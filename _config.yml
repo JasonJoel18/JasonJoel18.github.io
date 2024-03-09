@@ -35,7 +35,7 @@ author:
   googlescholar    : # "https://scholar.google.com/citations?user=PS_CX0AAAAAJ"
   impactstory      : # URL
   orcid            : # "http://orcid.org/yourorcidurl"
-  pubmed           : "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
+  pubmed           : # "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
   researchgate     : # URL
 
   # Repositories and software development
@@ -43,7 +43,7 @@ author:
   codepen          : # Username
   dribbble         : # Username
   github           : "JasonJoel18"
-  kaggle           : # Username  
+  kaggle           : "jasonjoelpinto" 
   stackoverflow    : # User number or user number and name (i.e., use "1" or "1/jeff-atwood")    
 
   # Social media
@@ -54,7 +54,7 @@ author:
   goodreads        : # Username
   google_plus      : # Username
   keybase          : # Username
-  instagram        : # Username
+  instagram        : "jasonjoelpinto"
   lastfm           : # Username
   linkedin         : "jason-joel-pinto-a44a16190"
   mastodon         : # URL
