@@ -34,6 +34,20 @@ During my time at Almasons Consulting LLC from June 2021 to December 2023 in Man
 **Git & GitHub:** Familiar with version control systems like Git and collaborative platforms like GitHub, enabling streamlined code management and team collaboration in software development projects.  
 **Machine Learning Tools:** Acquired foundational knowledge in machine learning, exploring tools and frameworks such as TensorFlow, scikit-learn, and MATLAB for predictive modeling and data analysis tasks.  
 
+
+<!--h1 without bottom border-->
+<div id="user-content-toc">
+  <ul align="center">
+    <summary><h2 style="display: inline-block">Technologies That I Know👨🏻‍💻</h2></summary>
+  </ul>
+</div>
+<!--tech stack icons-->
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=python,md,mysql,sqlite,fastapi,flask,gitlab,matlab,mongodb,postgres,postman,tensorflow,&perline=6" />
+  </a>
+</p>
+
 This is the front page of a website that is powered by th   e [academicpages template](https://github.com/academicpages/academicpages.github.io) and hosted on GitHub pages. [GitHub pages](https://pages.github.com) is a free service in which websites are built and hosted from code and data stored in a GitHub repository, automatically updating when a new commit is made to the respository. This template was forked from the [Minimal Mistakes Jekyll Theme](https://mmistakes.github.io/minimal-mistakes/) created by Michael Rose, and then extended to support the kinds of content that academics have: publications, talks, teaching, a portfolio, blog posts, and a dynamically-generated CV. You can fork [this repository](https://github.com/academicpages/academicpages.github.io) right now, modify the configuration and markdown files, add your own PDFs and other content, and have your own site for free, with no ads! An older version of this template powers my own personal website at [stuartgeiger.com](http://stuartgeiger.com), which uses [this Github repository](https://github.com/staeiou/staeiou.github.io).
 
 A data-driven personal website
