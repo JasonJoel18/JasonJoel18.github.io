@@ -13,15 +13,15 @@ Feel free to reach out to me using any of the following methods:
 
 ### Email 📧
 
-You can email me directly at [your_email@example.com](mailto:your_email@example.com).
+You can email me directly at [jasonjoel1899@gmail.com](mailto:jasonjoel1899@gmail.com).
 
 ### Social Media 🌐
 
 Connect with me on social media:
 
-![Twitter](/images/Twitter.svg){:height="24px"} **[Twitter](https://twitter.com/YourTwitterHandle)**
-![LinkedIn](/images/LinkedIn.svg){:height="24px"} **[LinkedIn](https://www.linkedin.com/in/yourprofile)**
-![Instagram](/images/Instagram.svg){:height="24px"} **[Instagram](https://www.instagram.com/YourInstagramHandle)**
+![LinkedIn](/images/LinkedIn.svg){:height="24px"} **[LinkedIn](https://www.linkedin.com/in/jason-joel-pinto-a44a16190)**  
+![Instagram](/images/Instagram.svg){:height="24px"} **[Instagram](https://www.instagram.com/jasonjoelpinto)**  
+![Twitter](/images/Twitter.svg){:height="24px"} **[Twitter](https://twitter.com/jason-joel-pinto-a44a16190)**  
 
 
 
