@@ -19,9 +19,9 @@ You can email me directly at [your_email@example.com](mailto:your_email@example.
 
 Connect with me on social media:
 
-- **Twitter:** [![Twitter](https://img.icons8.com/color/48/000000/twitter.png)](https://twitter.com/YourTwitterHandle)
-- **LinkedIn:** [![LinkedIn](https://img.icons8.com/color/48/000000/linkedin.png)](https://www.linkedin.com/in/yourprofile)
-- **Instagram:** [![Instagram](https://img.icons8.com/color/48/000000/instagram-new.png)](https://www.instagram.com/YourInstagramHandle)
+![Twitter](https://img.icons8.com/color/24/000000/twitter.png) **[Twitter](https://twitter.com/YourTwitterHandle)**
+![LinkedIn](https://img.icons8.com/color/24/000000/linkedin.png) **[LinkedIn](https://www.linkedin.com/in/yourprofile)**
+![Instagram](https://img.icons8.com/color/24/000000/instagram-new.png) **[Instagram](https://www.instagram.com/YourInstagramHandle)**
 
 ### Phone ☎️
 
