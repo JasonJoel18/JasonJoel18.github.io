@@ -1,3 +1,12 @@
+---
+permalink: /contact/
+title: "Contact"
+author_profile: true
+redirect_from: 
+  - /md/
+  - /contact.html
+---
+
 ## Get in Touch 📬
 
 Feel free to reach out to me using any of the following methods:
