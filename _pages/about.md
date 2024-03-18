@@ -37,12 +37,12 @@ redirect_from:
 
 ## 👨🏻‍🔬 Professional Experience  
 <div style="text-align: justify">
-During my time at Almasons Consulting LLC from June 2021 to December 2023 in Mangaluru, India, I served as a Senior Business Analyst, specializing in data modeling, SQL development, and technical deployment. I successfully led the development of the company's advanced Web Application, optimized core business applications, and collaborated cross-functionally to implement scalable solutions. Prior to this, I worked as an Audit Assistant at C.A. Krishnamoorthy from July 2020 to January 2021, honing my skills in financial data management and analysis. Proficient in SQL, Python, and data modeling techniques, I am adept at leveraging data to drive strategic decisions and contribute meaningfully to data-driven initiatives.
+During my time at [Almasons Consulting LLC](https://almasons.com) from June 2021 to December 2023 in Mangaluru, India, I served as a Senior Business Analyst, specializing in data modeling, SQL development, and technical deployment. I successfully led the development of the company's advanced Web Application, optimized core business applications, and collaborated cross-functionally to implement scalable solutions. Prior to this, I worked as an Audit Assistant at C.A. Krishnamoorthy from July 2020 to January 2021, honing my skills in financial data management and analysis. Proficient in SQL, Python, and data modeling techniques, I am adept at leveraging data to drive strategic decisions and contribute meaningfully to data-driven initiatives.
 </div>
 
 ## 🧿 Tools I have used
 
-**SQL and Database Management Systems (DBMS):**  
+**SQL:**  
 Proficient in SQL, MS-SQL, MySQL, SQLite, PostgreSQL, showcasing expertise in database querying, management, and optimization.  
 **Python:**  
 Leveraged Python programming for data manipulation, analysis, and machine learning tasks, contributing to the development of data-driven solutions.  
