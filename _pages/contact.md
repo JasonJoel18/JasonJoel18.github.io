@@ -24,16 +24,10 @@ Connect with me on social media:
 <img src="/images/Twitter16px.svg" alt="Twitter" height="24px"> **[Twitter](https://twitter.com/jason-joel-pinto-a44a16190)**
 
 
-
-
 ### Phone ☎️
 
-You can also give me a call at **+1 (123) 456-7890**.
+You can also give me a call at **+49 (155) 66145652**.
 
-### Address 🏠
-
-Visit me at:
-123 Main Street, City, Country
 
 ### Business Hours ⏰
 
