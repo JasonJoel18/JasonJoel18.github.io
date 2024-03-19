@@ -1,12 +1,14 @@
 ---
 permalink: /
-title: "👋🏼 Hello there, I'm Jason!"
+# title: "👋🏼 Hello there, I'm Jason!"
 excerpt: "About me"
 author_profile: true
 redirect_from: 
   - /about/
   - /about.html
 ---
+
+
 
 ![Illustration of combing data science, ML and language models](/images/text_to_image.jpg){: .align-right width="300px"}
 
