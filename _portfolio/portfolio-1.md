@@ -1,6 +1,6 @@
 ---
 title: "Image Classification"
-excerpt: "Created a model that will classify the diffrent types of gym equipments<br/><img src='images/portfolio-1.jpg'>"
+excerpt: "Created a model that will classify the diffrent types of gym equipments<br/><img src='images/portfolio-1500X300.jpg'>"
 collection: portfolio
 ---
 
