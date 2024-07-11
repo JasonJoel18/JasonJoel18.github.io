@@ -102,7 +102,7 @@ Acquired foundational knowledge in machine learning, exploring tools and framewo
     margin-left: -1px;
   }
   .timeline-item {
-    padding: 20px 20px;
+    padding: 20px 15px;
     position: relative;
     width: 50%;
     box-sizing: border-box;
