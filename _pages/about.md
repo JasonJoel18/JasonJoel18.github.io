@@ -69,7 +69,7 @@ Acquired foundational knowledge in machine learning, exploring tools and framewo
 <style>
   body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #fff;
     margin: 0;
     padding: 0;
   }
