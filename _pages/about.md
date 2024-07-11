@@ -58,3 +58,137 @@ Proficient in Microsoft Word, Excel, PowerPoint, and Access, utilized for data v
 Familiar with version control systems like Git and collaborative platforms like GitHub, enabling streamlined code management and team collaboration in software development projects.  
 **Machine Learning Tools:**  
 Acquired foundational knowledge in machine learning, exploring tools and frameworks such as TensorFlow, scikit-learn, and MATLAB for predictive modeling and data analysis tasks. 
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Experience Section</title>
+<style>
+  body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+  }
+  .timeline {
+    position: relative;
+    padding: 10px 0;
+    list-style: none;
+  }
+  .timeline:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #007bff;
+    left: 50%;
+    margin-left: -1px;
+  }
+  .timeline-item {
+    padding: 20px 40px;
+    position: relative;
+    width: 50%;
+    box-sizing: border-box;
+  }
+  .timeline-item:nth-child(odd) {
+    left: 0;
+    padding-right: 20px;
+  }
+  .timeline-item:nth-child(even) {
+    left: 50%;
+    padding-left: 20px;
+  }
+  .timeline-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  .timeline-content h3 {
+    margin-top: 0;
+    color: #007bff;
+    font-weight: bold;
+  }
+  .timeline-content p {
+    margin: 10px 0;
+  }
+  .timeline-content ul {
+    padding-left: 20px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>Experience</h2>
+  <ul class="timeline">
+    <li class="timeline-item">
+      <div class="timeline-content">
+        <h3>Senior Business Analyst at Almasons</h3>
+        <p><strong>Duration:</strong> October 2023 - Present · 10 mos</p>
+        <p><strong>Location:</strong> Mangaluru, Karnataka, India · On-site</p>
+        <ul>
+          <li>Led a team of business analysts in creating dashboards, writing advanced SQL queries, and implementing a scalable warehouse solution, resulting in more than 30% productivity gains and 30% reduction in operational costs. Collaborated with stakeholders to define project requirements and milestones.</li>
+          <li>Conducted ongoing reviews of business processes, identifying areas for optimization. Collaborated with stakeholders to gather requirements and perform a thorough analysis. Documented findings and communicated results to facilitate informed decision-making. Prioritized initiatives based on business needs, effectively managing resources.</li>
+          <li>Optimized database performance, resulting in a 25% improvement in query response time.</li>
+          <li>Mentored junior team members, fostering their professional growth in writing advanced SQL queries and achieving higher productivity.</li>
+          <li>Implemented automated database backup processes, reducing the manual work of taking backups.</li>
+        </ul>
+        <p><strong>Skills:</strong> User Stories, Python (Programming Language), Microsoft SQL Server, MySQL, SAP ERP, Data Visualization, Business Analysis</p>
+      </div>
+    </li>
+    <li class="timeline-item">
+      <div class="timeline-content">
+        <h3>Business Analyst at Almasons</h3>
+        <p><strong>Duration:</strong> September 2022 - October 2023 · 1 yr 2 mos</p>
+        <p><strong>Location:</strong> Karnataka, India</p>
+        <ul>
+          <li>Led analytics projects, identifying opportunities for process optimisation and implementing scalable solutions.</li>
+          <li>Developed and maintained advanced SQL Stored Procedures and queries.</li>
+          <li>Collaborated with cross-functional teams to troubleshoot core business applications.</li>
+          <li>Communicated effectively with organisational leaders, proposing solutions and providing progress updates.</li>
+          <li>Managed setup, configuration, and maintenance of systems, ensuring optimal performance and supportability.</li>
+        </ul>
+        <p><strong>Skills:</strong> User Stories, Python (Programming Language), Microsoft SQL Server, MySQL, SAP ERP, Data Visualization, Business Analysis</p>
+      </div>
+    </li>
+    <li class="timeline-item">
+      <div class="timeline-content">
+        <h3>Functional Associate at Almasons</h3>
+        <p><strong>Duration:</strong> June 2021 - September 2022 · 1 yr 4 mos</p>
+        <p><strong>Location:</strong> Karnataka, India</p>
+      </div>
+    </li>
+    <li class="timeline-item">
+      <div class="timeline-content">
+        <h3>Audit Assistant at C.A Krishnamurthy</h3>
+        <p><strong>Duration:</strong> July 2020 - January 2021 · 7 mos</p>
+        <p><strong>Location:</strong> Kankanady, Mangaluru, Karnataka, India</p>
+        <ul>
+          <li>Proficiently handled both manual and computerized bookkeeping of accounts, ensuring precision in recording financial transactions.</li>
+          <li>Managed bank entries, cash entries, and various expense and income entries. Skillfully prepared Bank Reconciliation Statements, meticulously comparing financial records to bank statements to maintain financial accuracy.</li>
+          <li>Efficiently managed a high volume of incoming calls and emails. Thoroughly compiled and updated customer records in both hard and digital formats, maintaining an organized and up-to-date repository of essential information.</li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</div>
+</body>
+</html>
