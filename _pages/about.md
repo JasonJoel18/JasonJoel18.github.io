@@ -102,7 +102,7 @@ Acquired foundational knowledge in machine learning, exploring tools and framewo
     margin-left: -1px;
   }
   .timeline-item {
-    padding: 20px 40px;
+    padding: 20px 20px;
     position: relative;
     width: 50%;
     box-sizing: border-box;
@@ -137,7 +137,7 @@ Acquired foundational knowledge in machine learning, exploring tools and framewo
 </head>
 <body>
 <div class="container">
-  <h2>Experience</h2>
+  <h2>👨🏻‍🔬 Professional Experience</h2>
   <ul class="timeline">
     <li class="timeline-item">
       <div class="timeline-content">
