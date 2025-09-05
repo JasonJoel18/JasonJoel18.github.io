@@ -9,7 +9,6 @@ redirect_from:
 ---
 
 
-
 ![Illustration of combing data science, ML and language models](/images/text_to_image.jpg){: .align-right width="300px"}
 
 
