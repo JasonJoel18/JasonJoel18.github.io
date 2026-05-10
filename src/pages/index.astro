@@ -1,20 +1,22 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import Hero from '~/components/sections/Hero.astro';
+import StatsStrip from '~/components/sections/StatsStrip.astro';
 import About from '~/components/sections/About.astro';
-import Experience from '~/components/sections/Experience.astro';
-import Projects from '~/components/sections/Projects.astro';
 import Skills from '~/components/sections/Skills.astro';
+import Projects from '~/components/sections/Projects.astro';
+import Experience from '~/components/sections/Experience.astro';
 import Education from '~/components/sections/Education.astro';
 import Contact from '~/components/sections/Contact.astro';
 ---
 
 <BaseLayout>
   <Hero />
+  <StatsStrip />
   <About />
-  <Experience />
-  <Projects />
   <Skills />
+  <Projects />
+  <Experience />
   <Education />
   <Contact />
 </BaseLayout>

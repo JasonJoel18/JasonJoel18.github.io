@@ -143,6 +143,17 @@ const projects = defineCollection({
       .default({}),
     caseStudy: z.boolean().default(false),
     order: z.number().int().default(0),
+    metrics: z
+      .array(
+        z.object({
+          label: z.string(),
+          value: z.string(),
+        }),
+      )
+      .default([]),
+    problem: z.string().optional(),
+    approach: z.string().optional(),
+    results: z.string().optional(),
   }),
 });
 

@@ -14,3 +14,12 @@ links:
   live: null
   demo: null
 caseStudy: false
+metrics:
+  - label: "Efficiency gain"
+    value: "+40%"
+  - label: "KPIs tracked"
+    value: "15+"
+  - label: "Tracking accuracy"
+    value: "+25%"
+  - label: "Distribution centers"
+    value: "8"

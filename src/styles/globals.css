@@ -15,21 +15,24 @@
 
   --color-accent:       #a78bfa;   /* violet 400 */
   --color-accent-2:     #22d3ee;   /* cyan 400 */
+  --color-accent-3:     #34d399;   /* emerald 400 */
   --color-accent-soft:  rgba(167, 139, 250, 0.16);
 
   --color-success:      #34d399;
   --color-warning:      #fbbf24;
+  --color-danger:       #f87171;
 
-  /* Font tokens */
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Font tokens — JetBrains Mono is primary across the UI for the terminal/dashboard aesthetic */
+  --font-sans: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-display: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Easings */
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Radii */
-  --radius-card: 18px;
+  --radius-card: 16px;
   --radius-pill: 9999px;
 }
 
@@ -38,24 +41,40 @@
     background: var(--color-bg);
     color: var(--color-fg);
     font-family: var(--font-sans);
+    font-feature-settings: "calt", "liga", "ss01";
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
-    /* Account for sticky header when scrolling to anchors */
-    scroll-padding-top: 88px;
+    scroll-padding-top: 80px;
   }
 
   body {
     background:
-      radial-gradient(800px 600px at 12% -10%, rgba(167, 139, 250, 0.18), transparent 60%),
-      radial-gradient(700px 500px at 95% 8%,   rgba(34, 211, 238, 0.12),  transparent 60%),
+      radial-gradient(900px 700px at 8% -8%, rgba(167, 139, 250, 0.18), transparent 60%),
+      radial-gradient(800px 600px at 96% 6%,  rgba(34, 211, 238, 0.13),  transparent 60%),
+      radial-gradient(700px 500px at 50% 110%, rgba(52, 211, 153, 0.08), transparent 60%),
       var(--color-bg);
     min-height: 100vh;
     overflow-x: hidden;
   }
 
-  /* Subtle noise overlay — purely decorative, no JS */
+  /* Subtle grid + noise overlay — "data canvas" feel, purely decorative */
   body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      linear-gradient(rgba(45, 51, 70, 0.35) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(45, 51, 70, 0.35) 1px, transparent 1px);
+    background-size: 64px 64px, 64px 64px;
+    mask-image: radial-gradient(ellipse at 50% 30%, rgba(0,0,0,0.7), transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 30%, rgba(0,0,0,0.7), transparent 75%);
+    opacity: 0.55;
+  }
+
+  body::after {
     content: "";
     position: fixed;
     inset: 0;
@@ -78,32 +97,62 @@
   }
 
   h1, h2, h3, h4 {
-    font-family: var(--font-sans);
-    letter-spacing: -0.02em;
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+    line-height: 1.1;
   }
 
-  /* Section vertical rhythm */
   section {
-    scroll-margin-top: 88px;
+    scroll-margin-top: 80px;
   }
 }
 
 @layer utilities {
   .container-page {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1280px;
     margin-inline: auto;
-    padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+    padding-inline: clamp(1rem, 3.5vw, 2rem);
+  }
+
+  .container-wide {
+    width: 100%;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 3vw, 2rem);
   }
 
   .text-balance { text-wrap: balance; }
   .text-pretty  { text-wrap: pretty; }
 
+  /* Glass tiers — static blur values, never animated */
+  .glass-sm {
+    background: color-mix(in oklab, var(--color-surface) 55%, transparent);
+    backdrop-filter: saturate(130%) blur(8px);
+    -webkit-backdrop-filter: saturate(130%) blur(8px);
+    border: 1px solid color-mix(in oklab, var(--color-border) 70%, transparent);
+  }
+
   .glass {
-    background: color-mix(in oklab, var(--color-surface) 70%, transparent);
+    background: color-mix(in oklab, var(--color-surface) 65%, transparent);
     backdrop-filter: saturate(140%) blur(14px);
     -webkit-backdrop-filter: saturate(140%) blur(14px);
     border: 1px solid color-mix(in oklab, var(--color-border) 80%, transparent);
+  }
+
+  .glass-strong {
+    background: color-mix(in oklab, var(--color-surface) 78%, transparent);
+    backdrop-filter: saturate(160%) blur(24px);
+    -webkit-backdrop-filter: saturate(160%) blur(24px);
+    border: 1px solid color-mix(in oklab, var(--color-border-2) 85%, transparent);
+  }
+
+  .glass-panel {
+    background: color-mix(in oklab, var(--color-surface) 72%, transparent);
+    backdrop-filter: saturate(150%) blur(18px);
+    -webkit-backdrop-filter: saturate(150%) blur(18px);
+    border: 1px solid color-mix(in oklab, var(--color-border) 85%, transparent);
+    border-radius: var(--radius-card);
   }
 
   .gradient-text {
@@ -118,6 +167,19 @@
     background: linear-gradient(90deg, transparent, var(--color-border-2), transparent);
   }
 
+  /* Local dotted grid for in-card "data canvas" backgrounds */
+  .grid-canvas {
+    background-image:
+      linear-gradient(rgba(45, 51, 70, 0.4) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(45, 51, 70, 0.4) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .dots-canvas {
+    background-image: radial-gradient(rgba(167, 139, 250, 0.18) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+
   .card {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -126,6 +188,20 @@
 
   .ring-accent {
     box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-accent) 40%, transparent);
+  }
+
+  .glow-accent {
+    box-shadow: 0 0 32px -8px color-mix(in oklab, var(--color-accent) 35%, transparent);
+  }
+
+  /* Mono label used heavily across the UI — small, tracked, muted */
+  .label-mono {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-fg-subtle);
+    font-weight: 500;
   }
 
   /* Below-fold rendering optimization */
@@ -150,7 +226,7 @@
 /* Print stylesheet for /cv */
 @media print {
   body { background: white !important; color: #111 !important; }
-  body::before { display: none; }
+  body::before, body::after { display: none; }
   .no-print { display: none !important; }
   .print-card { border-color: #ddd !important; background: white !important; }
   a { color: #111 !important; text-decoration: underline; }

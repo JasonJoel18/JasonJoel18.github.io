@@ -1,0 +1,23 @@
+---
+import { cn } from '~/lib/cn';
+interface Props {
+  title: string;
+  path: string;
+  hex: string;
+  size?: number;
+  class?: string;
+}
+const { title, path, hex, size = 28, class: className } = Astro.props;
+---
+<svg
+  role="img"
+  viewBox="0 0 24 24"
+  width={size}
+  height={size}
+  aria-label={title}
+  class={cn('shrink-0 transition-colors duration-300', className)}
+  style={`color: #${hex};`}
+>
+  <title>{title}</title>
+  <path fill="currentColor" d={path} />
+</svg>

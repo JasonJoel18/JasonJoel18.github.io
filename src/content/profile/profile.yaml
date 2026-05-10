@@ -1,8 +1,8 @@
 profile:
   name: "Jason Joel Pinto"
-  title: "Data Analyst"
-  heroSubtitle: "I turn messy data into dashboards executives actually use."
-  heroTagline: "BI · Visualization · SQL · Python"
+  title: "Data Analyst · BI & ML"
+  heroSubtitle: "I ship dashboards that move KPIs and ML models that hold up under uncertainty — 15+ dashboards live, 200+ SQL queries in production, 40% efficiency gains delivered."
+  heroTagline: "SQL · Python · Tableau · Power BI · Machine Learning"
   avatar: /profile.png
   location: "Berlin, Germany"
   availability: "Open to opportunities"

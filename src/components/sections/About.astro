@@ -2,47 +2,59 @@
 import { getEntry } from 'astro:content';
 import SectionHeader from '~/components/ui/SectionHeader.astro';
 import Reveal from '~/components/motion/Reveal.tsx';
-import { MapPin, Languages, Briefcase } from 'lucide-react';
+import { MapPin, Languages, Briefcase, GraduationCap } from 'lucide-react';
 
 const profile = await getEntry('profile', 'profile');
 const cv = await getEntry('cv', 'cv');
 if (!profile || !cv) throw new Error('Missing entries');
+
+const latestEdu = cv.data.education[0];
 ---
 
-<section id="about" class="py-24 sm:py-32 cv-auto">
-  <div class="container-page">
+<section id="about" class="py-14 sm:py-20 cv-auto">
+  <div class="container-wide">
     <SectionHeader eyebrow="About" title="A short version of the long story." />
 
-    <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-10 lg:gap-16">
-      <Reveal client:visible className="space-y-5 text-[var(--color-fg-muted)] text-lg leading-relaxed text-pretty">
+    <div class="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-6 lg:gap-8">
+      <Reveal client:visible className="glass-panel p-5 sm:p-6 space-y-4 text-[var(--color-fg-muted)] text-base leading-relaxed text-pretty">
         {profile.data.about.map((p) => <p>{p}</p>)}
       </Reveal>
 
-      <Reveal client:visible delay={0.1} className="space-y-4">
-        <div class="card p-5 flex items-start gap-3">
-          <MapPin size={18} className="text-[var(--color-accent)] mt-0.5 shrink-0" aria-hidden="true" />
-          <div>
-            <p class="text-sm text-[var(--color-fg-subtle)]">Based in</p>
-            <p class="text-[var(--color-fg)] font-medium">{profile.data.location}</p>
+      <Reveal client:visible delay={0.08} className="grid grid-cols-2 gap-3 lg:grid-cols-1 lg:gap-3 content-start">
+        <div class="glass-sm rounded-lg p-3.5 flex items-start gap-2.5 col-span-1">
+          <MapPin size={16} strokeWidth={1.5} className="text-[var(--color-accent)] mt-0.5 shrink-0" aria-hidden="true" />
+          <div class="min-w-0">
+            <p class="label-mono">Based in</p>
+            <p class="text-sm text-[var(--color-fg)] font-medium truncate">{profile.data.location}</p>
           </div>
         </div>
-        <div class="card p-5 flex items-start gap-3">
-          <Briefcase size={18} className="text-[var(--color-accent)] mt-0.5 shrink-0" aria-hidden="true" />
-          <div>
-            <p class="text-sm text-[var(--color-fg-subtle)]">Status</p>
-            <p class="text-[var(--color-fg)] font-medium">{profile.data.availability}</p>
+        <div class="glass-sm rounded-lg p-3.5 flex items-start gap-2.5 col-span-1">
+          <Briefcase size={16} strokeWidth={1.5} className="text-[var(--color-accent)] mt-0.5 shrink-0" aria-hidden="true" />
+          <div class="min-w-0">
+            <p class="label-mono">Status</p>
+            <p class="text-sm text-[var(--color-fg)] font-medium leading-tight">{profile.data.availability}</p>
           </div>
         </div>
-        <div class="card p-5">
-          <div class="flex items-start gap-3">
-            <Languages size={18} className="text-[var(--color-accent)] mt-0.5 shrink-0" aria-hidden="true" />
-            <div class="flex-1">
-              <p class="text-sm text-[var(--color-fg-subtle)] mb-2">Languages</p>
-              <ul class="space-y-1.5">
+        {latestEdu && (
+          <div class="glass-sm rounded-lg p-3.5 flex items-start gap-2.5 col-span-2 lg:col-span-1">
+            <GraduationCap size={16} strokeWidth={1.5} className="text-[var(--color-accent)] mt-0.5 shrink-0" aria-hidden="true" />
+            <div class="min-w-0">
+              <p class="label-mono">Currently</p>
+              <p class="text-sm text-[var(--color-fg)] font-medium leading-tight">{latestEdu.degree}</p>
+              <p class="text-xs text-[var(--color-fg-subtle)] truncate">{latestEdu.institution}</p>
+            </div>
+          </div>
+        )}
+        <div class="glass-sm rounded-lg p-3.5 col-span-2 lg:col-span-1">
+          <div class="flex items-start gap-2.5">
+            <Languages size={16} strokeWidth={1.5} className="text-[var(--color-accent)] mt-0.5 shrink-0" aria-hidden="true" />
+            <div class="flex-1 min-w-0">
+              <p class="label-mono mb-1.5">Languages</p>
+              <ul class="space-y-1">
                 {cv.data.languages.map((l) => (
-                  <li class="flex items-center justify-between text-sm">
-                    <span class="text-[var(--color-fg)]">{l.name}</span>
-                    <span class="text-[var(--color-fg-subtle)]">{l.level}</span>
+                  <li class="flex items-center justify-between text-xs gap-2">
+                    <span class="text-[var(--color-fg)] truncate">{l.name}</span>
+                    <span class="text-[var(--color-fg-subtle)] shrink-0">{l.level}</span>
                   </li>
                 ))}
               </ul>

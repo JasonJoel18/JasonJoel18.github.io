@@ -14,3 +14,12 @@ links:
   live: null
   demo: null
 caseStudy: false
+metrics:
+  - label: "Accuracy"
+    value: "99.5%"
+  - label: "Calibration ECE"
+    value: "0.012"
+  - label: "MC samples"
+    value: "100"
+  - label: "Architecture"
+    value: "ResNet-50"

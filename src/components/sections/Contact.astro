@@ -11,52 +11,53 @@ if (!profile) throw new Error('Missing profile entry');
 const email = profile.data.socials.find((s) => s.kind === 'email');
 ---
 
-<section id="contact" class="py-24 sm:py-32 relative">
+<section id="contact" class="py-14 sm:py-20 relative">
   <div
     aria-hidden="true"
-    class="absolute inset-x-0 top-1/2 -translate-y-1/2 mx-auto h-[420px] max-w-3xl rounded-full opacity-50 blur-3xl"
-    style="background: radial-gradient(closest-side, rgba(167,139,250,0.25), transparent 70%);"
+    class="absolute inset-x-0 top-1/2 -translate-y-1/2 mx-auto h-[320px] max-w-2xl rounded-full opacity-40 blur-3xl"
+    style="background: radial-gradient(closest-side, rgba(167,139,250,0.28), transparent 70%);"
   ></div>
 
   <div class="container-page relative">
     <Reveal client:visible>
-      <div class="text-center max-w-2xl mx-auto">
-        <p class="text-sm font-mono text-[var(--color-accent)] tracking-[0.18em] uppercase mb-4">
-          Get in touch
-        </p>
-        <h2 class="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-balance mb-5">
-          Let's build something <span class="gradient-text">measurable</span>.
-        </h2>
-        <p class="text-[var(--color-fg-muted)] text-lg leading-relaxed text-pretty mb-10">
-          Currently {profile.data.availability.toLowerCase()}. If you have a data problem worth solving — or just want to swap notes on dashboards — my inbox is always open.
-        </p>
+      <div class="glass-panel p-6 sm:p-10 max-w-3xl mx-auto text-center relative overflow-hidden">
+        <div class="absolute inset-0 dots-canvas opacity-30 pointer-events-none"></div>
+        <div class="relative">
+          <p class="label-mono !text-[var(--color-accent)] mb-3">Get in touch</p>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-balance mb-3">
+            Let's build something <span class="gradient-text">measurable</span>.
+          </h2>
+          <p class="text-[var(--color-fg-muted)] text-sm sm:text-base leading-relaxed text-pretty mb-6 max-w-xl mx-auto">
+            Currently {profile.data.availability.toLowerCase()}. If you have a data problem worth solving — or just want to swap notes on dashboards — my inbox is open.
+          </p>
 
-        <div class="flex flex-wrap items-center justify-center gap-3 mb-10">
-          {email && (
-            <MagneticButton
-              client:visible
-              href={email.url}
-              ariaLabel="Send an email"
-              className="inline-flex items-center gap-2 h-12 px-6 rounded-full bg-[var(--color-fg)] text-[var(--color-bg)] font-medium tracking-tight"
+          <div class="flex flex-wrap items-center justify-center gap-3 mb-6">
+            {email && (
+              <MagneticButton
+                client:visible
+                href={email.url}
+                ariaLabel="Send an email"
+                className="inline-flex items-center gap-2 h-11 px-5 rounded-full bg-[var(--color-fg)] text-[var(--color-bg)] font-medium tracking-tight text-sm"
+              >
+                <Mail size={15} strokeWidth={1.75} aria-hidden="true" />
+                Say hello
+                <ArrowUpRight size={13} strokeWidth={1.75} aria-hidden="true" />
+              </MagneticButton>
+            )}
+            <a
+              href="/cv"
+              class="glass-sm inline-flex items-center gap-2 h-11 px-5 rounded-full text-[var(--color-fg)] font-medium tracking-tight text-sm hover:-translate-y-0.5 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-[transform,border-color,color] duration-300 will-change-transform"
             >
-              <Mail size={16} aria-hidden="true" />
-              Say hello
-              <ArrowUpRight size={14} aria-hidden="true" />
-            </MagneticButton>
-          )}
-          <a
-            href="/cv"
-            class="inline-flex items-center gap-2 h-12 px-6 rounded-full border border-[var(--color-border-2)] text-[var(--color-fg)] font-medium tracking-tight hover:-translate-y-0.5 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-[transform,border-color,color] duration-300 will-change-transform"
-          >
-            View CV
-            <ArrowUpRight size={14} aria-hidden="true" />
-          </a>
-        </div>
+              View CV
+              <ArrowUpRight size={13} strokeWidth={1.75} aria-hidden="true" />
+            </a>
+          </div>
 
-        <div class="flex items-center justify-center gap-2">
-          {profile.data.socials.map((s) => (
-            <SocialIcon kind={s.kind} url={s.url} label={s.label} />
-          ))}
+          <div class="flex items-center justify-center gap-1">
+            {profile.data.socials.map((s) => (
+              <SocialIcon kind={s.kind} url={s.url} label={s.label} />
+            ))}
+          </div>
         </div>
       </div>
     </Reveal>

@@ -14,3 +14,12 @@ links:
   live: null
   demo: null
 caseStudy: false
+metrics:
+  - label: "Queries"
+    value: "200+"
+  - label: "Stored procs"
+    value: "50+"
+  - label: "Retrieval speed"
+    value: "+35%"
+  - label: "Processing time"
+    value: "-50%"
