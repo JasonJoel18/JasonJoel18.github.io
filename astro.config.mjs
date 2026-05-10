@@ -1,0 +1,22 @@
+import { defineConfig } from 'astro/config';
+import react from '@astrojs/react';
+import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
+import tailwindcss from '@tailwindcss/vite';
+
+export default defineConfig({
+  site: 'https://JasonJoel18.github.io',
+  output: 'static',
+  trailingSlash: 'ignore',
+  integrations: [react(), mdx(), sitemap()],
+  vite: {
+    plugins: [tailwindcss()],
+  },
+  build: {
+    inlineStylesheets: 'auto',
+  },
+  prefetch: {
+    prefetchAll: false,
+    defaultStrategy: 'hover',
+  },
+});

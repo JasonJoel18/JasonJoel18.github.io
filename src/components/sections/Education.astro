@@ -1,0 +1,51 @@
+---
+import { getEntry } from 'astro:content';
+import SectionHeader from '~/components/ui/SectionHeader.astro';
+import Reveal from '~/components/motion/Reveal.tsx';
+import { GraduationCap, Award } from 'lucide-react';
+
+const cv = await getEntry('cv', 'cv');
+if (!cv) throw new Error('Missing cv entry');
+---
+
+<section id="education" class="py-24 sm:py-32 cv-auto">
+  <div class="container-page">
+    <SectionHeader eyebrow="Credentials" title="Education & certifications." />
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <Reveal client:visible className="space-y-5">
+        <div class="flex items-center gap-2 text-[var(--color-fg)]">
+          <GraduationCap size={18} className="text-[var(--color-accent)]" aria-hidden="true" />
+          <h3 class="text-lg font-semibold tracking-tight">Education</h3>
+        </div>
+        <div class="space-y-4">
+          {cv.data.education.map((e) => (
+            <div class="card p-5">
+              <p class="text-base font-semibold text-[var(--color-fg)] tracking-tight">{e.degree}</p>
+              <p class="text-sm text-[var(--color-accent)] mt-0.5">{e.institution}</p>
+              <p class="text-xs text-[var(--color-fg-subtle)] mt-2">
+                {e.duration} · {e.location}
+              </p>
+              {e.summary && <p class="text-sm text-[var(--color-fg-muted)] mt-2">{e.summary}</p>}
+            </div>
+          ))}
+        </div>
+      </Reveal>
+
+      <Reveal client:visible delay={0.05} className="space-y-5">
+        <div class="flex items-center gap-2 text-[var(--color-fg)]">
+          <Award size={18} className="text-[var(--color-accent)]" aria-hidden="true" />
+          <h3 class="text-lg font-semibold tracking-tight">Certifications</h3>
+        </div>
+        <ul class="card p-5 divide-y divide-[var(--color-border)]">
+          {cv.data.certifications.map((c) => (
+            <li class="py-3 first:pt-0 last:pb-0 flex items-baseline justify-between gap-3">
+              <span class="text-sm text-[var(--color-fg)]">{c.name}</span>
+              <span class="text-xs text-[var(--color-fg-subtle)] whitespace-nowrap">{c.issuer}</span>
+            </li>
+          ))}
+        </ul>
+      </Reveal>
+    </div>
+  </div>
+</section>

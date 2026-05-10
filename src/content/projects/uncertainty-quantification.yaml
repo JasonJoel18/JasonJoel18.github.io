@@ -1,0 +1,16 @@
+title: "Uncertainty Quantification in Deep Learning"
+summary: "Monte Carlo Dropout model that estimates predictive uncertainty for healthcare risk decisions — 99.5% accuracy plus a confidence score for every prediction."
+year: 2024
+featured: true
+order: 1
+role: "Sole researcher"
+tech: [Python, PyTorch, Pandas, Matplotlib, Seaborn, "Deep Learning"]
+media:
+  type: image
+  src: /projects/uncertainty-quantification-cover.svg
+  alt: "Calibration curve illustrating predictive uncertainty"
+links:
+  github: "https://github.com/JasonJoel18"
+  live: null
+  demo: null
+caseStudy: false

@@ -1,0 +1,27 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { ArrowLeft } from 'lucide-react';
+---
+
+<BaseLayout title="404 — Page not found">
+  <section class="min-h-[80vh] grid place-items-center container-page">
+    <div class="text-center max-w-lg">
+      <p class="text-sm font-mono text-[var(--color-accent)] tracking-[0.2em] uppercase mb-4">
+        Error 404
+      </p>
+      <h1 class="text-7xl sm:text-8xl font-semibold tracking-tight gradient-text mb-6">
+        Lost the thread.
+      </h1>
+      <p class="text-[var(--color-fg-muted)] leading-relaxed mb-8">
+        That page either moved, never existed, or was archived in a place I can no longer reach.
+      </p>
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 h-12 px-6 rounded-full bg-[var(--color-fg)] text-[var(--color-bg)] font-medium tracking-tight hover:-translate-y-0.5 transition-transform duration-300 will-change-transform"
+      >
+        <ArrowLeft size={16} aria-hidden="true" />
+        Back home
+      </a>
+    </div>
+  </section>
+</BaseLayout>

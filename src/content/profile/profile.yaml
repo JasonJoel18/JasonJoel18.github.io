@@ -1,0 +1,19 @@
+profile:
+  name: "Jason Joel Pinto"
+  title: "Data Analyst"
+  heroSubtitle: "I turn messy data into dashboards executives actually use."
+  heroTagline: "BI · Visualization · SQL · Python"
+  avatar: /profile.png
+  location: "Berlin, Germany"
+  availability: "Open to opportunities"
+
+  socials:
+    - { kind: github,   url: "https://github.com/JasonJoel18",                            label: "JasonJoel18" }
+    - { kind: linkedin, url: "https://www.linkedin.com/in/jason-joel-pinto-a44a16190/",  label: "Jason Joel Pinto" }
+    - { kind: kaggle,   url: "https://www.kaggle.com/jasonjoelpinto",                     label: "jasonjoelpinto" }
+    - { kind: email,    url: "mailto:jasonjoel1899@gmail.com",                            label: "jasonjoel1899@gmail.com" }
+
+  about:
+    - "I'm a Data Analyst with 3+ years of experience bridging business, technology, and data. I specialize in turning ambiguous business questions into measurable, decision-grade analytics."
+    - "My day-to-day mixes SQL across MySQL and SAP HANA, Python for automation and modeling, and storytelling through Tableau, Power BI, and Plotly Dash. I've shipped 15+ dashboards used by C-suite stakeholders."
+    - "Currently based in Berlin, finishing an M.Sc. in Data Science, AI & Digital Business at GISMA University. Open to roles where data has to drive decisions, not just decorate them."

@@ -1,0 +1,115 @@
+cv:
+  name: Jason Joel Pinto
+  title: Data Analyst · Business Intelligence & Data Visualization · SQL & Python
+  summary: Data Analyst with 3+ years of experience bridging business, technology, and data in buy- or sell-side environments, with proven expertise in business intelligence techniques including data modeling,
+    data mining, data analysis, and data visualization. Proficient in Tableau, Power BI, Plotly Dash, and Jupyter Notebooks, underpinned by strong SQL skills and programming fluency in Python. Delivers
+    actionable insights and recommendations to C-suite stakeholders through compelling visual storytelling, translating complex datasets into measurable business value.
+  contact:
+    location: Berlin, Germany
+    phone: +49 155 6614 5652
+    email: jasonjoel1899@gmail.com
+    linkedin:
+      label: Jason Joel Pinto
+      url: https://www.linkedin.com/in/jason-joel-pinto-a44a16190/
+    github:
+      label: JasonJoel18
+      url: https://github.com/JasonJoel18
+  skills:
+  - category: Technical Skills
+    items:
+    - SQL
+    - Python
+    - Data visualization
+    - Data modeling
+    - Machine learning
+  - category: Tools & Platforms
+    items:
+    - Tableau
+    - Power BI
+    - Plotly Dash
+    - Jupyter Notebooks
+    - SAP / SAP HANA
+  - category: Domain Skills
+    items:
+    - Business intelligence techniques
+    - Self-service analytics tools
+    - Data automation
+    - Financial reporting
+    - Digital transformation
+  - category: Cloud & Data Platforms
+    items:
+    - AWS
+    - Azure
+    - MySQL
+    - BoldBI
+    - Jira
+  - category: Soft Skills
+    items:
+    - Visual storytelling
+    - Stakeholder management
+    - Cross-functional collaboration
+    - Actionable insights communication
+    - Continuous improvement mindset
+  - category: Other Tools
+    items:
+    - MS Office Suite
+    - Advanced Excel
+    - JavaScript
+    - D3
+    - Hadoop
+  languages:
+  - name: English
+    level: Proficient (C1)
+  - name: German
+    level: Intermediate (B1)
+  - name: Hindi
+    level: Native
+  education:
+  - degree: M.Sc. — Data Science, AI & Digital Business
+    institution: GISMA University of Applied Sciences
+    duration: Graduated 2025
+    location: Potsdam / Berlin, Germany
+    summary: 'GPA: 1.9 (German scale)'
+  - degree: B.Com — Bachelor of Commerce
+    institution: St. Aloysius College (Autonomous), Mangalore
+    duration: Graduated 2020
+    location: Mangalore, India
+    summary: 'CGPA: 6.66 / 10'
+  work:
+  - title: Senior Business Analyst
+    company: Almasons Consulting LLC
+    duration: Jun 2021 – Dec 2023
+    location: Berlin, Germany
+    points:
+    - Delivered impactful data visualizations using Tableau, BoldBI, and Jupyter Notebooks across warehouse and financial reporting domains, enabling data-driven goals for C-suite executives.
+    - Developed and automated 200+ complex SQL queries and 50+ stored procedures against MySQL and SAP HANA databases, boosting data retrieval efficiency by 35%.
+    - Designed 15+ interactive dashboards using Tableau and Power BI, driving a 40% improvement in warehouse management efficiency and a 25% gain in tracking accuracy.
+    - Automated internal data processes and workflows via Python scripting, cutting warehouse processing time by 50% and establishing continuous improvement in data operations.
+    - Deployed and maintained scalable data systems on AWS and Azure cloud platforms, reducing system downtime by 40% and increasing overall supportability by 25%.
+    - Partnered with cross-functional teams across operations, finance, and technology to deliver integrated commercial data products aligned to business intelligence targets.
+  - title: Business Analyst
+    company: Almasons Institute of Educational & Professional Training
+    duration: May 2020 – May 2021
+    location: India
+    points:
+    - Maintained day-to-day operational reporting and exception tracking, delivering management-level insights and recommendations to internal stakeholders.
+    - Validated billing data and resolved 100% of identified discrepancies within agreed timelines, supporting compliance documentation and audit readiness.
+    - Coordinated with finance and operations teams on cross-functional data needs, applying business intelligence techniques to reduce data quality errors by 30%.
+    - Documented operational workflows and data collection standards, delivering continuous improvement initiatives that reduced manual reporting effort by 20%.
+  certifications:
+  - name: 'AI Fluency: Framework & Foundations'
+    issuer: Anthropic Academy
+  - name: AWS Cloud Practitioner
+    issuer: In Progress
+  - name: HackerRank — SQL (Intermediate) Certificate
+    issuer: HackerRank
+  - name: 'Learning Data Analytics: 1 Foundations'
+    issuer: LinkedIn Learning
+  - name: 'Microsoft Future Ready: Data Science Research Methods'
+    issuer: Microsoft
+  - name: Introduction to Data Analytics with Python
+    issuer: Coursera
+  - name: Introduction to Career Skills in Data Analytics
+    issuer: LinkedIn Learning
+  - name: Claude 101
+    issuer: Anthropic Academy

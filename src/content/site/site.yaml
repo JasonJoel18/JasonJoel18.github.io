@@ -1,0 +1,24 @@
+site:
+  seo:
+    title: "Jason Joel Pinto — Data Analyst"
+    description: "Data Analyst building BI dashboards, ML systems, and decision-grade analytics. Berlin, Germany."
+    ogImage: /og-image.svg
+
+  nav:
+    - { label: About,      href: "#about" }
+    - { label: Experience, href: "#experience" }
+    - { label: Projects,   href: "#projects" }
+    - { label: Skills,     href: "#skills" }
+    - { label: Contact,    href: "#contact" }
+
+  cta:
+    primary:
+      label: "Download CV"
+      href: "/cv.pdf"
+    secondary:
+      label: "Get in touch"
+      href: "#contact"
+
+  footer:
+    tagline: "Designed & built from scratch."
+    builtWith: "Astro · React · Tailwind · Framer Motion"

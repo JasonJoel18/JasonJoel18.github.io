@@ -1,0 +1,165 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { Download, ArrowLeft, Mail, Phone, MapPin, Linkedin, Github } from 'lucide-react';
+
+const cv = await getEntry('cv', 'cv');
+const profile = await getEntry('profile', 'profile');
+if (!cv || !profile) throw new Error('Missing entries');
+const c = cv.data;
+---
+
+<BaseLayout
+  title={`${c.name} — CV`}
+  description={`Curriculum Vitae of ${c.name}. ${c.title}`}
+>
+  <div class="container-page pt-32 pb-20">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-10 no-print">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-fg)] transition-colors"
+      >
+        <ArrowLeft size={16} aria-hidden="true" />
+        Back to home
+      </a>
+      <div class="flex items-center gap-2">
+        <button
+          type="button"
+          onclick="window.print()"
+          class="inline-flex items-center gap-2 h-10 px-4 rounded-full border border-[var(--color-border-2)] text-[var(--color-fg)] text-sm font-medium hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
+        >
+          Print
+        </button>
+        <a
+          href="/cv.pdf"
+          download
+          class="inline-flex items-center gap-2 h-10 px-4 rounded-full bg-[var(--color-fg)] text-[var(--color-bg)] text-sm font-medium hover:-translate-y-0.5 transition-transform duration-300 ease-out will-change-transform"
+        >
+          <Download size={14} aria-hidden="true" />
+          Download PDF
+        </a>
+      </div>
+    </div>
+
+    <article class="card print-card p-8 sm:p-12 space-y-12">
+      <header class="space-y-3 pb-8 border-b border-[var(--color-border)]">
+        <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight text-balance">
+          {c.name}
+        </h1>
+        <p class="text-lg sm:text-xl text-[var(--color-accent)] font-medium tracking-tight">
+          {c.title}
+        </p>
+        <p class="text-[var(--color-fg-muted)] leading-relaxed text-pretty max-w-3xl">
+          {c.summary}
+        </p>
+        <ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm text-[var(--color-fg-muted)] pt-2">
+          <li class="inline-flex items-center gap-1.5">
+            <MapPin size={14} aria-hidden="true" /> {c.contact.location}
+          </li>
+          <li class="inline-flex items-center gap-1.5">
+            <Mail size={14} aria-hidden="true" />
+            <a href={`mailto:${c.contact.email}`} class="hover:text-[var(--color-accent)]">{c.contact.email}</a>
+          </li>
+          {c.contact.phone && (
+            <li class="inline-flex items-center gap-1.5">
+              <Phone size={14} aria-hidden="true" /> {c.contact.phone}
+            </li>
+          )}
+          <li class="inline-flex items-center gap-1.5">
+            <Linkedin size={14} aria-hidden="true" />
+            <a href={c.contact.linkedin.url} target="_blank" rel="noreferrer noopener" class="hover:text-[var(--color-accent)]">
+              {c.contact.linkedin.label}
+            </a>
+          </li>
+          <li class="inline-flex items-center gap-1.5">
+            <Github size={14} aria-hidden="true" />
+            <a href={c.contact.github.url} target="_blank" rel="noreferrer noopener" class="hover:text-[var(--color-accent)]">
+              {c.contact.github.label}
+            </a>
+          </li>
+        </ul>
+      </header>
+
+      <section>
+        <h2 class="text-xs font-mono uppercase tracking-[0.2em] text-[var(--color-accent)] mb-5">Experience</h2>
+        <div class="space-y-8">
+          {c.work.map((job) => (
+            <div>
+              <div class="flex flex-wrap items-baseline justify-between gap-x-4">
+                <h3 class="text-lg font-semibold tracking-tight text-[var(--color-fg)]">
+                  {job.title} <span class="text-[var(--color-accent)] font-medium">@ {job.company}</span>
+                </h3>
+                <span class="text-sm text-[var(--color-fg-subtle)]">{job.duration} · {job.location}</span>
+              </div>
+              <ul class="mt-3 space-y-1.5">
+                {job.points.map((p) => (
+                  <li class="flex gap-3 text-[var(--color-fg-muted)] leading-relaxed text-sm">
+                    <span class="mt-2 h-1 w-1 rounded-full bg-[var(--color-accent)] shrink-0"></span>
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div>
+          <h2 class="text-xs font-mono uppercase tracking-[0.2em] text-[var(--color-accent)] mb-5">Education</h2>
+          <div class="space-y-5">
+            {c.education.map((e) => (
+              <div>
+                <p class="font-semibold text-[var(--color-fg)] tracking-tight">{e.degree}</p>
+                <p class="text-sm text-[var(--color-accent)] mt-0.5">{e.institution}</p>
+                <p class="text-xs text-[var(--color-fg-subtle)] mt-1">{e.duration} · {e.location}</p>
+                {e.summary && <p class="text-sm text-[var(--color-fg-muted)] mt-1">{e.summary}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h2 class="text-xs font-mono uppercase tracking-[0.2em] text-[var(--color-accent)] mb-5">Languages</h2>
+          <ul class="space-y-2">
+            {c.languages.map((l) => (
+              <li class="flex items-center justify-between text-sm">
+                <span class="text-[var(--color-fg)]">{l.name}</span>
+                <span class="text-[var(--color-fg-subtle)]">{l.level}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xs font-mono uppercase tracking-[0.2em] text-[var(--color-accent)] mb-5">Skills</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {c.skills.map((g) => (
+            <div>
+              <p class="text-sm font-semibold text-[var(--color-fg)] mb-2">{g.category}</p>
+              <ul class="flex flex-wrap gap-1.5">
+                {g.items.map((it) => (
+                  <li class="text-xs text-[var(--color-fg-muted)] border border-[var(--color-border)] rounded-full px-2.5 py-0.5">
+                    {it}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xs font-mono uppercase tracking-[0.2em] text-[var(--color-accent)] mb-5">Certifications</h2>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5">
+          {c.certifications.map((cert) => (
+            <li class="flex items-baseline justify-between gap-3 text-sm">
+              <span class="text-[var(--color-fg)]">{cert.name}</span>
+              <span class="text-[var(--color-fg-subtle)] whitespace-nowrap">{cert.issuer}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </article>
+  </div>
+</BaseLayout>

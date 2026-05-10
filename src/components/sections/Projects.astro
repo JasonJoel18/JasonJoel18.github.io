@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHeader from '~/components/ui/SectionHeader.astro';
+import ProjectCard from './ProjectCard.tsx';
+
+const projects = (await getCollection('projects'))
+  .sort((a, b) => {
+    // Featured first, then explicit order, then year desc
+    if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+    if (a.data.order !== b.data.order) return a.data.order - b.data.order;
+    return b.data.year - a.data.year;
+  });
+---
+
+<section id="projects" class="py-24 sm:py-32 cv-auto">
+  <div class="container-page">
+    <SectionHeader
+      eyebrow="Selected Work"
+      title="Projects I'm proud of."
+      description="Dashboards, ML systems, and SQL automation that moved the metric. Hover any card for a closer look."
+    />
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+      {projects.map((p, i) => (
+        <ProjectCard
+          client:visible
+          index={i}
+          project={{
+            title: p.data.title,
+            summary: p.data.summary,
+            year: p.data.year,
+            tech: p.data.tech,
+            media: p.data.media,
+            links: p.data.links ?? {},
+            href: p.data.caseStudy ? `/projects/${p.id}/` : null,
+            featured: p.data.featured,
+          }}
+        />
+      ))}
+    </div>
+  </div>
+</section>

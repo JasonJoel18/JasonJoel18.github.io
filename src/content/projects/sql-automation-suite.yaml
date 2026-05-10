@@ -1,0 +1,16 @@
+title: "SQL Automation Suite"
+summary: "200+ parameterized queries and 50+ stored procedures across MySQL and SAP HANA — boosted data retrieval efficiency 35% and freed analyst hours for higher-leverage work."
+year: 2023
+featured: false
+order: 3
+role: "BI engineer"
+tech: [SQL, MySQL, "SAP HANA", Python]
+media:
+  type: image
+  src: /projects/sql-automation-cover.svg
+  alt: "Stylized SQL code blocks"
+links:
+  github: null
+  live: null
+  demo: null
+caseStudy: false

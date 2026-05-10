@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" aria-label="SQL automation suite cover">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0f1f"/>
+      <stop offset="100%" stop-color="#1a1430"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#bg3)"/>
+  <g font-family="JetBrains Mono, ui-monospace, monospace" font-size="15">
+    <text x="60" y="120" fill="#a855f7">SELECT</text><text x="125" y="120" fill="#e6e8ef"> warehouse_id, SUM(units) AS total</text>
+    <text x="60" y="148" fill="#a855f7">FROM</text>   <text x="110" y="148" fill="#e6e8ef"> ops.fact_shipments</text>
+    <text x="60" y="176" fill="#a855f7">WHERE</text>  <text x="115" y="176" fill="#e6e8ef"> ship_date </text><text x="195" y="176" fill="#06b6d4">&gt;=</text><text x="220" y="176" fill="#fde68a"> '2023-01-01'</text>
+    <text x="60" y="204" fill="#a855f7">GROUP BY</text><text x="140" y="204" fill="#e6e8ef"> warehouse_id</text>
+    <text x="60" y="232" fill="#a855f7">ORDER BY</text><text x="140" y="232" fill="#e6e8ef"> total </text><text x="195" y="232" fill="#06b6d4">DESC</text>
+    <text x="60" y="260" fill="#e6e8ef">LIMIT </text><text x="120" y="260" fill="#fde68a">10</text>
+    <text x="60" y="288" fill="#475569">-- 200+ queries · 50+ procedures · 35% faster</text>
+  </g>
+  <rect x="40" y="80" width="720" height="240" rx="14" fill="none" stroke="#1f2a44" stroke-width="1"/>
+  <g fill="#e6e8ef" font-family="Inter, system-ui, sans-serif">
+    <text x="40" y="380" font-size="22" font-weight="700">SQL Automation Suite</text>
+    <text x="40" y="406" font-size="14" fill="#94a3b8">MySQL · SAP HANA · Python orchestration</text>
+  </g>
+</svg>

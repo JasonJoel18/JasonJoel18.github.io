@@ -1,0 +1,100 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ProjectMedia from '~/components/media/ProjectMedia.tsx';
+import { ArrowLeft, Github, ExternalLink, BarChart3 } from 'lucide-react';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', ({ data }) => data.caseStudy === true);
+  return projects.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const p = entry.data;
+---
+
+<BaseLayout title={`${p.title} — Jason Joel Pinto`} description={p.summary}>
+  <article class="container-page pt-32 pb-24">
+    <a
+      href="/#projects"
+      class="inline-flex items-center gap-2 text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-fg)] transition-colors mb-8"
+    >
+      <ArrowLeft size={16} aria-hidden="true" />
+      Back to projects
+    </a>
+
+    <header class="mb-10 max-w-3xl">
+      <p class="text-sm font-mono text-[var(--color-accent)] tracking-[0.18em] uppercase mb-3">
+        Case study · {p.year}
+      </p>
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-balance mb-5">
+        {p.title}
+      </h1>
+      <p class="text-lg text-[var(--color-fg-muted)] leading-relaxed text-pretty">{p.summary}</p>
+
+      <ul class="flex flex-wrap gap-2 mt-6">
+        {p.tech.map((t) => (
+          <li class="text-xs font-mono uppercase tracking-wider text-[var(--color-fg-muted)] border border-[var(--color-border)] rounded-full px-2.5 py-0.5">
+            {t}
+          </li>
+        ))}
+      </ul>
+
+      {(p.links?.github || p.links?.live || p.links?.demo) && (
+        <div class="flex flex-wrap gap-2 mt-6">
+          {p.links?.github && (
+            <a
+              href={p.links.github}
+              target="_blank"
+              rel="noreferrer noopener"
+              class="inline-flex items-center gap-2 h-10 px-4 rounded-full border border-[var(--color-border-2)] text-sm hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
+            >
+              <Github size={14} aria-hidden="true" />
+              GitHub
+            </a>
+          )}
+          {p.links?.live && (
+            <a
+              href={p.links.live}
+              target="_blank"
+              rel="noreferrer noopener"
+              class="inline-flex items-center gap-2 h-10 px-4 rounded-full bg-[var(--color-fg)] text-[var(--color-bg)] text-sm font-medium hover:-translate-y-0.5 transition-transform duration-300 will-change-transform"
+            >
+              <ExternalLink size={14} aria-hidden="true" />
+              Live
+            </a>
+          )}
+          {p.links?.demo && (
+            <a
+              href={p.links.demo}
+              target="_blank"
+              rel="noreferrer noopener"
+              class="inline-flex items-center gap-2 h-10 px-4 rounded-full border border-[var(--color-border-2)] text-sm hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
+            >
+              <BarChart3 size={14} aria-hidden="true" />
+              Dashboard
+            </a>
+          )}
+        </div>
+      )}
+    </header>
+
+    <div class="mb-12">
+      <ProjectMedia client:load media={p.media} />
+    </div>
+
+    <div class="prose prose-invert max-w-3xl mx-auto
+      prose-headings:tracking-tight prose-headings:text-[var(--color-fg)]
+      prose-p:text-[var(--color-fg-muted)] prose-p:leading-relaxed
+      prose-a:text-[var(--color-accent)] prose-a:no-underline hover:prose-a:underline
+      prose-strong:text-[var(--color-fg)]
+      prose-code:text-[var(--color-accent-2)] prose-code:font-mono prose-code:text-sm
+      prose-li:text-[var(--color-fg-muted)]">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

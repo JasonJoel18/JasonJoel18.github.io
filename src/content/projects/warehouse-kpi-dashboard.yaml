@@ -1,0 +1,16 @@
+title: "Warehouse Operations KPI Dashboard"
+summary: "Tableau dashboard suite tracking 15+ KPIs across distribution centers — drove a 40% improvement in warehouse management efficiency."
+year: 2023
+featured: true
+order: 2
+role: "Lead BI developer"
+tech: [Tableau, SQL, "SAP HANA", "Power BI"]
+media:
+  type: image
+  src: /projects/warehouse-kpi-cover.svg
+  alt: "KPI dashboard mock showing throughput and accuracy charts"
+links:
+  github: null
+  live: null
+  demo: null
+caseStudy: false

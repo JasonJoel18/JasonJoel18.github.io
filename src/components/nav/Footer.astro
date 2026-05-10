@@ -1,0 +1,28 @@
+---
+import { getEntry } from 'astro:content';
+import SocialIcon from '~/components/ui/SocialIcon.astro';
+
+const site = await getEntry('site', 'site');
+const profile = await getEntry('profile', 'profile');
+if (!site || !profile) throw new Error('Missing site/profile entries');
+
+const year = new Date().getFullYear();
+---
+
+<footer class="relative z-10 mt-32 border-t border-[var(--color-border)]/60">
+  <div class="container-page py-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+    <div class="space-y-1">
+      <p class="text-sm text-[var(--color-fg)] font-medium tracking-tight">
+        © {year} {profile.data.name}
+      </p>
+      <p class="text-xs text-[var(--color-fg-subtle)]">
+        {site.data.footer.tagline} · {site.data.footer.builtWith}
+      </p>
+    </div>
+    <div class="flex items-center gap-2">
+      {profile.data.socials.map((s) => (
+        <SocialIcon kind={s.kind} url={s.url} label={s.label} />
+      ))}
+    </div>
+  </div>
+</footer>

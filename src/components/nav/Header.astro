@@ -1,0 +1,84 @@
+---
+import { getEntry } from 'astro:content';
+import { Download } from 'lucide-react';
+import ActiveSectionNav from './ActiveSectionNav.tsx';
+import MobileMenu from './MobileMenu.tsx';
+
+const site = await getEntry('site', 'site');
+const profile = await getEntry('profile', 'profile');
+if (!site || !profile) throw new Error('Missing site/profile entries');
+
+const { nav, cta } = site.data;
+// Initials for the logo mark
+const initials = profile.data.name
+  .split(' ')
+  .map((s) => s[0])
+  .filter(Boolean)
+  .slice(0, 2)
+  .join('');
+---
+
+<header
+  id="site-header"
+  class="fixed inset-x-0 top-0 z-50 transition-[backdrop-filter,background-color,border-color,padding] duration-300 ease-out"
+>
+  <div class="container-page">
+    <div class="mt-3 sm:mt-4 flex items-center justify-between rounded-full glass px-3 sm:px-4 py-2.5">
+      <a
+        href="/"
+        class="group inline-flex items-center gap-2 pl-2 pr-3 py-1 rounded-full hover:bg-white/5 transition-colors"
+        aria-label={`${profile.data.name} — Home`}
+      >
+        <span
+          class="grid place-items-center h-8 w-8 rounded-full bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-2)] text-[var(--color-bg)] font-bold text-sm tracking-tight shadow-[0_6px_24px_-8px_rgba(167,139,250,0.6)]"
+        >
+          {initials}
+        </span>
+        <span class="hidden sm:inline text-sm font-medium text-[var(--color-fg)] tracking-tight">
+          {profile.data.name.split(' ')[0]}
+          <span class="text-[var(--color-fg-subtle)]">.dev</span>
+        </span>
+      </a>
+
+      <ActiveSectionNav client:idle nav={nav} />
+
+      <div class="flex items-center gap-2">
+        <a
+          href={cta.primary.href}
+          download
+          class="hidden md:inline-flex items-center gap-2 h-9 px-4 rounded-full bg-[var(--color-fg)] text-[var(--color-bg)] text-sm font-medium tracking-tight hover:-translate-y-0.5 transition-transform duration-300 ease-out will-change-transform"
+        >
+          <Download size={14} aria-hidden="true" />
+          CV
+        </a>
+        <MobileMenu client:idle nav={nav} cta={cta} />
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Header scroll-shrink: pure CSS class toggle, no layout thrash.
+  const header = document.getElementById('site-header');
+  if (header) {
+    let scrolled = false;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const next = y > 24;
+      if (next !== scrolled) {
+        scrolled = next;
+        header.classList.toggle('is-scrolled', scrolled);
+      }
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+</script>
+
+<style>
+  #site-header.is-scrolled > .container-page > div {
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    background: color-mix(in oklab, var(--color-bg-elev) 85%, transparent);
+  }
+</style>

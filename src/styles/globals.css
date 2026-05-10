@@ -1,0 +1,157 @@
+@import "tailwindcss";
+
+@theme {
+  /* Color tokens — dark-first */
+  --color-bg:           #07080d;
+  --color-bg-elev:      #0c0e16;
+  --color-surface:      #11141d;
+  --color-surface-2:    #161a26;
+  --color-border:       #232838;
+  --color-border-2:     #2d3346;
+
+  --color-fg:           #e7e9ef;
+  --color-fg-muted:     #a3a8b8;
+  --color-fg-subtle:    #6b7185;
+
+  --color-accent:       #a78bfa;   /* violet 400 */
+  --color-accent-2:     #22d3ee;   /* cyan 400 */
+  --color-accent-soft:  rgba(167, 139, 250, 0.16);
+
+  --color-success:      #34d399;
+  --color-warning:      #fbbf24;
+
+  /* Font tokens */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Easings */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Radii */
+  --radius-card: 18px;
+  --radius-pill: 9999px;
+}
+
+@layer base {
+  html {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+    /* Account for sticky header when scrolling to anchors */
+    scroll-padding-top: 88px;
+  }
+
+  body {
+    background:
+      radial-gradient(800px 600px at 12% -10%, rgba(167, 139, 250, 0.18), transparent 60%),
+      radial-gradient(700px 500px at 95% 8%,   rgba(34, 211, 238, 0.12),  transparent 60%),
+      var(--color-bg);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Subtle noise overlay — purely decorative, no JS */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.025;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.85'/></svg>");
+  }
+
+  ::selection {
+    background: var(--color-accent-soft);
+    color: var(--color-fg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-sans);
+    letter-spacing: -0.02em;
+  }
+
+  /* Section vertical rhythm */
+  section {
+    scroll-margin-top: 88px;
+  }
+}
+
+@layer utilities {
+  .container-page {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+  }
+
+  .text-balance { text-wrap: balance; }
+  .text-pretty  { text-wrap: pretty; }
+
+  .glass {
+    background: color-mix(in oklab, var(--color-surface) 70%, transparent);
+    backdrop-filter: saturate(140%) blur(14px);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+    border: 1px solid color-mix(in oklab, var(--color-border) 80%, transparent);
+  }
+
+  .gradient-text {
+    background: linear-gradient(120deg, var(--color-accent) 0%, var(--color-accent-2) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .gradient-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-border-2), transparent);
+  }
+
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+  }
+
+  .ring-accent {
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-accent) 40%, transparent);
+  }
+
+  /* Below-fold rendering optimization */
+  .cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 800px;
+  }
+}
+
+/* Reduced motion — kill all transitions/animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print stylesheet for /cv */
+@media print {
+  body { background: white !important; color: #111 !important; }
+  body::before { display: none; }
+  .no-print { display: none !important; }
+  .print-card { border-color: #ddd !important; background: white !important; }
+  a { color: #111 !important; text-decoration: underline; }
+}

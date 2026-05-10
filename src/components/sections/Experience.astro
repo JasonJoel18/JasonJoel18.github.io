@@ -1,0 +1,59 @@
+---
+import { getEntry } from 'astro:content';
+import SectionHeader from '~/components/ui/SectionHeader.astro';
+import Reveal from '~/components/motion/Reveal.tsx';
+import { MapPin, CalendarDays } from 'lucide-react';
+
+const cv = await getEntry('cv', 'cv');
+if (!cv) throw new Error('Missing cv entry');
+---
+
+<section id="experience" class="py-24 sm:py-32 cv-auto">
+  <div class="container-page">
+    <SectionHeader
+      eyebrow="Experience"
+      title="Where I've shipped data products."
+      description="Three years building dashboards, automating SQL pipelines, and translating ambiguity into measurable wins."
+    />
+
+    <ol class="relative pl-6 sm:pl-8 border-l border-[var(--color-border)] space-y-12">
+      {cv.data.work.map((job, i) => (
+        <Reveal client:visible delay={i * 0.05} as="li" className="relative">
+          <span
+            class="absolute -left-[33px] sm:-left-[37px] top-1.5 grid place-items-center h-4 w-4 rounded-full bg-[var(--color-bg)] border-2 border-[var(--color-accent)]"
+            aria-hidden="true"
+          >
+            <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]"></span>
+          </span>
+
+          <div class="card p-6 sm:p-8">
+            <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-1">
+              <h3 class="text-xl sm:text-2xl font-semibold tracking-tight text-[var(--color-fg)]">
+                {job.title}
+              </h3>
+              <span class="text-[var(--color-accent)] font-medium">@ {job.company}</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-[var(--color-fg-subtle)] mb-5">
+              <span class="inline-flex items-center gap-1.5">
+                <CalendarDays size={14} aria-hidden="true" />
+                {job.duration}
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <MapPin size={14} aria-hidden="true" />
+                {job.location}
+              </span>
+            </div>
+            <ul class="space-y-2.5">
+              {job.points.map((point) => (
+                <li class="flex gap-3 text-[var(--color-fg-muted)] leading-relaxed">
+                  <span class="mt-2 h-1 w-1 rounded-full bg-[var(--color-accent)] shrink-0"></span>
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Reveal>
+      ))}
+    </ol>
+  </div>
+</section>

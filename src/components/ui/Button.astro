@@ -1,0 +1,57 @@
+---
+import { cn } from '~/lib/cn';
+
+type Variant = 'primary' | 'secondary' | 'ghost';
+type Size = 'sm' | 'md' | 'lg';
+
+interface Props {
+  href?: string;
+  variant?: Variant;
+  size?: Size;
+  external?: boolean;
+  download?: boolean;
+  class?: string;
+  ariaLabel?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  external = false,
+  download = false,
+  class: className,
+  ariaLabel,
+} = Astro.props;
+
+const sizeClass = {
+  sm: 'h-9 px-4 text-sm',
+  md: 'h-11 px-5 text-[15px]',
+  lg: 'h-12 px-6 text-base',
+}[size];
+
+const variantClass = {
+  primary:
+    'bg-[var(--color-fg)] text-[var(--color-bg)] hover:bg-white shadow-[0_8px_30px_-10px_rgba(255,255,255,0.45)]',
+  secondary:
+    'bg-transparent text-[var(--color-fg)] border border-[var(--color-border-2)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]',
+  ghost:
+    'bg-transparent text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]',
+}[variant];
+
+const base =
+  'inline-flex items-center justify-center gap-2 rounded-full font-medium tracking-tight transition-[transform,color,background-color,border-color,box-shadow] duration-300 ease-out will-change-transform hover:-translate-y-0.5 active:translate-y-0';
+
+const Tag = href ? 'a' : 'button';
+const externalAttrs = external ? { target: '_blank', rel: 'noreferrer noopener' } : {};
+---
+
+<Tag
+  href={href}
+  download={download ? '' : undefined}
+  aria-label={ariaLabel}
+  class={cn(base, sizeClass, variantClass, className)}
+  {...externalAttrs}
+>
+  <slot />
+</Tag>
