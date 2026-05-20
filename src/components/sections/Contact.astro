@@ -1,6 +1,6 @@
 ---
 import { getEntry } from 'astro:content';
-import { ArrowUpRight, Mail } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import Reveal from '~/components/motion/Reveal.tsx';
 import MagneticButton from '~/components/motion/MagneticButton.tsx';
 import SocialIcon from '~/components/ui/SocialIcon.astro';
@@ -9,57 +9,50 @@ const profile = await getEntry('profile', 'profile');
 if (!profile) throw new Error('Missing profile entry');
 
 const email = profile.data.socials.find((s) => s.kind === 'email');
+const emailAddress = email?.label ?? '';
 ---
 
-<section id="contact" class="py-14 sm:py-20 relative">
-  <div
-    aria-hidden="true"
-    class="absolute inset-x-0 top-1/2 -translate-y-1/2 mx-auto h-[320px] max-w-2xl rounded-full opacity-40 blur-3xl"
-    style="background: radial-gradient(closest-side, rgba(167,139,250,0.28), transparent 70%);"
-  ></div>
+<section id="contact" class="relative min-h-screen flex flex-col justify-center py-28 sm:py-40">
+  <div class="container-wide w-full">
+    <div class="flex items-baseline gap-6 mb-12 sm:mb-16">
+      <span class="label-mono">06 — Contact</span>
+      <Reveal client:visible variant="draw-line" className="hairline flex-1" amount={0.4}>
+        <span class="block h-px"></span>
+      </Reveal>
+    </div>
 
-  <div class="container-page relative">
-    <Reveal client:visible>
-      <div class="glass-panel p-6 sm:p-10 max-w-3xl mx-auto text-center relative overflow-hidden">
-        <div class="absolute inset-0 dots-canvas opacity-30 pointer-events-none"></div>
-        <div class="relative">
-          <p class="label-mono !text-[var(--color-accent)] mb-3">Get in touch</p>
-          <h2 class="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-balance mb-3">
-            Let's build something <span class="gradient-text">measurable</span>.
-          </h2>
-          <p class="text-[var(--color-fg-muted)] text-sm sm:text-base leading-relaxed text-pretty mb-6 max-w-xl mx-auto">
-            Currently {profile.data.availability.toLowerCase()}. If you have a data problem worth solving — or just want to swap notes on dashboards — my inbox is open.
-          </p>
+    <Reveal
+      client:visible
+      as="h2"
+      variant="stagger-words"
+      text="Let's build something measurable."
+      className="display-italic text-[clamp(3rem,11vw,12rem)] text-[var(--color-fg)] leading-[0.95] text-balance max-w-[15ch]"
+    />
 
-          <div class="flex flex-wrap items-center justify-center gap-3 mb-6">
-            {email && (
-              <MagneticButton
-                client:visible
-                href={email.url}
-                ariaLabel="Send an email"
-                className="inline-flex items-center gap-2 h-11 px-5 rounded-full bg-[var(--color-fg)] text-[var(--color-bg)] font-medium tracking-tight text-sm"
-              >
-                <Mail size={15} strokeWidth={1.75} aria-hidden="true" />
-                Say hello
-                <ArrowUpRight size={13} strokeWidth={1.75} aria-hidden="true" />
-              </MagneticButton>
-            )}
-            <a
-              href="/cv"
-              class="glass-sm inline-flex items-center gap-2 h-11 px-5 rounded-full text-[var(--color-fg)] font-medium tracking-tight text-sm hover:-translate-y-0.5 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-[transform,border-color,color] duration-300 will-change-transform"
-            >
-              View CV
-              <ArrowUpRight size={13} strokeWidth={1.75} aria-hidden="true" />
-            </a>
-          </div>
+    <p class="mt-12 max-w-2xl text-lg sm:text-xl text-[var(--color-fg-muted)] leading-relaxed">
+      Currently {profile.data.availability.toLowerCase()}. If you have a data problem worth solving — or just want to swap notes on dashboards — my inbox is open.
+    </p>
 
-          <div class="flex items-center justify-center gap-1">
-            {profile.data.socials.map((s) => (
-              <SocialIcon kind={s.kind} url={s.url} label={s.label} />
-            ))}
-          </div>
-        </div>
+    {email && (
+      <div class="mt-16 sm:mt-20">
+        <p class="label-mono mb-4">Email</p>
+        <MagneticButton
+          client:visible
+          href={email.url}
+          ariaLabel="Send an email"
+          strength={14}
+          className="display-italic inline-flex items-baseline gap-3 text-[clamp(2rem,6vw,5.5rem)] leading-[1] text-[var(--color-fg)] hover:text-[var(--color-accent)] transition-colors duration-300"
+        >
+          <span class="draw-underline">{emailAddress}</span>
+          <ArrowUpRight size={32} strokeWidth={1} aria-hidden="true" />
+        </MagneticButton>
       </div>
-    </Reveal>
+    )}
+
+    <div class="mt-16 sm:mt-20 flex items-center gap-2">
+      {profile.data.socials.filter((s) => s.kind !== 'email').map((s) => (
+        <SocialIcon kind={s.kind} url={s.url} label={s.label} class="h-10 w-10" />
+      ))}
+    </div>
   </div>
 </section>

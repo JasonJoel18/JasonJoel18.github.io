@@ -1,25 +1,33 @@
 ---
 import { getCollection } from 'astro:content';
-import SectionHeader from '~/components/ui/SectionHeader.astro';
+import Reveal from '~/components/motion/Reveal.tsx';
 import ProjectCard from './ProjectCard.tsx';
 
-const projects = (await getCollection('projects'))
-  .sort((a, b) => {
-    if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
-    if (a.data.order !== b.data.order) return a.data.order - b.data.order;
-    return b.data.year - a.data.year;
-  });
+const projects = (await getCollection('projects')).sort((a, b) => {
+  if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+  if (a.data.order !== b.data.order) return a.data.order - b.data.order;
+  return b.data.year - a.data.year;
+});
 ---
 
-<section id="projects" class="py-14 sm:py-20 cv-auto">
+<section id="projects" class="relative py-28 sm:py-40 cv-auto">
   <div class="container-wide">
-    <SectionHeader
-      eyebrow="Selected Work"
-      title="Projects with measurable impact."
-      description="Each one moved a number — efficiency, accuracy, time-to-insight. Hover any card for a closer look."
+    <div class="flex items-baseline gap-6 mb-12 sm:mb-16">
+      <span class="label-mono">03 — Selected work</span>
+      <Reveal client:visible variant="draw-line" className="hairline flex-1" amount={0.4}>
+        <span class="block h-px"></span>
+      </Reveal>
+    </div>
+
+    <Reveal
+      client:visible
+      as="h2"
+      variant="stagger-words"
+      text="Projects with measurable impact."
+      className="display-italic text-[clamp(2.25rem,5.5vw,5rem)] text-[var(--color-fg)] leading-[1.04] max-w-[20ch] mb-20 sm:mb-28"
     />
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
+    <div class="space-y-28 sm:space-y-40">
       {projects.map((p, i) => (
         <ProjectCard
           client:visible

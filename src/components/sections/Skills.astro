@@ -1,19 +1,24 @@
 ---
-import SectionHeader from '~/components/ui/SectionHeader.astro';
 import Reveal from '~/components/motion/Reveal.tsx';
 import ToolGrid from '~/components/sections/ToolGrid.astro';
 ---
 
-<section id="skills" class="py-14 sm:py-20 cv-auto">
+<section id="skills" class="relative py-28 sm:py-40 cv-auto">
   <div class="container-wide">
-    <SectionHeader
-      eyebrow="Stack"
-      title="Tools & technologies."
-      description="Five years of stack iteration distilled — from SQL warehouses to ML pipelines to executive-grade dashboards."
+    <div class="flex items-baseline gap-6 mb-12 sm:mb-16">
+      <span class="label-mono">04 — Stack</span>
+      <Reveal client:visible variant="draw-line" className="hairline flex-1" amount={0.4}>
+        <span class="block h-px"></span>
+      </Reveal>
+    </div>
+    <Reveal
+      client:visible
+      as="h2"
+      variant="stagger-words"
+      text="The tools I reach for."
+      className="display-italic text-[clamp(2.25rem,5.5vw,5rem)] text-[var(--color-fg)] leading-[1.04] max-w-[22ch] mb-16 sm:mb-20"
     />
-
-    <Reveal client:visible className="glass-panel p-5 sm:p-7">
-      <ToolGrid />
-    </Reveal>
   </div>
+
+  <ToolGrid />
 </section>

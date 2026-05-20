@@ -1,31 +1,31 @@
 @import "tailwindcss";
 
 @theme {
-  /* Color tokens — dark-first */
-  --color-bg:           #07080d;
-  --color-bg-elev:      #0c0e16;
+  /* Color tokens — dark editorial */
+  --color-bg:           #050507;
+  --color-bg-elev:      #0a0b10;
   --color-surface:      #11141d;
   --color-surface-2:    #161a26;
-  --color-border:       #232838;
-  --color-border-2:     #2d3346;
+  --color-border:       #1c2030;
+  --color-border-2:     #2a3046;
 
-  --color-fg:           #e7e9ef;
-  --color-fg-muted:     #a3a8b8;
-  --color-fg-subtle:    #6b7185;
+  --color-fg:           #f4f4f6;
+  --color-fg-muted:     #9ba0b3;
+  --color-fg-subtle:    #5e6377;
 
-  --color-accent:       #a78bfa;   /* violet 400 */
-  --color-accent-2:     #22d3ee;   /* cyan 400 */
-  --color-accent-3:     #34d399;   /* emerald 400 */
+  --color-accent:       #a78bfa;
+  --color-accent-2:     #22d3ee;
+  --color-accent-3:     #34d399;
   --color-accent-soft:  rgba(167, 139, 250, 0.16);
 
   --color-success:      #34d399;
   --color-warning:      #fbbf24;
   --color-danger:       #f87171;
 
-  /* Font tokens — JetBrains Mono is primary across the UI for the terminal/dashboard aesthetic */
-  --font-sans: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  --font-display: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  /* Font tokens — editorial three-stack */
+  --font-display: "Instrument Serif", "Times New Roman", serif;
+  --font-sans:    "Inter Tight", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Easings */
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
@@ -41,46 +41,38 @@
     background: var(--color-bg);
     color: var(--color-fg);
     font-family: var(--font-sans);
-    font-feature-settings: "calt", "liga", "ss01";
+    font-feature-settings: "ss01", "cv02";
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    scroll-behavior: smooth;
     scroll-padding-top: 80px;
   }
 
+  /* Lenis applies styles to html when smooth scroll is active */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  html.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  html.lenis-stopped {
+    overflow: clip;
+  }
+
   body {
-    background:
-      radial-gradient(900px 700px at 8% -8%, rgba(167, 139, 250, 0.18), transparent 60%),
-      radial-gradient(800px 600px at 96% 6%,  rgba(34, 211, 238, 0.13),  transparent 60%),
-      radial-gradient(700px 500px at 50% 110%, rgba(52, 211, 153, 0.08), transparent 60%),
-      var(--color-bg);
+    background: var(--color-bg);
     min-height: 100vh;
     overflow-x: hidden;
   }
 
-  /* Subtle grid + noise overlay — "data canvas" feel, purely decorative */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background-image:
-      linear-gradient(rgba(45, 51, 70, 0.35) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(45, 51, 70, 0.35) 1px, transparent 1px);
-    background-size: 64px 64px, 64px 64px;
-    mask-image: radial-gradient(ellipse at 50% 30%, rgba(0,0,0,0.7), transparent 75%);
-    -webkit-mask-image: radial-gradient(ellipse at 50% 30%, rgba(0,0,0,0.7), transparent 75%);
-    opacity: 0.55;
-  }
-
+  /* Decorative grain — kept very subtle for editorial feel */
   body::after {
     content: "";
     position: fixed;
     inset: 0;
     pointer-events: none;
     z-index: 0;
-    opacity: 0.025;
+    opacity: 0.03;
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.85'/></svg>");
   }
@@ -98,8 +90,9 @@
 
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.025em;
-    line-height: 1.1;
+    letter-spacing: -0.015em;
+    line-height: 1.02;
+    font-weight: 400;
   }
 
   section {
@@ -124,6 +117,17 @@
 
   .text-balance { text-wrap: balance; }
   .text-pretty  { text-wrap: pretty; }
+
+  /* Editorial display utility — Instrument Serif italic */
+  .font-display { font-family: var(--font-display); }
+  .font-mono    { font-family: var(--font-mono); }
+  .display-italic {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+  }
 
   /* Glass tiers — static blur values, never animated */
   .glass-sm {
@@ -194,14 +198,28 @@
     box-shadow: 0 0 32px -8px color-mix(in oklab, var(--color-accent) 35%, transparent);
   }
 
-  /* Mono label used heavily across the UI — small, tracked, muted */
+  /* Mono label — small caps, used for chapter numbers, meta labels */
   .label-mono {
     font-family: var(--font-mono);
     font-size: 0.6875rem;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--color-fg-subtle);
     font-weight: 500;
+  }
+
+  /* Hairline rule that draws in via transform */
+  .hairline {
+    height: 1px;
+    background: var(--color-border-2);
+    transform-origin: left center;
+  }
+
+  /* Scroll progress bar (driven by Lenis CSS var --scroll-progress 0..1) */
+  .scroll-progress-bar {
+    transform: scaleX(var(--scroll-progress, 0));
+    transform-origin: left center;
+    transition: transform 80ms linear;
   }
 
   /* Below-fold rendering optimization */
@@ -209,13 +227,67 @@
     content-visibility: auto;
     contain-intrinsic-size: 1px 800px;
   }
+
+  /* Marquee track — generic infinite scroller used by Skills */
+  .marquee-track {
+    display: flex;
+    gap: 3rem;
+    width: max-content;
+    will-change: transform;
+  }
 }
 
-/* Reduced motion — kill all transitions/animations */
+/* CSS-driven marquees — duplicated rows of width 200% animated 0 → -50% */
+@keyframes marquee-left  { 0% { transform: translateX(0); }   100% { transform: translateX(-50%); } }
+@keyframes marquee-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+
+.marquee {
+  display: flex;
+  width: max-content;
+  gap: 3.5rem;
+  animation: marquee-left var(--marquee-duration, 35s) linear infinite;
+  will-change: transform;
+}
+.marquee[data-dir="right"] { animation-name: marquee-right; }
+.marquee:hover { animation-play-state: paused; }
+
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  .marquee { animation: none; }
+}
+
+/* Hover-only icon polish — no ambient motion */
+.tool-cell > span:first-of-type {
+  transition: transform 250ms ease, filter 250ms ease;
+}
+.tool-cell:hover > span:first-of-type {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 14px color-mix(in oklab, var(--icon-hex, var(--color-accent)) 60%, transparent));
+}
+
+/* Underline that draws on hover — used by project titles, nav links */
+.draw-underline {
+  position: relative;
+  display: inline-block;
+}
+.draw-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.06em;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.draw-underline:hover::after,
+.group:hover .draw-underline::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
@@ -226,7 +298,7 @@
 /* Print stylesheet for /cv */
 @media print {
   body { background: white !important; color: #111 !important; }
-  body::before, body::after { display: none; }
+  body::after { display: none; }
   .no-print { display: none !important; }
   .print-card { border-color: #ddd !important; background: white !important; }
   a { color: #111 !important; text-decoration: underline; }

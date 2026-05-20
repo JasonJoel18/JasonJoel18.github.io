@@ -1,9 +1,9 @@
 ---
 import { getEntry } from 'astro:content';
-import { ArrowRight, Download, MapPin } from 'lucide-react';
+import { ArrowRight, Download } from 'lucide-react';
 import HeroIntro from '~/components/motion/HeroIntro.tsx';
-import HeroDashboard from '~/components/motion/HeroDashboard.tsx';
 import MagneticButton from '~/components/motion/MagneticButton.tsx';
+import VerticalMarquee from '~/components/motion/VerticalMarquee.tsx';
 import SocialIcon from '~/components/ui/SocialIcon.astro';
 
 const profile = await getEntry('profile', 'profile');
@@ -11,51 +11,42 @@ const site = await getEntry('site', 'site');
 if (!profile || !site) throw new Error('Missing entries');
 const p = profile.data;
 const cta = site.data.cta;
+
+const roles = (p.heroTagline ?? '').split('·').map((s: string) => s.trim()).filter(Boolean);
+const marqueeRoles = roles.length > 0 ? roles : ['Data Analyst', 'BI Engineer', 'ML Practitioner'];
 ---
 
 <section
   id="hero"
-  class="relative min-h-[calc(100vh-4rem)] flex items-center pt-24 pb-12 sm:pt-28 sm:pb-16 overflow-hidden"
+  class="relative min-h-screen flex flex-col justify-center pt-32 pb-20 overflow-hidden"
 >
-  <!-- Decorative glow blobs -->
-  <div
-    aria-hidden="true"
-    class="pointer-events-none absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full opacity-60"
-    style="background: radial-gradient(closest-side, rgba(167,139,250,0.32), transparent 70%); filter: blur(50px);"
-  ></div>
-  <div
-    aria-hidden="true"
-    class="pointer-events-none absolute top-20 right-[-180px] h-[480px] w-[480px] rounded-full opacity-50"
-    style="background: radial-gradient(closest-side, rgba(34,211,238,0.28), transparent 70%); filter: blur(50px);"
-  ></div>
-
-  <div class="container-wide grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-12 items-center relative">
-    <div class="min-w-0">
-      <div class="flex items-center gap-3 mb-6">
-        <div class="relative h-12 w-12 sm:h-14 sm:w-14 rounded-full overflow-hidden border border-[var(--color-border-2)] glass shrink-0">
-          <img
-            src={p.avatar}
-            alt={`Portrait of ${p.name}`}
-            width="56"
-            height="56"
-            loading="eager"
-            decoding="async"
-            fetchpriority="high"
-            class="h-full w-full object-cover"
-          />
-        </div>
-        <div class="min-w-0">
-          <div class="label-mono">{p.location}</div>
-          <div class="text-xs text-[var(--color-fg-muted)] flex items-center gap-1.5">
-            <span class="relative flex h-1.5 w-1.5">
-              <span class="absolute inset-0 rounded-full bg-[var(--color-success)] opacity-75 animate-ping"></span>
-              <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--color-success)]"></span>
-            </span>
-            {p.availability}
-          </div>
-        </div>
+  <!-- Avatar chip top-left -->
+  <div class="container-wide relative z-10">
+    <div class="flex items-center gap-3 mb-12 sm:mb-16">
+      <div class="relative h-10 w-10 rounded-full overflow-hidden border border-[var(--color-border-2)] shrink-0">
+        <img
+          src={p.avatar}
+          alt={`Portrait of ${p.name}`}
+          width="40"
+          height="40"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+          class="h-full w-full object-cover"
+        />
       </div>
+      <div class="text-xs text-[var(--color-fg-muted)] flex items-center gap-2 font-mono">
+        <span class="relative flex h-1.5 w-1.5">
+          <span class="absolute inset-0 rounded-full bg-[var(--color-success)] opacity-75 animate-ping"></span>
+          <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--color-success)]"></span>
+        </span>
+        {p.location} — {p.availability}
+      </div>
+    </div>
+  </div>
 
+  <div class="container-wide grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 items-end relative z-10">
+    <div class="min-w-0">
       <HeroIntro
         client:load
         name={p.name}
@@ -64,27 +55,31 @@ const cta = site.data.cta;
         tagline={p.heroTagline}
       />
 
-      <div class="mt-6 sm:mt-8 flex flex-wrap items-center gap-3">
+      <div class="mt-10 sm:mt-12 flex flex-wrap items-center gap-3">
         <MagneticButton
           client:visible
           href={cta.primary.href}
           download
           ariaLabel="Download CV"
-          className="inline-flex items-center gap-2 h-11 px-5 rounded-full bg-[var(--color-fg)] text-[var(--color-bg)] font-medium tracking-tight text-sm shadow-[0_10px_40px_-15px_rgba(255,255,255,0.5)]"
+          strength={12}
+          className="inline-flex items-center gap-2 h-12 px-6 rounded-full bg-[var(--color-fg)] text-[var(--color-bg)] font-medium tracking-tight text-sm shadow-[0_20px_60px_-20px_rgba(255,255,255,0.4)]"
         >
           <Download size={15} strokeWidth={1.75} aria-hidden="true" />
           {cta.primary.label}
         </MagneticButton>
 
-        <a
+        <MagneticButton
+          client:visible
           href={cta.secondary.href}
-          class="glass-sm inline-flex items-center gap-2 h-11 px-5 rounded-full text-[var(--color-fg)] font-medium tracking-tight text-sm transition-[transform,border-color,color] duration-300 ease-out will-change-transform hover:-translate-y-0.5 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          ariaLabel={cta.secondary.label}
+          strength={10}
+          className="inline-flex items-center gap-2 h-12 px-6 rounded-full border border-[var(--color-border-2)] text-[var(--color-fg)] font-medium tracking-tight text-sm hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors duration-300"
         >
           {cta.secondary.label}
           <ArrowRight size={15} strokeWidth={1.75} aria-hidden="true" />
-        </a>
+        </MagneticButton>
 
-        <div class="flex items-center gap-1 ml-1">
+        <div class="flex items-center gap-1 ml-2">
           {p.socials.map((s) => (
             <SocialIcon kind={s.kind} url={s.url} label={s.label} class="h-9 w-9" />
           ))}
@@ -92,8 +87,9 @@ const cta = site.data.cta;
       </div>
     </div>
 
-    <div class="relative">
-      <HeroDashboard client:load />
-    </div>
+    <!-- Vertical role marquee — desktop only -->
+    <aside class="hidden lg:block self-center max-h-[50vh] w-[180px]">
+      <VerticalMarquee client:visible items={marqueeRoles} duration={26} />
+    </aside>
   </div>
 </section>

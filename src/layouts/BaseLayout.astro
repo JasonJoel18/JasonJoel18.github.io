@@ -2,6 +2,10 @@
 import '~/styles/globals.css';
 import Header from '~/components/nav/Header.astro';
 import Footer from '~/components/nav/Footer.astro';
+import CursorSpotlight from '~/components/gl/CursorSpotlight.tsx';
+import MeshGradient from '~/components/gl/MeshGradient.tsx';
+import SmoothScroll from '~/components/motion/SmoothScroll.tsx';
+import PageTransition from '~/components/motion/PageTransition.tsx';
 import { getEntry } from 'astro:content';
 
 interface Props {
@@ -28,7 +32,6 @@ const {
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 const ogImageAbsolute = new URL(ogImage, Astro.site).toString();
 
-// JSON-LD Person
 const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -44,11 +47,11 @@ const personJsonLd = {
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#07080d" />
+    <meta name="theme-color" content="#050507" />
     <meta name="color-scheme" content="dark" />
 
     <title>{title}</title>
@@ -58,19 +61,19 @@ const personJsonLd = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
 
-    <!-- JetBrains Mono is the primary UI typeface — terminal/dashboard aesthetic. -->
+    <!-- Editorial type stack: Instrument Serif (display), Inter Tight (UI), JetBrains Mono (mono) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
       onload="this.onload=null;this.rel='stylesheet'"
     />
     <noscript>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
       />
     </noscript>
 
@@ -96,6 +99,11 @@ const personJsonLd = {
     <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
   <body class="text-[var(--color-fg)] antialiased">
+    <MeshGradient client:only="react" />
+    <CursorSpotlight client:only="react" />
+    <SmoothScroll client:idle />
+    <PageTransition client:only="react" />
+
     <a
       href="#main"
       class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:px-3 focus:py-2 focus:rounded-md focus:bg-white focus:text-black"

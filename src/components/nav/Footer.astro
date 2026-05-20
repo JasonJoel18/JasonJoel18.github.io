@@ -7,22 +7,34 @@ const profile = await getEntry('profile', 'profile');
 if (!site || !profile) throw new Error('Missing site/profile entries');
 
 const year = new Date().getFullYear();
+const email = profile.data.socials.find((s) => s.kind === 'email');
 ---
 
-<footer class="relative z-10 mt-32 border-t border-[var(--color-border)]/60">
-  <div class="container-page py-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-    <div class="space-y-1">
-      <p class="text-sm text-[var(--color-fg)] font-medium tracking-tight">
-        © {year} {profile.data.name}
-      </p>
-      <p class="text-xs text-[var(--color-fg-subtle)]">
-        {site.data.footer.tagline} · {site.data.footer.builtWith}
-      </p>
+<footer class="relative z-10 border-t border-[color-mix(in_oklab,var(--color-border-2)_60%,transparent)]">
+  <div class="container-wide py-12 sm:py-16">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-10">
+      <div>
+        <p class="label-mono mb-3">Get in touch</p>
+        {email && (
+          <a
+            href={email.url}
+            class="display-italic text-3xl sm:text-5xl text-[var(--color-fg)] hover:text-[var(--color-accent)] transition-colors leading-tight"
+          >
+            <span class="draw-underline">{email.label}</span>
+          </a>
+        )}
+      </div>
+      <div class="flex items-center gap-2">
+        {profile.data.socials.filter((s) => s.kind !== 'email').map((s) => (
+          <SocialIcon kind={s.kind} url={s.url} label={s.label} class="h-9 w-9" />
+        ))}
+      </div>
     </div>
-    <div class="flex items-center gap-2">
-      {profile.data.socials.map((s) => (
-        <SocialIcon kind={s.kind} url={s.url} label={s.label} />
-      ))}
+
+    <div class="mt-12 sm:mt-16 pt-6 border-t border-[color-mix(in_oklab,var(--color-border)_70%,transparent)] flex flex-col sm:flex-row items-baseline justify-between gap-3 text-xs font-mono uppercase tracking-[0.18em] text-[var(--color-fg-subtle)]">
+      <p>© {year} {profile.data.name}</p>
+      <p>{site.data.footer.tagline}</p>
+      <p>{site.data.footer.builtWith}</p>
     </div>
   </div>
 </footer>

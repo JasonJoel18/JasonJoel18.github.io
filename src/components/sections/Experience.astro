@@ -1,80 +1,28 @@
 ---
 import { getEntry } from 'astro:content';
-import SectionHeader from '~/components/ui/SectionHeader.astro';
 import Reveal from '~/components/motion/Reveal.tsx';
-import { MapPin, Briefcase } from 'lucide-react';
+import ExperienceChapters from './ExperienceChapters.tsx';
 
 const cv = await getEntry('cv', 'cv');
 if (!cv) throw new Error('Missing cv entry');
-
-// Crude metric extractor — pulls % / + / number tokens from a bullet to surface as a chip.
-function extractMetrics(point: string): string[] {
-  const matches = point.match(/(\d+\+?%?|\d+\+|\$\d+\w*|\d+x)/g) ?? [];
-  return matches.slice(0, 2);
-}
 ---
 
-<section id="experience" class="py-14 sm:py-20 cv-auto">
-  <div class="container-wide">
-    <SectionHeader
-      eyebrow="Experience"
-      title="Where I've shipped data products."
-      description="Three years building dashboards, automating SQL pipelines, and translating ambiguity into measurable wins."
+<section id="experience" class="relative cv-auto">
+  <div class="container-wide pt-28 sm:pt-40 pb-10">
+    <div class="flex items-baseline gap-6 mb-12">
+      <span class="label-mono">02 — Experience</span>
+      <Reveal client:visible variant="draw-line" className="hairline flex-1" amount={0.4}>
+        <span class="block h-px"></span>
+      </Reveal>
+    </div>
+    <Reveal
+      client:visible
+      as="h2"
+      variant="stagger-words"
+      text="Three years shipping data products."
+      className="display-italic text-[clamp(2rem,5vw,4.5rem)] text-[var(--color-fg)] leading-[1.05] max-w-[22ch]"
     />
-
-    <ol class="relative pl-6 sm:pl-7 border-l border-dashed border-[var(--color-border-2)] space-y-6 sm:space-y-7">
-      {cv.data.work.map((job, i) => (
-        <Reveal client:visible delay={i * 0.05} as="li" className="relative">
-          <span
-            class="absolute -left-[31px] sm:-left-[35px] top-3 grid place-items-center h-4 w-4 rounded-full bg-[var(--color-bg)] border-2 border-[var(--color-accent)]"
-            aria-hidden="true"
-          >
-            <span class="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]"></span>
-          </span>
-
-          <div class="glass-panel p-4 sm:p-5">
-            <div class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-2 mb-3 pb-3 border-b border-[var(--color-border)]">
-              <div class="min-w-0">
-                <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-                  <h3 class="text-base sm:text-lg font-semibold tracking-tight text-[var(--color-fg)] inline-flex items-center gap-2">
-                    <Briefcase size={14} strokeWidth={1.5} className="text-[var(--color-accent)]" />
-                    {job.title}
-                  </h3>
-                  <span class="text-[var(--color-accent)] font-medium text-sm">@ {job.company}</span>
-                </div>
-                <div class="label-mono mt-1 inline-flex items-center gap-1.5">
-                  <MapPin size={11} strokeWidth={1.5} aria-hidden="true" />
-                  {job.location}
-                </div>
-              </div>
-              <div class="label-mono md:text-right shrink-0">{job.duration}</div>
-            </div>
-
-            <ul class="space-y-2">
-              {job.points.map((point) => {
-                const metrics = extractMetrics(point);
-                return (
-                  <li class="flex gap-2.5 text-sm text-[var(--color-fg-muted)] leading-snug">
-                    <span class="mt-2 h-1 w-1 rounded-full bg-[var(--color-accent)] shrink-0"></span>
-                    <span class="flex-1">
-                      {point}
-                      {metrics.length > 0 && (
-                        <span class="inline-flex flex-wrap gap-1 ml-2 align-middle">
-                          {metrics.map((m) => (
-                            <span class="inline-block text-[10px] font-mono text-[var(--color-accent)] bg-[var(--color-accent-soft)] border border-[color-mix(in_oklab,var(--color-accent)_30%,transparent)] rounded px-1.5 py-0 leading-tight tabular-nums">
-                              {m}
-                            </span>
-                          ))}
-                        </span>
-                      )}
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </Reveal>
-      ))}
-    </ol>
   </div>
+
+  <ExperienceChapters client:visible jobs={cv.data.work} />
 </section>

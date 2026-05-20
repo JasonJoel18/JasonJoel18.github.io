@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { cn } from '~/lib/cn';
 
 interface NavItem {
@@ -14,10 +15,7 @@ export default function ActiveSectionNav({ nav }: Props) {
   const [active, setActive] = useState<string>('');
 
   useEffect(() => {
-    // Only watch hash-style anchors. External / route links are ignored.
-    const ids = nav
-      .filter((n) => n.href.startsWith('#'))
-      .map((n) => n.href.slice(1));
+    const ids = nav.filter((n) => n.href.startsWith('#')).map((n) => n.href.slice(1));
     if (ids.length === 0) return;
 
     const sections = ids
@@ -25,40 +23,25 @@ export default function ActiveSectionNav({ nav }: Props) {
       .filter((el): el is HTMLElement => el !== null);
     if (sections.length === 0) return;
 
-    // Use IntersectionObserver to track which section dominates the viewport.
     const visibility = new Map<string, number>();
-
     const observer = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
-          visibility.set(entry.target.id, entry.intersectionRatio);
-        }
+        for (const entry of entries) visibility.set(entry.target.id, entry.intersectionRatio);
         let bestId = '';
         let best = 0;
         for (const [id, ratio] of visibility) {
-          if (ratio > best) {
-            best = ratio;
-            bestId = id;
-          }
+          if (ratio > best) { best = ratio; bestId = id; }
         }
         if (bestId) setActive(bestId);
       },
-      {
-        // 25% from top, 60% from bottom — biased to "what the user is reading"
-        rootMargin: '-25% 0px -60% 0px',
-        threshold: [0, 0.1, 0.25, 0.5, 0.75, 1],
-      },
+      { rootMargin: '-30% 0px -55% 0px', threshold: [0, 0.1, 0.25, 0.5, 0.75, 1] },
     );
-
     sections.forEach((s) => observer.observe(s));
     return () => observer.disconnect();
   }, [nav]);
 
   return (
-    <nav
-      aria-label="Section navigation"
-      className="hidden md:flex items-center gap-1 text-sm"
-    >
+    <nav aria-label="Section navigation" className="hidden md:flex items-center gap-1 text-xs font-mono uppercase tracking-[0.15em]">
       {nav.map((item) => {
         const isAnchor = item.href.startsWith('#');
         const isActive = isAnchor && active === item.href.slice(1);
@@ -67,15 +50,15 @@ export default function ActiveSectionNav({ nav }: Props) {
             key={item.href}
             href={item.href}
             className={cn(
-              'relative px-3 py-1.5 rounded-full font-medium tracking-tight transition-colors duration-300',
-              isActive
-                ? 'text-[var(--color-fg)]'
-                : 'text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]',
+              'relative px-3 py-2 transition-colors duration-300',
+              isActive ? 'text-[var(--color-fg)]' : 'text-[var(--color-fg-subtle)] hover:text-[var(--color-fg)]',
             )}
           >
             {isActive && (
-              <span
-                className="absolute inset-0 rounded-full bg-white/8 ring-1 ring-white/10"
+              <motion.span
+                layoutId="nav-underline"
+                className="absolute left-3 right-3 bottom-1 h-px bg-[var(--color-accent)]"
+                transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                 aria-hidden
               />
             )}
