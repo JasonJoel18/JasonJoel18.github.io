@@ -65,6 +65,21 @@
     overflow-x: hidden;
   }
 
+  /* Mobile-only static gradient fallback — desktop uses WebGL MeshGradient instead */
+  @media (max-width: 767px) {
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(60vw 60vw at 15% 12%, rgba(167, 139, 250, 0.35), transparent 60%),
+        radial-gradient(70vw 70vw at 85% 30%, rgba(34, 211, 238, 0.22), transparent 65%),
+        radial-gradient(80vw 80vw at 50% 100%, rgba(52, 211, 153, 0.18), transparent 70%);
+    }
+  }
+
   /* Decorative grain — kept very subtle for editorial feel */
   body::after {
     content: "";
@@ -131,30 +146,30 @@
 
   /* Glass tiers — static blur values, never animated */
   .glass-sm {
-    background: color-mix(in oklab, var(--color-surface) 55%, transparent);
-    backdrop-filter: saturate(130%) blur(8px);
-    -webkit-backdrop-filter: saturate(130%) blur(8px);
+    background: color-mix(in oklab, var(--color-surface) 60%, transparent);
+    backdrop-filter: saturate(130%) blur(4px);
+    -webkit-backdrop-filter: saturate(130%) blur(4px);
     border: 1px solid color-mix(in oklab, var(--color-border) 70%, transparent);
   }
 
   .glass {
-    background: color-mix(in oklab, var(--color-surface) 65%, transparent);
-    backdrop-filter: saturate(140%) blur(14px);
-    -webkit-backdrop-filter: saturate(140%) blur(14px);
+    background: color-mix(in oklab, var(--color-surface) 70%, transparent);
+    backdrop-filter: saturate(140%) blur(10px);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
     border: 1px solid color-mix(in oklab, var(--color-border) 80%, transparent);
   }
 
   .glass-strong {
-    background: color-mix(in oklab, var(--color-surface) 78%, transparent);
-    backdrop-filter: saturate(160%) blur(24px);
-    -webkit-backdrop-filter: saturate(160%) blur(24px);
+    background: color-mix(in oklab, var(--color-surface) 82%, transparent);
+    backdrop-filter: saturate(160%) blur(16px);
+    -webkit-backdrop-filter: saturate(160%) blur(16px);
     border: 1px solid color-mix(in oklab, var(--color-border-2) 85%, transparent);
   }
 
   .glass-panel {
-    background: color-mix(in oklab, var(--color-surface) 72%, transparent);
-    backdrop-filter: saturate(150%) blur(18px);
-    -webkit-backdrop-filter: saturate(150%) blur(18px);
+    background: color-mix(in oklab, var(--color-surface) 76%, transparent);
+    backdrop-filter: saturate(150%) blur(14px);
+    -webkit-backdrop-filter: saturate(150%) blur(14px);
     border: 1px solid color-mix(in oklab, var(--color-border) 85%, transparent);
     border-radius: var(--radius-card);
   }
@@ -247,9 +262,9 @@
   gap: 3.5rem;
   animation: marquee-left var(--marquee-duration, 35s) linear infinite;
   will-change: transform;
+  transform: translateZ(0);
 }
 .marquee[data-dir="right"] { animation-name: marquee-right; }
-.marquee:hover { animation-play-state: paused; }
 
 @media (prefers-reduced-motion: reduce) {
   .marquee { animation: none; }

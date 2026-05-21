@@ -86,7 +86,7 @@ export default function Reveal({
           /\s+/.test(w) ? (
             <span key={i}>{w}</span>
           ) : (
-            <span key={i} style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'bottom' }}>
+            <span key={i} style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'bottom', paddingTop: '0.2em', paddingBottom: '0.25em', marginTop: '-0.2em', marginBottom: '-0.25em' }}>
               <motion.span variants={child} style={{ display: 'inline-block' }}>
                 {w}
               </motion.span>

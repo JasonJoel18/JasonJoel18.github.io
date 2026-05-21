@@ -50,12 +50,28 @@ export default function DistortMedia({ src, alt, className }: Props) {
   const [glReady, setGlReady] = useState(false);
   const [reduce, setReduce] = useState(false);
 
+  const [inView, setInView] = useState(false);
+
   useEffect(() => {
     setReduce(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   }, []);
 
   useEffect(() => {
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) setInView(e.isIntersecting);
+      },
+      { rootMargin: '200px 0px' },
+    );
+    io.observe(wrap);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
     if (reduce) return;
+    if (!inView) return;
     const canvas = canvasRef.current;
     const img = imgRef.current;
     const wrap = wrapRef.current;
@@ -148,7 +164,7 @@ export default function DistortMedia({ src, alt, className }: Props) {
       wrap.removeEventListener('pointerleave', onLeave);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
-  }, [reduce, src]);
+  }, [reduce, src, inView]);
 
   return (
     <div ref={wrapRef} className={className} style={{ position: 'relative', overflow: 'hidden' }}>

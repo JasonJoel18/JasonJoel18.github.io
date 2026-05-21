@@ -12,13 +12,10 @@ const pullQuote = paragraphs[0] ?? '';
 const runningCopy = paragraphs.slice(1);
 ---
 
-<section id="about" class="relative py-28 sm:py-40 cv-auto">
+<section id="about" class="relative py-16 sm:py-24 cv-auto">
   <div class="container-wide">
-    <div class="flex items-baseline gap-6 mb-12 sm:mb-16">
+    <div class="mb-8 sm:mb-10">
       <span class="label-mono">01 — About</span>
-      <Reveal client:visible variant="draw-line" className="hairline flex-1" amount={0.4}>
-        <span class="block h-px"></span>
-      </Reveal>
     </div>
 
     <Reveal
@@ -26,40 +23,40 @@ const runningCopy = paragraphs.slice(1);
       as="p"
       variant="stagger-words"
       text={pullQuote}
-      className="display-italic text-[clamp(2rem,5.6vw,5.5rem)] leading-[1.05] text-[var(--color-fg)] text-balance max-w-[20ch]"
+      className="display-italic text-[clamp(1.5rem,3.2vw,3rem)] leading-[1.15] text-[var(--color-fg)] text-balance max-w-[24ch]"
     />
 
-    <div class="mt-20 sm:mt-28 grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-12 lg:gap-20">
+    <div class="mt-10 sm:mt-12 grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-8 lg:gap-12">
       <Reveal
         client:visible
         variant="fade"
-        className="space-y-6 text-[var(--color-fg-muted)] text-lg leading-relaxed text-pretty max-w-2xl"
+        className="space-y-5 text-[var(--color-fg-muted)] text-base sm:text-lg leading-relaxed text-pretty max-w-2xl"
       >
         {runningCopy.map((p) => <p>{p}</p>)}
       </Reveal>
 
-      <Reveal client:visible variant="rise" delay={0.1} className="space-y-8">
-        <dl class="space-y-6">
+      <Reveal client:visible variant="rise" delay={0.1}>
+        <dl class="space-y-5">
           <div>
-            <dt class="label-mono mb-1.5">Based in</dt>
-            <dd class="display-italic text-2xl text-[var(--color-fg)]">{profile.data.location}</dd>
+            <dt class="label-mono mb-1">Based in</dt>
+            <dd class="text-base text-[var(--color-fg)]">{profile.data.location}</dd>
           </div>
           <div>
-            <dt class="label-mono mb-1.5">Status</dt>
+            <dt class="label-mono mb-1">Status</dt>
             <dd class="text-base text-[var(--color-fg)]">{profile.data.availability}</dd>
           </div>
           {latestEdu && (
             <div>
-              <dt class="label-mono mb-1.5">Currently</dt>
+              <dt class="label-mono mb-1">Currently</dt>
               <dd class="text-base text-[var(--color-fg)]">{latestEdu.degree}</dd>
               <dd class="text-sm text-[var(--color-fg-subtle)]">{latestEdu.institution}</dd>
             </div>
           )}
           <div>
-            <dt class="label-mono mb-1.5">Languages</dt>
+            <dt class="label-mono mb-1">Languages</dt>
             <dd class="space-y-1">
               {cv.data.languages.map((l) => (
-                <div class="flex items-baseline justify-between gap-3 text-base">
+                <div class="flex items-baseline justify-between gap-3 text-sm sm:text-base">
                   <span class="text-[var(--color-fg)]">{l.name}</span>
                   <span class="font-mono text-xs text-[var(--color-fg-subtle)] tracking-wider uppercase">{l.level}</span>
                 </div>

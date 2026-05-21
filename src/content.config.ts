@@ -10,6 +10,7 @@ const profile = defineCollection({
     title: z.string(),
     heroSubtitle: z.string(),
     heroTagline: z.string().optional(),
+    heroProof: z.array(z.string()).length(3).optional(),
     avatar: z.string(),
     location: z.string(),
     availability: z.string(),

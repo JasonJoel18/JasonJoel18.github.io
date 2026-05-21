@@ -1,6 +1,5 @@
 ---
-import { Github, Linkedin, Mail, Twitter, Instagram, Globe, ExternalLink } from 'lucide-react';
-import { cn } from '~/lib/cn';
+import SocialIcon from './SocialIcon.tsx';
 
 interface Props {
   kind: 'github' | 'linkedin' | 'kaggle' | 'email' | 'twitter' | 'instagram' | 'website';
@@ -9,36 +8,8 @@ interface Props {
   class?: string;
   size?: number;
 }
+
 const { kind, url, label, class: className, size = 18 } = Astro.props;
-
-const isExternal = !url.startsWith('mailto:') && !url.startsWith('#') && !url.startsWith('/');
-
-// Kaggle isn't in lucide; render a small inline SVG below.
-const useInlineKaggle = kind === 'kaggle';
 ---
 
-<a
-  href={url}
-  aria-label={label}
-  title={label}
-  target={isExternal ? '_blank' : undefined}
-  rel={isExternal ? 'noreferrer noopener' : undefined}
-  class={cn(
-    'group inline-flex items-center justify-center h-10 w-10 rounded-full border border-[var(--color-border)] text-[var(--color-fg-muted)]',
-    'transition-[color,border-color,transform,background-color] duration-300 ease-out will-change-transform',
-    'hover:text-[var(--color-fg)] hover:border-[var(--color-accent)] hover:-translate-y-0.5 hover:bg-[var(--color-accent-soft)]',
-    className,
-  )}
->
-  {kind === 'github'    && <Github size={size} aria-hidden="true" />}
-  {kind === 'linkedin'  && <Linkedin size={size} aria-hidden="true" />}
-  {kind === 'email'     && <Mail size={size} aria-hidden="true" />}
-  {kind === 'twitter'   && <Twitter size={size} aria-hidden="true" />}
-  {kind === 'instagram' && <Instagram size={size} aria-hidden="true" />}
-  {kind === 'website'   && <Globe size={size} aria-hidden="true" />}
-  {useInlineKaggle && (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v5.111c0 .235-.117.352-.351.352H5.505c-.236 0-.354-.117-.354-.352V.353c0-.233.118-.353.354-.353h2.431c.234 0 .351.12.351.353v14.343l6.203-6.272c.165-.165.33-.246.495-.246h3.239c.144 0 .236.06.285.18.046.149.034.255-.036.315l-6.555 6.344 6.836 8.507c.095.104.117.208.07.336"/>
-    </svg>
-  )}
-</a>
+<SocialIcon client:visible kind={kind} url={url} label={label} className={className} size={size} />

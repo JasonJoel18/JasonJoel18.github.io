@@ -42,12 +42,12 @@ export default function LiquidText({ text, as: Tag = 'span', className }: Props)
       >
         {chars.map((char, i) => {
           if (char === ' ') {
-            return <span key={i}>&nbsp;</span>;
+            return <span key={i}>{' '}</span>;
           }
           return (
             <span
               key={i}
-              style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'bottom', lineHeight: 0.92 }}
+              style={{ display: 'inline-block', overflow: 'hidden', verticalAlign: 'bottom', lineHeight: 0.92, paddingTop: '0.25em', paddingBottom: '0.3em', marginTop: '-0.25em', marginBottom: '-0.3em' }}
             >
               <motion.span variants={child} style={{ display: 'inline-block' }}>
                 {char}

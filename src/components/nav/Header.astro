@@ -3,6 +3,7 @@ import { getEntry } from 'astro:content';
 import { Download } from 'lucide-react';
 import ActiveSectionNav from './ActiveSectionNav.tsx';
 import MobileMenu from './MobileMenu.tsx';
+import MotionIcon from '~/components/ui/MotionIcon.tsx';
 
 const site = await getEntry('site', 'site');
 const profile = await getEntry('profile', 'profile');
@@ -46,7 +47,7 @@ const initials = profile.data.name
           download
           class="hidden md:inline-flex items-center gap-2 h-9 px-4 rounded-full border border-[var(--color-border-2)] text-xs font-mono uppercase tracking-[0.15em] text-[var(--color-fg)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors duration-300"
         >
-          <Download size={12} strokeWidth={1.75} aria-hidden="true" />
+          <MotionIcon client:visible icon={Download} size={12} strokeWidth={1.75} reveal={false} />
           CV
         </a>
         <MobileMenu client:idle nav={nav} cta={cta} />

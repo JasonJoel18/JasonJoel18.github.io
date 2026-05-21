@@ -3,6 +3,7 @@ import { getEntry } from 'astro:content';
 import { ArrowUpRight } from 'lucide-react';
 import Reveal from '~/components/motion/Reveal.tsx';
 import MagneticButton from '~/components/motion/MagneticButton.tsx';
+import MotionIcon from '~/components/ui/MotionIcon.tsx';
 import SocialIcon from '~/components/ui/SocialIcon.astro';
 
 const profile = await getEntry('profile', 'profile');
@@ -12,13 +13,10 @@ const email = profile.data.socials.find((s) => s.kind === 'email');
 const emailAddress = email?.label ?? '';
 ---
 
-<section id="contact" class="relative min-h-screen flex flex-col justify-center py-28 sm:py-40">
+<section id="contact" class="relative py-16 sm:py-24">
   <div class="container-wide w-full">
-    <div class="flex items-baseline gap-6 mb-12 sm:mb-16">
+    <div class="mb-6 sm:mb-8">
       <span class="label-mono">06 — Contact</span>
-      <Reveal client:visible variant="draw-line" className="hairline flex-1" amount={0.4}>
-        <span class="block h-px"></span>
-      </Reveal>
     </div>
 
     <Reveal
@@ -26,32 +24,32 @@ const emailAddress = email?.label ?? '';
       as="h2"
       variant="stagger-words"
       text="Let's build something measurable."
-      className="display-italic text-[clamp(3rem,11vw,12rem)] text-[var(--color-fg)] leading-[0.95] text-balance max-w-[15ch]"
+      className="display-italic text-[clamp(2rem,7vw,5rem)] text-[var(--color-fg)] leading-[1.05] text-balance max-w-[18ch]"
     />
 
-    <p class="mt-12 max-w-2xl text-lg sm:text-xl text-[var(--color-fg-muted)] leading-relaxed">
+    <p class="mt-6 sm:mt-8 max-w-2xl text-base sm:text-lg text-[var(--color-fg-muted)] leading-relaxed">
       Currently {profile.data.availability.toLowerCase()}. If you have a data problem worth solving — or just want to swap notes on dashboards — my inbox is open.
     </p>
 
     {email && (
-      <div class="mt-16 sm:mt-20">
-        <p class="label-mono mb-4">Email</p>
+      <div class="mt-10 sm:mt-12">
+        <p class="label-mono mb-3">Email</p>
         <MagneticButton
           client:visible
           href={email.url}
           ariaLabel="Send an email"
           strength={14}
-          className="display-italic inline-flex items-baseline gap-3 text-[clamp(2rem,6vw,5.5rem)] leading-[1] text-[var(--color-fg)] hover:text-[var(--color-accent)] transition-colors duration-300"
+          className="display-italic inline-flex items-baseline gap-3 text-[clamp(1.5rem,4vw,2.75rem)] leading-[1.1] text-[var(--color-fg)] hover:text-[var(--color-accent)] transition-colors duration-300"
         >
           <span class="draw-underline">{emailAddress}</span>
-          <ArrowUpRight size={32} strokeWidth={1} aria-hidden="true" />
+          <MotionIcon client:visible icon={ArrowUpRight} size={24} strokeWidth={1.25} reveal={false} />
         </MagneticButton>
       </div>
     )}
 
-    <div class="mt-16 sm:mt-20 flex items-center gap-2">
+    <div class="mt-10 sm:mt-12 flex items-center gap-1">
       {profile.data.socials.filter((s) => s.kind !== 'email').map((s) => (
-        <SocialIcon kind={s.kind} url={s.url} label={s.label} class="h-10 w-10" />
+        <SocialIcon kind={s.kind} url={s.url} label={s.label} class="h-9 w-9" />
       ))}
     </div>
   </div>

@@ -102,9 +102,10 @@ export default function MeshGradient() {
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      canvas.width  = Math.floor(window.innerWidth  * dpr);
-      canvas.height = Math.floor(window.innerHeight * dpr);
+      // Render at half-resolution and CSS-upscale — ~4x less fragment work.
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5) * 0.5;
+      canvas.width  = Math.max(1, Math.floor(window.innerWidth  * dpr));
+      canvas.height = Math.max(1, Math.floor(window.innerHeight * dpr));
       canvas.style.width  = `${window.innerWidth}px`;
       canvas.style.height = `${window.innerHeight}px`;
       gl.viewport(0, 0, canvas.width, canvas.height);
@@ -113,13 +114,19 @@ export default function MeshGradient() {
     resize();
     window.addEventListener('resize', resize);
 
+    // Cap render loop at ~30fps, pause when tab is hidden.
     const start = performance.now();
+    const frameInterval = 1000 / 30;
     let rafId = 0;
-    const tick = () => {
-      const t = (performance.now() - start) / 1000;
+    let lastFrame = 0;
+    const tick = (now: number) => {
+      rafId = requestAnimationFrame(tick);
+      if (document.hidden) return;
+      if (now - lastFrame < frameInterval) return;
+      lastFrame = now;
+      const t = (now - start) / 1000;
       gl.uniform1f(uTime, t);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
-      rafId = requestAnimationFrame(tick);
     };
     rafId = requestAnimationFrame(tick);
 

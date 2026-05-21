@@ -1,51 +1,41 @@
 ---
 import { getCollection } from 'astro:content';
 import Reveal from '~/components/motion/Reveal.tsx';
-import ProjectCard from './ProjectCard.tsx';
+import ProjectsHorizontal from '~/components/motion/ProjectsHorizontal.tsx';
 
 const projects = (await getCollection('projects')).sort((a, b) => {
   if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
   if (a.data.order !== b.data.order) return a.data.order - b.data.order;
   return b.data.year - a.data.year;
 });
+
+const slides = projects.map((p) => ({
+  title: p.data.title,
+  summary: p.data.summary,
+  year: p.data.year,
+  tech: p.data.tech,
+  media: p.data.media,
+  metrics: p.data.metrics,
+  role: p.data.role,
+  links: p.data.links ?? {},
+  href: p.data.caseStudy ? `/projects/${p.id}/` : null,
+  featured: p.data.featured,
+}));
 ---
 
-<section id="projects" class="relative py-28 sm:py-40 cv-auto">
-  <div class="container-wide">
-    <div class="flex items-baseline gap-6 mb-12 sm:mb-16">
+<section id="projects" class="relative cv-auto">
+  <div class="container-wide pt-16 sm:pt-24 pb-8">
+    <div class="mb-6 sm:mb-8">
       <span class="label-mono">03 — Selected work</span>
-      <Reveal client:visible variant="draw-line" className="hairline flex-1" amount={0.4}>
-        <span class="block h-px"></span>
-      </Reveal>
     </div>
-
     <Reveal
       client:visible
       as="h2"
       variant="stagger-words"
       text="Projects with measurable impact."
-      className="display-italic text-[clamp(2.25rem,5.5vw,5rem)] text-[var(--color-fg)] leading-[1.04] max-w-[20ch] mb-20 sm:mb-28"
+      className="display-italic text-[clamp(1.75rem,3.6vw,3.25rem)] text-[var(--color-fg)] leading-[1.1] max-w-[22ch]"
     />
-
-    <div class="space-y-28 sm:space-y-40">
-      {projects.map((p, i) => (
-        <ProjectCard
-          client:visible
-          index={i}
-          project={{
-            title: p.data.title,
-            summary: p.data.summary,
-            year: p.data.year,
-            tech: p.data.tech,
-            media: p.data.media,
-            metrics: p.data.metrics,
-            role: p.data.role,
-            links: p.data.links ?? {},
-            href: p.data.caseStudy ? `/projects/${p.id}/` : null,
-            featured: p.data.featured,
-          }}
-        />
-      ))}
-    </div>
   </div>
+
+  <ProjectsHorizontal client:visible projects={slides} />
 </section>
