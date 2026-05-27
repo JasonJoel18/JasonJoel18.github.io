@@ -1,4 +1,3 @@
----
 import {
   siPython, siJupyter, siPandas, siNumpy, siScikitlearn, siTensorflow, siPytorch,
   siKeras, siHuggingface, siMlflow, siApachespark, siApacheairflow, siR,
@@ -8,22 +7,28 @@ import {
   siKaggle, siAnaconda,
 } from 'simple-icons';
 import { customIcons } from '~/lib/custom-icons';
-import ToolIcon from '~/components/ui/ToolIcon.astro';
 
-interface ToolEntry {
+export interface ToolEntry {
   title: string;
   path: string;
   hex: string;
 }
 
-const groups: { label: string; tools: ToolEntry[]; duration: number; dir: 'left' | 'right' }[] = [
+export interface ToolGroup {
+  label: string;
+  tools: ToolEntry[];
+}
+
+export const toolGroups: ToolGroup[] = [
   {
     label: 'Languages · ML · Data Science',
-    duration: 38,
-    dir: 'left',
     tools: [
       { title: 'Python', path: siPython.path, hex: siPython.hex },
-      { title: 'SQL', path: 'M12 3c-5 0-9 1.5-9 3.5v11c0 2 4 3.5 9 3.5s9-1.5 9-3.5v-11c0-2-4-3.5-9-3.5zm0 2c4.4 0 7 1.2 7 1.5S16.4 8 12 8 5 6.8 5 6.5 7.6 5 12 5zm-7 4.4c1.7.9 4.2 1.4 7 1.4s5.3-.5 7-1.4v3c0 .3-2.6 1.5-7 1.5S5 12.7 5 12.4v-3zm0 5c1.7.9 4.2 1.4 7 1.4s5.3-.5 7-1.4v3c0 .3-2.6 1.5-7 1.5s-7-1.2-7-1.5v-3z', hex: '4479A1' },
+      {
+        title: 'SQL',
+        path: 'M12 3c-5 0-9 1.5-9 3.5v11c0 2 4 3.5 9 3.5s9-1.5 9-3.5v-11c0-2-4-3.5-9-3.5zm0 2c4.4 0 7 1.2 7 1.5S16.4 8 12 8 5 6.8 5 6.5 7.6 5 12 5zm-7 4.4c1.7.9 4.2 1.4 7 1.4s5.3-.5 7-1.4v3c0 .3-2.6 1.5-7 1.5S5 12.7 5 12.4v-3zm0 5c1.7.9 4.2 1.4 7 1.4s5.3-.5 7-1.4v3c0 .3-2.6 1.5-7 1.5s-7-1.2-7-1.5v-3z',
+        hex: '4479A1',
+      },
       { title: 'R', path: siR.path, hex: siR.hex },
       { title: 'pandas', path: siPandas.path, hex: 'B488F0' },
       { title: 'NumPy', path: siNumpy.path, hex: '4D77CF' },
@@ -37,8 +42,6 @@ const groups: { label: string; tools: ToolEntry[]; duration: number; dir: 'left'
   },
   {
     label: 'BI · Visualization · Notebooks',
-    duration: 34,
-    dir: 'right',
     tools: [
       { ...customIcons.tableau },
       { ...customIcons.powerbi },
@@ -50,8 +53,6 @@ const groups: { label: string; tools: ToolEntry[]; duration: number; dir: 'left'
   },
   {
     label: 'Data & Cloud',
-    duration: 40,
-    dir: 'left',
     tools: [
       { title: 'MySQL', path: siMysql.path, hex: siMysql.hex },
       { title: 'PostgreSQL', path: siPostgresql.path, hex: siPostgresql.hex },
@@ -67,52 +68,17 @@ const groups: { label: string; tools: ToolEntry[]; duration: number; dir: 'left'
   },
   {
     label: 'Tools & Workflow',
-    duration: 36,
-    dir: 'right',
     tools: [
       { title: 'Git', path: siGit.path, hex: siGit.hex },
-      { title: 'GitHub', path: siGithub.path, hex: 'E7E9EF' },
+      { title: 'GitHub', path: siGithub.path, hex: '6E7681' },
       { title: 'Docker', path: siDocker.path, hex: siDocker.hex },
       { ...customIcons.vscode },
       { title: 'Anaconda', path: siAnaconda.path, hex: siAnaconda.hex },
-      { title: 'Linux', path: siLinux.path, hex: 'E0E0E0' },
+      { title: 'Linux', path: siLinux.path, hex: '4D4D4D' },
       { title: 'Jira', path: siJira.path, hex: '4D8AFF' },
-      { title: 'Notion', path: siNotion.path, hex: 'E7E9EF' },
+      { title: 'Notion', path: siNotion.path, hex: '6E7681' },
       { title: 'Kaggle', path: siKaggle.path, hex: siKaggle.hex },
-      { title: 'Markdown', path: siMarkdown.path, hex: 'A3A8B8' },
+      { title: 'Markdown', path: siMarkdown.path, hex: '6E7681' },
     ],
   },
 ];
----
-
-<div class="space-y-10 sm:space-y-14">
-  {groups.map((group) => (
-    <div>
-      <div class="container-wide flex items-baseline gap-4 mb-5">
-        <span class="label-mono text-[var(--color-accent)]">{group.label}</span>
-        <span class="h-px flex-1 bg-[color-mix(in_oklab,var(--color-border-2)_70%,transparent)]"></span>
-      </div>
-      <div class="overflow-hidden">
-        <div class="marquee" data-dir={group.dir} style={`--marquee-duration: ${group.duration}s;`}>
-          {[0, 1].map(() => (
-            <div class="flex items-center gap-14 shrink-0" aria-hidden={undefined}>
-              {group.tools.map((tool) => (
-                <div
-                  class="tool-cell group inline-flex items-center gap-3 whitespace-nowrap"
-                  style={`--icon-hex: #${tool.hex};`}
-                >
-                  <span class="grid place-items-center w-9 h-9">
-                    <ToolIcon title={tool.title} path={tool.path} hex={tool.hex} size={32} />
-                  </span>
-                  <span class="display-italic text-3xl sm:text-4xl text-[var(--color-fg-muted)] group-hover:text-[var(--color-fg)] transition-colors">
-                    {tool.title}
-                  </span>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  ))}
-</div>

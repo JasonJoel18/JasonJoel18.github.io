@@ -10,13 +10,13 @@ Built with **Astro 5 · React 19 · Tailwind CSS v4 · Framer Motion**, deployed
 ## Local development
 
 ```bash
-npm install        # one-time
-npm run dev        # starts http://localhost:4321
-npm run build      # type-checks + builds to ./dist
-npm run preview    # preview the production build
+bun install        # one-time
+bun run dev        # starts http://localhost:4321
+bun run build      # type-checks + builds to ./dist
+bun run preview    # preview the production build
 ```
 
-Node 20+ recommended.
+Bun 1.x. (Node 20+ also works if you swap the commands back to `npm`.)
 
 ## Editing content (no code required)
 

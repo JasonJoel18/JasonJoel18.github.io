@@ -1,25 +1,82 @@
 ---
 import { getEntry } from 'astro:content';
-import SocialIcon from '~/components/ui/SocialIcon.astro';
+import { Github, Linkedin, Mail } from 'lucide-react';
+import KaggleIcon from '~/components/ui/KaggleIcon.astro';
 
 const site = await getEntry('site', 'site');
 const profile = await getEntry('profile', 'profile');
 if (!site || !profile) throw new Error('Missing site/profile entries');
 
 const year = new Date().getFullYear();
+const socialIconMap = { github: Github, linkedin: Linkedin, email: Mail } as const;
+
+const quickLinks = site.data.nav;
+const focusAreas = [
+  'BI Dashboards',
+  'Machine Learning Systems',
+  'SQL Automation',
+  'Financial Reporting',
+];
 ---
 
-<footer class="relative z-10 border-t border-[color-mix(in_oklab,var(--color-border-2)_60%,transparent)]">
-  <div class="container-wide py-12 sm:py-16">
-    <div class="flex items-center gap-2">
-      {profile.data.socials.filter((s) => s.kind !== 'email').map((s) => (
-        <SocialIcon kind={s.kind} url={s.url} label={s.label} class="h-9 w-9" />
-      ))}
+<footer class="border-t border-border bg-muted/30">
+  <div class="container-page py-12 sm:py-16">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-10">
+      <div>
+        <p class="text-sm font-semibold text-foreground">{profile.data.name}</p>
+        <p class="mt-2 text-sm text-muted-foreground leading-relaxed max-w-xs">
+          {profile.data.title} based in {profile.data.location}. {site.data.footer.tagline}
+        </p>
+        <div class="mt-4 flex items-center gap-2">
+          {profile.data.socials.map((s) => {
+            const baseClass =
+              'inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground';
+            if (s.kind === 'kaggle') {
+              return (
+                <a href={s.url} target="_blank" rel="noreferrer noopener" aria-label={s.label} class={baseClass}>
+                  <KaggleIcon size={16} />
+                </a>
+              );
+            }
+            const Icon = socialIconMap[s.kind as keyof typeof socialIconMap];
+            if (!Icon) return null;
+            return (
+              <a href={s.url} target={s.kind === 'email' ? undefined : '_blank'} rel="noreferrer noopener" aria-label={s.label} class={baseClass}>
+                <Icon size={16} aria-hidden="true" />
+              </a>
+            );
+          })}
+        </div>
+      </div>
+
+      <div>
+        <p class="text-sm font-semibold text-foreground">Quick Links</p>
+        <ul class="mt-3 space-y-2">
+          {quickLinks.map((item) => (
+            <li>
+              <a href={item.href} class="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                {item.label}
+              </a>
+            </li>
+          ))}
+          <li>
+            <a href="/cv" class="text-sm text-muted-foreground hover:text-foreground transition-colors">CV</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="text-sm font-semibold text-foreground">Focus Areas</p>
+        <ul class="mt-3 space-y-2">
+          {focusAreas.map((area) => (
+            <li class="text-sm text-muted-foreground">{area}</li>
+          ))}
+        </ul>
+      </div>
     </div>
 
-    <div class="mt-12 sm:mt-16 pt-6 border-t border-[color-mix(in_oklab,var(--color-border)_70%,transparent)] flex flex-col sm:flex-row items-baseline justify-between gap-3 text-xs font-mono uppercase tracking-[0.18em] text-[var(--color-fg-subtle)]">
-      <p>© {year} {profile.data.name}</p>
-      <p>{site.data.footer.tagline}</p>
+    <div class="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-baseline justify-between gap-3 text-xs text-muted-foreground">
+      <p>© {year} {profile.data.name}. All rights reserved.</p>
       <p>{site.data.footer.builtWith}</p>
     </div>
   </div>

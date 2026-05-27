@@ -1,9 +1,7 @@
 ---
 import { getEntry } from 'astro:content';
 import { Download } from 'lucide-react';
-import ActiveSectionNav from './ActiveSectionNav.tsx';
-import MobileMenu from './MobileMenu.tsx';
-import MotionIcon from '~/components/ui/MotionIcon.tsx';
+import MobileSheet from './MobileSheet.tsx';
 
 const site = await getEntry('site', 'site');
 const profile = await getEntry('profile', 'profile');
@@ -20,37 +18,44 @@ const initials = profile.data.name
 
 <header
   id="site-header"
-  class="fixed inset-x-0 top-0 z-50 transition-[background-color,border-color] duration-300 ease-out"
+  class="fixed inset-x-0 top-0 z-50 border-b border-transparent transition-[background-color,border-color,backdrop-filter] duration-200"
 >
-  <!-- Scroll progress bar -->
-  <div class="h-px w-full bg-transparent">
-    <div class="scroll-progress-bar h-px bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)]"></div>
-  </div>
-
-  <div class="container-wide">
-    <div class="flex items-center justify-between h-16 sm:h-[72px]">
+  <div class="container-page">
+    <div class="flex items-center justify-between h-16">
       <a
         href="/"
         class="inline-flex items-center gap-2 group"
         aria-label={`${profile.data.name} — Home`}
       >
-        <span class="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg)] group-hover:text-[var(--color-accent)] transition-colors">
-          {initials} — {profile.data.name.split(' ')[0]}
+        <span class="inline-flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground text-xs font-semibold">
+          {initials}
+        </span>
+        <span class="text-sm font-semibold tracking-tight text-foreground">
+          {profile.data.name}
         </span>
       </a>
 
-      <ActiveSectionNav client:idle nav={nav} />
+      <nav class="hidden md:flex items-center gap-1">
+        {nav.map((item) => (
+          <a
+            href={item.href}
+            class="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md"
+          >
+            {item.label}
+          </a>
+        ))}
+      </nav>
 
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2">
         <a
           href={cta.primary.href}
           download
-          class="hidden md:inline-flex items-center gap-2 h-9 px-4 rounded-full border border-[var(--color-border-2)] text-xs font-mono uppercase tracking-[0.15em] text-[var(--color-fg)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors duration-300"
+          class="hidden md:inline-flex items-center gap-2 h-9 px-4 rounded-[var(--radius)] bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
         >
-          <MotionIcon client:visible icon={Download} size={12} strokeWidth={1.75} reveal={false} />
+          <Download size={14} />
           CV
         </a>
-        <MobileMenu client:idle nav={nav} cta={cta} />
+        <MobileSheet client:idle nav={nav} cta={cta} />
       </div>
     </div>
   </div>
@@ -61,8 +66,7 @@ const initials = profile.data.name
   if (header) {
     let scrolled = false;
     const onScroll = () => {
-      const y = window.scrollY;
-      const next = y > 24;
+      const next = window.scrollY > 24;
       if (next !== scrolled) {
         scrolled = next;
         header.classList.toggle('is-scrolled', scrolled);
@@ -74,13 +78,10 @@ const initials = profile.data.name
 </script>
 
 <style>
-  #site-header {
-    background: color-mix(in oklab, var(--color-bg) 0%, transparent);
-  }
   #site-header.is-scrolled {
-    background: color-mix(in oklab, var(--color-bg) 78%, transparent);
-    backdrop-filter: blur(20px) saturate(150%);
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
-    border-bottom: 1px solid color-mix(in oklab, var(--color-border) 60%, transparent);
+    background: color-mix(in oklab, var(--background) 82%, transparent);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    border-bottom-color: var(--border);
   }
 </style>

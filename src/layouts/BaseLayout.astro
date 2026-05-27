@@ -2,10 +2,6 @@
 import '~/styles/globals.css';
 import Header from '~/components/nav/Header.astro';
 import Footer from '~/components/nav/Footer.astro';
-import CursorSpotlight from '~/components/gl/CursorSpotlight.tsx';
-import MeshGradient from '~/components/gl/MeshGradient.tsx';
-import SmoothScroll from '~/components/motion/SmoothScroll.tsx';
-import PageTransition from '~/components/motion/PageTransition.tsx';
 import { getEntry } from 'astro:content';
 
 interface Props {
@@ -51,8 +47,7 @@ const personJsonLd = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#050507" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#ffffff" />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -61,21 +56,12 @@ const personJsonLd = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
 
-    <!-- Editorial type stack: Instrument Serif (display), Inter Tight (UI), JetBrains Mono (mono) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
-      onload="this.onload=null;this.rel='stylesheet'"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
-    <noscript>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
-      />
-    </noscript>
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -98,22 +84,17 @@ const personJsonLd = {
     <!-- Sitemap -->
     <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
-  <body class="text-[var(--color-fg)] antialiased">
-    <MeshGradient client:only="react" />
-    <CursorSpotlight client:only="react" />
-    <SmoothScroll client:idle />
-    <PageTransition client:only="react" />
-
+  <body class="bg-background text-foreground antialiased">
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:px-3 focus:py-2 focus:rounded-md focus:bg-white focus:text-black"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:px-3 focus:py-2 focus:rounded-md focus:bg-primary focus:text-primary-foreground"
     >
       Skip to content
     </a>
 
     {!noHeader && <Header />}
 
-    <main id="main" class="relative z-10">
+    <main id="main">
       <slot />
     </main>
 

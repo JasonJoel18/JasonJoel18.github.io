@@ -43,7 +43,7 @@ export default function EmbedFrame({
     <div
       ref={ref}
       data-provider={provider}
-      className={cn('w-full overflow-hidden rounded-2xl border border-[var(--color-border)] bg-black', className)}
+      className={cn('w-full overflow-hidden rounded-[var(--radius)] border border-border bg-muted', className)}
       style={{ aspectRatio: aspect.replace('/', ' / ') }}
     >
       {mounted ? (
@@ -56,7 +56,7 @@ export default function EmbedFrame({
           className="h-full w-full border-0"
         />
       ) : (
-        <div className="h-full w-full grid place-items-center text-sm text-[var(--color-fg-subtle)]">
+        <div className="h-full w-full grid place-items-center text-sm text-muted-foreground">
           Loading embed…
         </div>
       )}

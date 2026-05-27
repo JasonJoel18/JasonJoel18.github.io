@@ -18,27 +18,29 @@ const p = entry.data;
 ---
 
 <BaseLayout title={`${p.title} — Jason Joel Pinto`} description={p.summary}>
-  <article class="container-page pt-32 pb-24">
+  <article class="container-page pt-28 pb-20">
     <a
       href="/#projects"
-      class="inline-flex items-center gap-2 text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-fg)] transition-colors mb-8"
+      class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
     >
       <ArrowLeft size={16} aria-hidden="true" />
       Back to projects
     </a>
 
-    <header class="mb-10 max-w-3xl">
-      <p class="text-sm font-mono text-[var(--color-accent)] tracking-[0.18em] uppercase mb-3">
+    <header class="rounded-[var(--radius)] border border-border bg-card p-6 sm:p-10 shadow-sm mb-10">
+      <p class="text-xs font-semibold uppercase tracking-[0.16em] text-primary mb-3">
         Case study · {p.year}
       </p>
-      <h1 class="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-balance mb-5">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-balance mb-4">
         {p.title}
       </h1>
-      <p class="text-lg text-[var(--color-fg-muted)] leading-relaxed text-pretty">{p.summary}</p>
+      <p class="text-base sm:text-lg text-muted-foreground leading-relaxed text-pretty max-w-3xl">
+        {p.summary}
+      </p>
 
-      <ul class="flex flex-wrap gap-2 mt-6">
+      <ul class="flex flex-wrap gap-1.5 mt-5">
         {p.tech.map((t) => (
-          <li class="text-xs font-mono uppercase tracking-wider text-[var(--color-fg-muted)] border border-[var(--color-border)] rounded-full px-2.5 py-0.5">
+          <li class="text-xs font-medium text-secondary-foreground bg-secondary rounded-md px-2.5 py-0.5">
             {t}
           </li>
         ))}
@@ -51,7 +53,7 @@ const p = entry.data;
               href={p.links.github}
               target="_blank"
               rel="noreferrer noopener"
-              class="inline-flex items-center gap-2 h-10 px-4 rounded-full border border-[var(--color-border-2)] text-sm hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
+              class="inline-flex items-center gap-2 h-10 px-4 rounded-[var(--radius)] border border-border bg-background text-sm font-medium hover:bg-muted transition-colors"
             >
               <Github size={14} aria-hidden="true" />
               GitHub
@@ -62,7 +64,7 @@ const p = entry.data;
               href={p.links.live}
               target="_blank"
               rel="noreferrer noopener"
-              class="inline-flex items-center gap-2 h-10 px-4 rounded-full bg-[var(--color-fg)] text-[var(--color-bg)] text-sm font-medium hover:-translate-y-0.5 transition-transform duration-300 will-change-transform"
+              class="inline-flex items-center gap-2 h-10 px-4 rounded-[var(--radius)] bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
             >
               <ExternalLink size={14} aria-hidden="true" />
               Live
@@ -73,7 +75,7 @@ const p = entry.data;
               href={p.links.demo}
               target="_blank"
               rel="noreferrer noopener"
-              class="inline-flex items-center gap-2 h-10 px-4 rounded-full border border-[var(--color-border-2)] text-sm hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors"
+              class="inline-flex items-center gap-2 h-10 px-4 rounded-[var(--radius)] border border-border bg-background text-sm font-medium hover:bg-muted transition-colors"
             >
               <BarChart3 size={14} aria-hidden="true" />
               Dashboard
@@ -87,13 +89,13 @@ const p = entry.data;
       <ProjectMedia client:load media={p.media} />
     </div>
 
-    <div class="prose prose-invert max-w-3xl mx-auto
-      prose-headings:tracking-tight prose-headings:text-[var(--color-fg)]
-      prose-p:text-[var(--color-fg-muted)] prose-p:leading-relaxed
-      prose-a:text-[var(--color-accent)] prose-a:no-underline hover:prose-a:underline
-      prose-strong:text-[var(--color-fg)]
-      prose-code:text-[var(--color-accent-2)] prose-code:font-mono prose-code:text-sm
-      prose-li:text-[var(--color-fg-muted)]">
+    <div class="prose max-w-3xl mx-auto
+      prose-headings:tracking-tight prose-headings:text-foreground
+      prose-p:text-muted-foreground prose-p:leading-relaxed
+      prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+      prose-strong:text-foreground
+      prose-code:text-foreground prose-code:font-mono prose-code:text-sm
+      prose-li:text-muted-foreground">
       <Content />
     </div>
   </article>

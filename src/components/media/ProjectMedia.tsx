@@ -51,7 +51,7 @@ export default function ProjectMedia({ media, hovered = false, className }: Prop
 
   if (media.type === 'video') {
     return (
-      <div className={cn('relative w-full aspect-video overflow-hidden rounded-2xl bg-black border border-[var(--color-border)]', className)}>
+      <div className={cn('relative w-full aspect-video overflow-hidden rounded-[var(--radius)] bg-black border border-border', className)}>
         <img
           src={media.poster}
           alt={media.alt}
@@ -80,7 +80,7 @@ export default function ProjectMedia({ media, hovered = false, className }: Prop
 
   // image | gif
   return (
-    <div className={cn('relative w-full aspect-video overflow-hidden rounded-2xl bg-black border border-[var(--color-border)]', className)}>
+    <div className={cn('relative w-full aspect-video overflow-hidden rounded-[var(--radius)] bg-muted border border-border', className)}>
       <img
         src={media.src}
         alt={media.alt}

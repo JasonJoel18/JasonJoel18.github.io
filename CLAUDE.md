@@ -5,14 +5,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm install          # one-time install
-npm run dev          # http://localhost:4321 with HMR
-npm run build        # astro check (typecheck) + astro build → ./dist
-npm run preview      # preview the production build locally
-npm run typecheck    # astro check on its own
+bun install          # one-time install
+bun run dev          # http://localhost:4321 with HMR
+bun run build        # astro check (typecheck) + astro build → ./dist
+bun run preview      # preview the production build locally
+bun run typecheck    # astro check on its own
 ```
 
-Node 20+. There are no test scripts — visual + Lighthouse checks are the verification path.
+Bun 1.x. There are no test scripts — visual + Lighthouse checks are the verification path.
 
 ## What this project is
 
