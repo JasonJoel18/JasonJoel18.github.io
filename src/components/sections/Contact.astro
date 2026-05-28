@@ -12,7 +12,7 @@ if (!profile || !cv) throw new Error('Missing entries');
 const c = cv.data.contact;
 const infoRows = [
   { key: 'Email',    value: c.email,    href: `mailto:${c.email}`, copy: c.email },
-  { key: 'Phone',    value: c.phone ?? null, href: c.phone ? `tel:${c.phone.replace(/\s+/g, '')}` : null, copy: null },
+  { key: 'Phone',    value: c.phone ?? null, href: c.phone ? `tel:${c.phone.replace(/[^\d+]/g, '')}` : null, copy: null },
   { key: 'Location', value: c.location, href: null, copy: null },
   { key: 'Timezone', value: 'CET · UTC+1', href: null, copy: null },
   { key: 'Status',   value: 'Open to roles', href: null, copy: null },
@@ -148,7 +148,6 @@ const socialIconMap = { github: Github, linkedin: Linkedin, email: Mail } as con
             action="https://formspree.io/f/xvzylred"
             method="POST"
             novalidate
-            data-fallback-mailto={`mailto:${c.email}`}
             data-reveal-cascade
             class="form-body space-y-5"
             style="--cascade-step: 70ms;"

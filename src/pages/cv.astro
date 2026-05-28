@@ -56,9 +56,9 @@ const c = cv.data;
           <li class="inline-flex items-center gap-1.5">
             <MapPin size={14} aria-hidden="true" /> {c.contact.location}
           </li>
-          <li class="inline-flex items-center gap-1.5">
-            <Mail size={14} aria-hidden="true" />
-            <a href={`mailto:${c.contact.email}`} class="hover:text-primary">{c.contact.email}</a>
+          <li class="inline-flex items-center gap-1.5 min-w-0">
+            <Mail size={14} aria-hidden="true" className="shrink-0" />
+            <a href={`mailto:${c.contact.email}`} class="hover:text-primary break-all">{c.contact.email}</a>
           </li>
           {c.contact.phone && (
             <li class="inline-flex items-center gap-1.5">
@@ -80,6 +80,7 @@ const c = cv.data;
         </ul>
       </header>
 
+      {c.work.length > 0 && (
       <section>
         <h2 class="text-xs font-semibold uppercase tracking-[0.16em] text-primary mb-5">Experience</h2>
         <div class="space-y-8">
@@ -103,8 +104,11 @@ const c = cv.data;
           ))}
         </div>
       </section>
+      )}
 
+      {(c.education.length > 0 || c.languages.length > 0) && (
       <section class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        {c.education.length > 0 && (
         <div>
           <h2 class="text-xs font-semibold uppercase tracking-[0.16em] text-primary mb-5">Education</h2>
           <div class="space-y-5">
@@ -118,6 +122,8 @@ const c = cv.data;
             ))}
           </div>
         </div>
+        )}
+        {c.languages.length > 0 && (
         <div>
           <h2 class="text-xs font-semibold uppercase tracking-[0.16em] text-primary mb-5">Languages</h2>
           <ul class="space-y-2">
@@ -129,8 +135,11 @@ const c = cv.data;
             ))}
           </ul>
         </div>
+        )}
       </section>
+      )}
 
+      {c.skills.length > 0 && (
       <section>
         <h2 class="text-xs font-semibold uppercase tracking-[0.16em] text-primary mb-5">Skills</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -139,7 +148,7 @@ const c = cv.data;
               <p class="text-sm font-semibold text-foreground mb-2">{g.category}</p>
               <ul class="flex flex-wrap gap-1.5">
                 {g.items.map((it) => (
-                  <li class="text-xs text-muted-foreground border border-border rounded-md px-2.5 py-0.5">
+                  <li class="text-xs text-muted-foreground border border-border rounded-md px-2.5 py-0.5 break-words max-w-full">
                     {it}
                   </li>
                 ))}
@@ -148,7 +157,9 @@ const c = cv.data;
           ))}
         </div>
       </section>
+      )}
 
+      {c.certifications.length > 0 && (
       <section>
         <h2 class="text-xs font-semibold uppercase tracking-[0.16em] text-primary mb-5">Certifications</h2>
         <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5">
@@ -160,6 +171,7 @@ const c = cv.data;
           ))}
         </ul>
       </section>
+      )}
     </article>
   </div>
 </BaseLayout>

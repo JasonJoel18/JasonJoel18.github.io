@@ -70,6 +70,8 @@ export default function ProjectIndex({ projects }: Props) {
     };
 
     const onEnter = () => {
+      // Only show the preview if at least one project actually has a cover to render.
+      if (!projects.some((p) => p.cover)) return;
       visible = true;
       preview.dataset.visible = 'true';
       // On first show, snap so the preview doesn't fly in from a stale position.
@@ -181,19 +183,24 @@ export default function ProjectIndex({ projects }: Props) {
         ].join(' ')}
         style={{ width: PREVIEW_W, height: PREVIEW_H, willChange: 'transform' }}
       >
-        {projects.map((p, i) => (
-          <img
-            key={p.slug}
-            src={p.cover}
-            alt=""
-            loading="lazy"
-            decoding="async"
-            className={[
-              'absolute inset-0 h-full w-full object-cover transition-opacity duration-200',
-              activeIdx === i ? 'opacity-100' : 'opacity-0',
-            ].join(' ')}
-          />
-        ))}
+        {projects.map((p, i) =>
+          p.cover ? (
+            <img
+              key={p.slug}
+              src={p.cover}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).style.display = 'none';
+              }}
+              className={[
+                'absolute inset-0 h-full w-full object-cover transition-opacity duration-200',
+                activeIdx === i ? 'opacity-100' : 'opacity-0',
+              ].join(' ')}
+            />
+          ) : null,
+        )}
       </div>
     </div>
   );
