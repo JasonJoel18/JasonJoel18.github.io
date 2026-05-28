@@ -56,42 +56,45 @@
 }
 
 .dark {
-  --code-bg:     oklch(0.205 0.008 256);
-  --code-prompt: oklch(0.75 0.18 148);
-  --code-kw:     oklch(0.78 0.17 296);
-  --code-str:    oklch(0.78 0.15 28);
-  --code-num:    oklch(0.78 0.13 200);
-  --code-fn:     oklch(0.78 0.14 250);
-  --code-com:    oklch(0.55 0.01 256);
+  --code-bg:     oklch(0.215 0.012 256);
+  --code-prompt: oklch(0.78 0.16 148);
+  --code-kw:     oklch(0.8 0.16 296);
+  --code-str:    oklch(0.8 0.14 28);
+  --code-num:    oklch(0.8 0.12 200);
+  --code-fn:     oklch(0.8 0.13 250);
+  --code-com:    oklch(0.58 0.012 256);
   --code-op:     oklch(0.72 0.005 256);
 
-  --background: oklch(0.155 0.01 256);
-  --foreground: oklch(0.97 0.005 256);
+  /* Dark theme is the default surface. Deeper near-black with a cool cobalt tint;
+     elevated tiers (card, muted, border) climb in measured 0.05-0.08 steps to give
+     the page a real sense of layered depth instead of a flat dark wash. */
+  --background: oklch(0.13 0.012 256);
+  --foreground: oklch(0.965 0.006 256);
 
-  --card: oklch(0.195 0.012 256);
-  --card-foreground: oklch(0.97 0.005 256);
+  --card: oklch(0.195 0.014 256);
+  --card-foreground: oklch(0.965 0.006 256);
 
-  --popover: oklch(0.195 0.012 256);
-  --popover-foreground: oklch(0.97 0.005 256);
+  --popover: oklch(0.2 0.014 256);
+  --popover-foreground: oklch(0.965 0.006 256);
 
-  --primary: oklch(0.72 0.16 256);
-  --primary-foreground: oklch(0.16 0.02 256);
+  --primary: oklch(0.72 0.165 256);
+  --primary-foreground: oklch(0.14 0.018 256);
 
-  --secondary: oklch(0.27 0.015 256);
-  --secondary-foreground: oklch(0.97 0.005 256);
+  --secondary: oklch(0.255 0.014 256);
+  --secondary-foreground: oklch(0.965 0.006 256);
 
-  --muted: oklch(0.265 0.012 256);
-  --muted-foreground: oklch(0.7 0.012 256);
+  --muted: oklch(0.235 0.012 256);
+  --muted-foreground: oklch(0.72 0.012 256);
 
-  --accent: oklch(0.3 0.04 256);
-  --accent-foreground: oklch(0.85 0.08 256);
+  --accent: oklch(0.32 0.05 256);
+  --accent-foreground: oklch(0.88 0.08 256);
 
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --destructive: oklch(0.55 0.18 25);
+  --destructive-foreground: oklch(0.97 0.01 256);
 
-  --border: oklch(0.28 0.014 256);
-  --input: oklch(0.28 0.014 256);
-  --input-background: oklch(0.21 0.012 256);
+  --border: oklch(0.275 0.016 256);
+  --input: oklch(0.275 0.016 256);
+  --input-background: oklch(0.19 0.013 256);
   --ring: oklch(0.65 0.16 256);
 }
 
@@ -191,6 +194,50 @@
   .cv-auto {
     content-visibility: auto;
     contain-intrinsic-size: 1px 800px;
+  }
+
+  /* Liquid-glass surface: parameterized by --glass-amount (0..1).
+     Drive it from a scroll listener and the surface re-mixes its tint,
+     blur, saturation, top-edge specular, and hairline border in lockstep. */
+  .liquid-glass {
+    --glass-amount: 0;
+    --glass-tint: var(--background);
+    background: color-mix(
+      in oklab,
+      var(--glass-tint) calc(var(--glass-amount) * 78%),
+      transparent
+    );
+    backdrop-filter:
+      blur(calc(var(--glass-amount) * 22px))
+      saturate(calc(100% + var(--glass-amount) * 80%));
+    -webkit-backdrop-filter:
+      blur(calc(var(--glass-amount) * 22px))
+      saturate(calc(100% + var(--glass-amount) * 80%));
+    border-bottom: 1px solid
+      color-mix(in oklab, var(--border) calc(var(--glass-amount) * 100%), transparent);
+    box-shadow:
+      inset 0 1px 0 0 color-mix(in oklab, var(--foreground) calc(var(--glass-amount) * 8%), transparent),
+      0 calc(var(--glass-amount) * 10px) calc(var(--glass-amount) * 30px) calc(var(--glass-amount) * -16px)
+        color-mix(in oklab, var(--foreground) 18%, transparent);
+    transition:
+      background 220ms var(--ease-out-quart),
+      backdrop-filter 220ms var(--ease-out-quart),
+      border-color 220ms var(--ease-out-quart),
+      box-shadow 220ms var(--ease-out-quart);
+  }
+  .liquid-glass::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in oklab, var(--foreground) calc(var(--glass-amount) * 14%), transparent) 50%,
+      transparent 100%
+    );
+    opacity: calc(var(--glass-amount) * 1);
   }
 
   /* Subtle card lift — used on Skill / Focus / Contact cards. */

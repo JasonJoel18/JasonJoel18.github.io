@@ -1,5 +1,6 @@
+import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Download, Github, Linkedin, Mail } from 'lucide-react';
+import { ArrowRight, Check, Download, Github, Linkedin, Mail } from 'lucide-react';
 import KaggleIcon from '~/components/ui/KaggleIcon';
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -19,9 +20,51 @@ interface Props {
   availability: string;
   socials: Social[];
   cvHref: string;
+  cvSizeKb: number;
 }
 
 const SOCIAL_ICON = { github: Github, linkedin: Linkedin, email: Mail } as const;
+
+const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as const;
+const DAY_ORDER = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
+
+type BerlinStatus = { online: boolean; label: string };
+
+function computeBerlinStatus(): BerlinStatus {
+  const now = new Date();
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/Berlin',
+    weekday: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  }).formatToParts(now);
+
+  const weekday = parts.find((p) => p.type === 'weekday')?.value ?? 'Mon';
+  const hour = parseInt(parts.find((p) => p.type === 'hour')?.value ?? '0', 10);
+  const minute = parts.find((p) => p.type === 'minute')?.value ?? '00';
+  const hh = String(hour).padStart(2, '0');
+
+  const isWeekday = (WEEKDAYS as readonly string[]).includes(weekday);
+  const isBusinessHours = isWeekday && hour >= 9 && hour < 18;
+
+  if (isBusinessHours) {
+    return { online: true, label: `online · ${hh}:${minute} CET · Berlin` };
+  }
+
+  // Find next business-day label.
+  let nextDay: string;
+  if (isWeekday && hour < 9) {
+    nextDay = weekday;
+  } else {
+    let idx = DAY_ORDER.indexOf(weekday as (typeof DAY_ORDER)[number]);
+    do {
+      idx = (idx + 1) % 7;
+    } while (!(WEEKDAYS as readonly string[]).includes(DAY_ORDER[idx]));
+    nextDay = DAY_ORDER[idx];
+  }
+  return { online: false, label: `back ${nextDay} · 09:00 CET · Berlin` };
+}
 
 export default function HeroIntro({
   firstWords,
@@ -32,8 +75,18 @@ export default function HeroIntro({
   availability,
   socials,
   cvHref,
+  cvSizeKb,
 }: Props) {
   const reduce = useReducedMotion();
+  const [status, setStatus] = useState<BerlinStatus | null>(null);
+  const [cvDownloaded, setCvDownloaded] = useState(false);
+
+  useEffect(() => {
+    const tick = () => setStatus(computeBerlinStatus());
+    tick();
+    const id = window.setInterval(tick, 60_000);
+    return () => window.clearInterval(id);
+  }, []);
 
   const fade = (delay: number) =>
     reduce
@@ -44,17 +97,36 @@ export default function HeroIntro({
           transition: { duration: 0.7, delay, ease: EASE },
         };
 
+  const handleCvClick = () => {
+    setCvDownloaded(true);
+    window.setTimeout(() => setCvDownloaded(false), 1600);
+  };
+
+  const fallbackLabel = `${location} — ${availability}`;
+  const displayLabel = status?.label ?? fallbackLabel;
+  const online = status?.online ?? true; // pre-hydration: render as if online
+
   return (
     <>
       <motion.p
         {...fade(0)}
         className="text-sm font-mono text-muted-foreground mb-4 inline-flex items-center gap-2"
+        aria-live="polite"
       >
-        <span className="relative flex h-2 w-2">
-          <span className="absolute inset-0 rounded-full bg-primary/55 animate-ping" />
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+        <span className="relative flex h-2 w-2" aria-hidden="true">
+          {online && !reduce && (
+            <span className="absolute inset-0 rounded-full bg-primary/55 animate-ping" />
+          )}
+          <span
+            className={
+              'relative inline-flex h-2 w-2 rounded-full ' +
+              (online
+                ? 'bg-primary'
+                : 'bg-transparent ring-1 ring-muted-foreground/50')
+            }
+          />
         </span>
-        {location} — {availability}
+        {displayLabel}
       </motion.p>
 
       <motion.h1
@@ -112,10 +184,21 @@ export default function HeroIntro({
         <a
           href={cvHref}
           download
+          onClick={handleCvClick}
+          aria-live="polite"
           className="inline-flex items-center gap-2 h-11 rounded-[var(--radius)] border border-border bg-background px-6 text-sm font-medium text-foreground transition-colors hover:bg-muted"
         >
-          <Download size={16} />
-          Download CV
+          {cvDownloaded ? (
+            <>
+              <Check size={16} className="text-primary" aria-hidden="true" />
+              <span className="tabular-nums">cv.pdf · {cvSizeKb} KB</span>
+            </>
+          ) : (
+            <>
+              <Download size={16} aria-hidden="true" />
+              Download CV
+            </>
+          )}
         </a>
       </motion.div>
 

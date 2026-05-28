@@ -3,6 +3,7 @@ import { getEntry } from 'astro:content';
 import { Download } from 'lucide-react';
 import MobileSheet from './MobileSheet.tsx';
 import CommandPalette from './CommandPalette.tsx';
+import ThemeToggle from './ThemeToggle.tsx';
 
 const site = await getEntry('site', 'site');
 const profile = await getEntry('profile', 'profile');
@@ -19,7 +20,7 @@ const initials = profile.data.name
 
 <header
   id="site-header"
-  class="fixed inset-x-0 top-0 z-50 border-b border-transparent transition-[background-color,border-color,backdrop-filter] duration-200"
+  class="liquid-glass fixed inset-x-0 top-0 z-50 will-change-[background,backdrop-filter]"
 >
   <div class="container-page">
     <div class="flex items-center justify-between h-16">
@@ -49,6 +50,7 @@ const initials = profile.data.name
 
       <div class="flex items-center gap-2">
         <CommandPalette client:idle />
+        <ThemeToggle client:idle />
         <a
           href={cta.primary.href}
           download
@@ -64,26 +66,37 @@ const initials = profile.data.name
 </header>
 
 <script>
-  const header = document.getElementById('site-header');
-  if (header) {
-    let scrolled = false;
-    const onScroll = () => {
-      const next = window.scrollY > 24;
-      if (next !== scrolled) {
-        scrolled = next;
-        header.classList.toggle('is-scrolled', scrolled);
-      }
-    };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-  }
-</script>
+  // Drive the liquid-glass amount from scroll position, smoothed with rAF.
+  // Scroll 0..160px maps to glass-amount 0..1 via ease-out-quart for physics-y feel.
+  (function () {
+    const header = document.getElementById('site-header');
+    if (!header) return;
 
-<style>
-  #site-header.is-scrolled {
-    background: color-mix(in oklab, var(--background) 82%, transparent);
-    backdrop-filter: blur(12px) saturate(140%);
-    -webkit-backdrop-filter: blur(12px) saturate(140%);
-    border-bottom-color: var(--border);
-  }
-</style>
+    const MAX_SCROLL = 160;
+    let raf = 0;
+    let current = -1;
+
+    const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
+
+    const apply = () => {
+      raf = 0;
+      const y = Math.max(0, Math.min(window.scrollY, MAX_SCROLL));
+      const linear = y / MAX_SCROLL;
+      const eased = easeOutQuart(linear);
+      // Two-decimal precision to avoid layout thrash from sub-pixel jitter.
+      const rounded = Math.round(eased * 100) / 100;
+      if (rounded === current) return;
+      current = rounded;
+      header.style.setProperty('--glass-amount', String(rounded));
+    };
+
+    const schedule = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(apply);
+    };
+
+    apply();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule, { passive: true });
+  })();
+</script>

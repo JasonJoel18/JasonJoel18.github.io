@@ -11,11 +11,11 @@ if (!profile || !cv) throw new Error('Missing entries');
 
 const c = cv.data.contact;
 const infoRows = [
-  { key: 'Email',    value: c.email,    href: `mailto:${c.email}` },
-  { key: 'Phone',    value: c.phone ?? null, href: c.phone ? `tel:${c.phone.replace(/\s+/g, '')}` : null },
-  { key: 'Location', value: c.location, href: null },
-  { key: 'Timezone', value: 'CET · UTC+1', href: null },
-  { key: 'Status',   value: 'Open to roles', href: null },
+  { key: 'Email',    value: c.email,    href: `mailto:${c.email}`, copy: c.email },
+  { key: 'Phone',    value: c.phone ?? null, href: c.phone ? `tel:${c.phone.replace(/\s+/g, '')}` : null, copy: null },
+  { key: 'Location', value: c.location, href: null, copy: null },
+  { key: 'Timezone', value: 'CET · UTC+1', href: null, copy: null },
+  { key: 'Status',   value: 'Open to roles', href: null, copy: null },
 ].filter((r) => r.value);
 
 const socialIconMap = { github: Github, linkedin: Linkedin, email: Mail } as const;
@@ -42,13 +42,36 @@ const socialIconMap = { github: Github, linkedin: Linkedin, email: Mail } as con
                 <dt class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
                   {row.key}
                 </dt>
-                <dd class="text-sm text-foreground break-all">
-                  {row.href ? (
-                    <a href={row.href} class="hover:text-primary transition-colors">
-                      {row.value}
-                    </a>
-                  ) : (
-                    <span>{row.value}</span>
+                <dd class="text-sm text-foreground break-all" data-copy-row={row.copy ? 'true' : undefined}>
+                  <span class="inline-flex items-center gap-2" data-default>
+                    {row.href ? (
+                      <a href={row.href} class="hover:text-primary transition-colors">
+                        {row.value}
+                      </a>
+                    ) : (
+                      <span>{row.value}</span>
+                    )}
+                    {row.copy && (
+                      <button
+                        type="button"
+                        data-copy={row.copy}
+                        aria-label={`Copy ${row.key.toLowerCase()} to clipboard`}
+                        class="inline-flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors -my-1"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+                          <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+                        </svg>
+                      </button>
+                    )}
+                  </span>
+                  {row.copy && (
+                    <span class="hidden items-center gap-2 text-primary" data-confirm>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      copied to clipboard
+                    </span>
                   )}
                 </dd>
               </div>
@@ -151,3 +174,32 @@ const socialIconMap = { github: Github, linkedin: Linkedin, email: Mail } as con
     </div>
   </div>
 </section>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
+    btn.addEventListener('click', async (event) => {
+      event.preventDefault();
+      const value = btn.dataset.copy;
+      if (!value) return;
+      try {
+        await navigator.clipboard.writeText(value);
+      } catch {
+        // Older browsers / insecure contexts: silently fail rather than disrupt.
+        return;
+      }
+      const row = btn.closest<HTMLElement>('[data-copy-row]');
+      if (!row) return;
+      const def = row.querySelector<HTMLElement>('[data-default]');
+      const conf = row.querySelector<HTMLElement>('[data-confirm]');
+      if (!def || !conf) return;
+      def.classList.add('hidden');
+      conf.classList.remove('hidden');
+      conf.classList.add('inline-flex');
+      window.setTimeout(() => {
+        def.classList.remove('hidden');
+        conf.classList.add('hidden');
+        conf.classList.remove('inline-flex');
+      }, 1400);
+    });
+  });
+</script>

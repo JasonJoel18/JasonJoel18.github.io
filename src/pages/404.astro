@@ -1,27 +1,71 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { ArrowLeft } from 'lucide-react';
+
+// On static hosts, GitHub Pages serves this for every unknown path.
+// Astro can't know the requested path at build time, so render a
+// reasonable fallback and update it client-side from window.location.
+const fallbackPath = '/unknown';
 ---
 
 <BaseLayout title="404 — Page not found">
-  <section class="min-h-[80vh] grid place-items-center container-page">
-    <div class="text-center max-w-lg">
-      <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary mb-4">
-        Error 404
-      </p>
-      <h1 class="text-6xl sm:text-7xl font-semibold tracking-tight text-foreground mb-5">
-        Lost the thread.
-      </h1>
-      <p class="text-muted-foreground leading-relaxed mb-8">
-        That page either moved, never existed, or was archived in a place I can no longer reach.
-      </p>
-      <a
-        href="/"
-        class="inline-flex items-center gap-2 h-11 px-6 rounded-[var(--radius)] bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
+  <section class="min-h-[78vh] grid place-items-center container-page py-24">
+    <div class="w-full max-w-2xl">
+      <div
+        class="font-mono text-[13px] sm:text-sm leading-[1.85] text-muted-foreground select-text"
+        aria-label="Terminal session"
       >
-        <ArrowLeft size={16} aria-hidden="true" />
-        Back home
-      </a>
+        <div class="flex">
+          <span class="text-[color:var(--code-prompt)] mr-2" aria-hidden="true">$</span>
+          <span class="text-foreground">pwd</span>
+        </div>
+        <div class="ml-4 text-foreground break-all">
+          <span data-req-path>{fallbackPath}</span>
+        </div>
+
+        <div class="mt-3 flex">
+          <span class="text-[color:var(--code-prompt)] mr-2" aria-hidden="true">$</span>
+          <span class="text-foreground">ls .</span>
+        </div>
+        <div class="ml-4 break-words">
+          ls: cannot access '<span data-req-path class="text-foreground/90">{fallbackPath}</span>': No such file or directory
+        </div>
+
+        <div class="mt-3 flex">
+          <span class="text-[color:var(--code-prompt)] mr-2" aria-hidden="true">$</span>
+          <span class="text-foreground">cd ~</span>
+        </div>
+      </div>
+
+      <div class="mt-14 max-w-lg">
+        <p class="text-xs font-mono uppercase tracking-[0.2em] text-primary mb-3">
+          <span class="tabular-nums">404</span> / not found
+        </p>
+        <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight text-foreground mb-5 leading-[1.1]">
+          Lost the thread.
+        </h1>
+        <p class="text-muted-foreground leading-relaxed mb-9">
+          That page moved, never existed, or got archived somewhere I can no longer reach. The shell agrees.
+        </p>
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 h-11 px-6 rounded-[var(--radius)] bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
+        >
+          <ArrowLeft size={16} aria-hidden="true" />
+          Back home
+        </a>
+      </div>
     </div>
   </section>
+
+  <script is:inline>
+    (function () {
+      var path = (window.location && window.location.pathname) || '/';
+      if (!path || path === '/') path = '/unknown';
+      var nodes = document.querySelectorAll('[data-req-path]');
+      for (var i = 0; i < nodes.length; i++) {
+        nodes[i].textContent = path;
+      }
+    })();
+  </script>
 </BaseLayout>

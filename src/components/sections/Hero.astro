@@ -1,4 +1,6 @@
 ---
+import fs from 'node:fs';
+import path from 'node:path';
 import { getEntry } from 'astro:content';
 import { ArrowDown } from 'lucide-react';
 import HeroIntro from '~/components/motion/HeroIntro';
@@ -13,6 +15,15 @@ const p = profile.data;
 const nameParts = p.name.trim().split(/\s+/);
 const lastWord = nameParts.pop()!;
 const firstWords = nameParts.join(' ');
+
+// Compute CV size at build time so the download confirmation shows real bytes.
+let cvSizeKb = 0;
+try {
+  const cvPath = path.resolve(process.cwd(), 'public/cv.pdf');
+  cvSizeKb = Math.round(fs.statSync(cvPath).size / 1024);
+} catch (_) {
+  cvSizeKb = 0;
+}
 
 const terminalLines = [
   { prompt: '$ ', text: 'whoami' },
@@ -39,6 +50,7 @@ const terminalLines = [
       availability={p.availability}
       socials={p.socials}
       cvHref={site.data.cta.primary.href}
+      cvSizeKb={cvSizeKb}
     />
 
     <Reveal client:visible delay={0.55} className="mt-12 max-w-xl mx-auto text-left">

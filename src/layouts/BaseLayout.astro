@@ -47,7 +47,23 @@ const personJsonLd = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#1a1a1d" />
+
+    <script is:inline>
+      // Apply persisted theme before paint to prevent flash of wrong theme.
+      // Dark is the explicit default; only an explicit 'light' choice opts out.
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          var dark = stored !== 'light';
+          if (dark) document.documentElement.classList.add('dark');
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', dark ? '#1a1a1d' : '#fafafa');
+        } catch (_) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -83,6 +99,37 @@ const personJsonLd = {
 
     <!-- Sitemap -->
     <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <script is:inline>
+      // Console signature for curious devs.
+      try {
+        if (typeof console !== 'undefined' && console.log) {
+          const title = ['',
+            '   ▌ ▄▖▄▖▖▖   ▌ ▄▖▄▖▖    ▄▖▄▖▖ ▖▄▖▄▖',
+            '   ▌ ▌▌▐ ▌▌   ▌ ▌▌▙▖▌    ▙▌▐ ▛▌▐ ▌▌▐ ',
+            '▗▖▙▖▛▌▟▖▛▘▗▖▗▖▙▖▙▌▙▖▙▖▗▖▌    ▐ ▌▌▐ ▙▌▐ ',
+            ''].join('\n');
+          const cssTitle = 'color:#3b53d6; font-weight:600; font-family:JetBrains Mono,monospace; line-height:1.15;';
+          const cssLabel = 'color:#3b53d6; background:#eef0fb; padding:2px 6px; border-radius:3px; font:600 11px JetBrains Mono,monospace; letter-spacing:0.12em;';
+          const cssMeta  = 'color:#1f2937; font:13px Inter Tight,sans-serif;';
+          const cssMuted = 'color:#6b7280; font:12px Inter Tight,sans-serif;';
+          const cssMono  = 'color:#3b53d6; font:600 13px JetBrains Mono,monospace;';
+          const cssRule  = 'color:#d1d5db; font:11px JetBrains Mono,monospace;';
+
+          console.log('%c' + title, cssTitle);
+          console.log('%c HELLO ', cssLabel, '');
+          console.log('%cJason Joel Pinto · Data Analyst · Berlin', cssMeta);
+          console.log('%c────────────────────────────────────────', cssRule);
+          console.log('%cCurious enough to open DevTools — that already says a lot.', cssMuted);
+          console.log('%cOpen to analytics + ML roles where data drives decisions.', cssMuted);
+          console.log(' ');
+          console.log('%cjasonjoel1899@gmail.com', cssMono);
+          console.log(' ');
+          console.log('%cbuilt with  %cAstro · React · Framer Motion · Tailwind v4', cssMuted, cssMeta);
+          console.log('%csource      %chttps://github.com/JasonJoel18/JasonJoel18.github.io', cssMuted, cssMeta);
+        }
+      } catch (_) { /* never let a console flourish break the page */ }
+    </script>
   </head>
   <body class="bg-background text-foreground antialiased">
     <a
