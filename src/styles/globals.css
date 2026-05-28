@@ -256,6 +256,158 @@
     border-color: color-mix(in oklab, var(--primary) 30%, var(--border));
   }
 
+  /* Scroll-triggered cascade reveal.
+     Mark a parent with `data-reveal-cascade` and each child with `data-reveal-item`.
+     The inline observer in BaseLayout adds `.is-in` on first intersection.
+     Stagger comes from `--cascade-step` × the child's `--i` (0-indexed). */
+  [data-reveal-cascade] [data-reveal-item] {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+    transition:
+      opacity 560ms var(--ease-out-expo),
+      transform 560ms var(--ease-out-expo);
+    transition-delay: calc(var(--i, 0) * var(--cascade-step, 70ms));
+    will-change: transform, opacity;
+  }
+  [data-reveal-cascade].is-in [data-reveal-item] {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal-cascade] [data-reveal-item] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* Copy-to-clipboard confirmation crossfade.
+     Default sits in flow, confirm overlays it; toggle via [data-copied="true"] on the row. */
+  [data-copy-row] .copy-state {
+    transition: opacity 200ms var(--ease-out-quart);
+  }
+  [data-copy-row] [data-confirm] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+  [data-copy-row][data-copied="true"] [data-default] {
+    opacity: 0;
+  }
+  [data-copy-row][data-copied="true"] [data-confirm] {
+    opacity: 1;
+  }
+
+  /* Contact form inputs — shared style for input + textarea. */
+  .form-input {
+    display: flex;
+    height: 2.75rem;
+    width: 100%;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--input-background);
+    padding: 0 0.875rem;
+    font-size: 0.875rem;
+    color: var(--foreground);
+    transition:
+      border-color 180ms var(--ease-out-quart),
+      box-shadow 180ms var(--ease-out-quart);
+  }
+  .form-input::placeholder { color: var(--muted-foreground); }
+  .form-input:focus-visible {
+    outline: none;
+    border-color: color-mix(in oklab, var(--primary) 40%, var(--border));
+    box-shadow: 0 0 0 2px var(--ring);
+  }
+  textarea.form-input {
+    height: auto;
+    padding: 0.75rem 0.875rem;
+    line-height: 1.55;
+    resize: vertical;
+  }
+
+  /* Field validation: error shown when wrapper has [data-invalid="true"]. */
+  .field-error {
+    display: block;
+    overflow: hidden;
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--destructive);
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-2px);
+    transition:
+      max-height 220ms var(--ease-out-quart),
+      opacity 180ms var(--ease-out-quart),
+      transform 220ms var(--ease-out-quart);
+  }
+  .field[data-invalid='true'] .field-error {
+    max-height: 2.5rem;
+    opacity: 1;
+    transform: translateY(0);
+    margin-top: 0.5rem;
+  }
+  .field[data-invalid='true'] .form-input {
+    border-color: color-mix(in oklab, var(--destructive) 55%, var(--border));
+  }
+  .field[data-invalid='true'] .form-input:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--destructive) 55%, transparent);
+  }
+
+  /* Submit button state machine: which span is visible follows [data-form-state]. */
+  .submit-btn [data-btn-state] {
+    display: none;
+  }
+  [data-form-state='idle']   .submit-btn [data-btn-state='idle'],
+  [data-form-state='error']  .submit-btn [data-btn-state='idle'] {
+    display: inline-flex;
+  }
+  [data-form-state='sending'] .submit-btn [data-btn-state='sending'] {
+    display: inline-flex;
+  }
+  [data-form-state='success'] .submit-btn [data-btn-state='success'] {
+    display: inline-flex;
+  }
+  .submit-spinner {
+    animation: submit-spin 720ms linear infinite;
+    transform-origin: 50% 50%;
+  }
+  @keyframes submit-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .submit-spinner { animation: none; }
+  }
+
+  /* Form-shell state swap: form hides on success, success panel reveals. */
+  [data-form-shell] .form-body,
+  [data-form-shell] .form-success {
+    transition: opacity 280ms var(--ease-out-quart), transform 280ms var(--ease-out-quart);
+  }
+  [data-form-state='success'] .form-body {
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    visibility: hidden;
+  }
+  [data-form-state='success'] .form-success {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    animation: form-success-in 360ms var(--ease-out-expo);
+  }
+  @keyframes form-success-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-form-state='success'] .form-success { animation: none; }
+    [data-form-shell] .form-body,
+    [data-form-shell] .form-success { transition: none; }
+  }
+
   /* Slower, softer scroll-cue bounce (data-cursor feel). */
   @keyframes nudge {
     0%, 100% { transform: translateY(0); opacity: 0.7; }

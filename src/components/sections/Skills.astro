@@ -24,46 +24,56 @@ const stats = [
       />
     </Reveal>
 
-    <div class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-14">
+    <div
+      data-reveal-cascade
+      class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-14"
+      style="--cascade-step: 90ms;"
+    >
       {toolGroups.map((group, gi) => (
-        <Reveal client:visible delay={gi * 0.07}>
-          <div>
-            <div class="flex items-baseline justify-between gap-4 pb-4 border-b border-border">
-              <h3 class="text-base font-semibold text-foreground tracking-tight">
-                {group.label}
-              </h3>
-              <span class="font-mono text-[10.5px] tabular-nums uppercase tracking-[0.18em] text-muted-foreground/70">
-                {String(group.tools.length).padStart(2, '0')} tools
-              </span>
-            </div>
-            <ul class="mt-6 grid grid-cols-2 gap-x-6 gap-y-3.5">
-              {group.tools.map((tool) => (
-                <li
-                  class="tool-row flex items-center gap-2.5 text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground"
-                  title={tool.title}
-                >
-                  <ToolIcon title={tool.title} path={tool.path} hex={tool.hex} size={16} />
-                  <span class="truncate">{tool.title}</span>
-                </li>
-              ))}
-            </ul>
+        <div data-reveal-item style={`--i:${gi};`}>
+          <div class="flex items-baseline justify-between gap-4 pb-4 border-b border-border">
+            <h3 class="text-base font-semibold text-foreground tracking-tight">
+              {group.label}
+            </h3>
+            <span class="font-mono text-[10.5px] tabular-nums uppercase tracking-[0.18em] text-muted-foreground/70">
+              {String(group.tools.length).padStart(2, '0')} tools
+            </span>
           </div>
-        </Reveal>
+          <ul
+            data-reveal-cascade
+            class="mt-6 grid grid-cols-2 gap-x-6 gap-y-3.5"
+            style="--cascade-step: 35ms;"
+          >
+            {group.tools.map((tool, ti) => (
+              <li
+                data-reveal-item
+                style={`--i:${ti};`}
+                class="tool-row flex items-center gap-2.5 text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground"
+                title={tool.title}
+              >
+                <ToolIcon title={tool.title} path={tool.path} hex={tool.hex} size={16} />
+                <span class="truncate">{tool.title}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       ))}
     </div>
 
-    <div class="mt-24 grid grid-cols-3 gap-6 border-t border-border pt-10">
+    <div
+      data-reveal-cascade
+      class="mt-24 grid grid-cols-3 gap-6 border-t border-border pt-10"
+      style="--cascade-step: 90ms;"
+    >
       {stats.map((s, i) => (
-        <Reveal client:visible delay={0.1 + i * 0.08}>
-          <div class="flex flex-col">
-            <div class="text-3xl sm:text-4xl font-semibold text-foreground tabular-nums leading-none tracking-tight">
-              <CountUp client:visible value={s.value} />
-            </div>
-            <div class="mt-3 font-mono text-[11px] text-muted-foreground tracking-[0.18em] uppercase">
-              {s.label}
-            </div>
+        <div data-reveal-item style={`--i:${i};`} class="flex flex-col">
+          <div class="text-3xl sm:text-4xl font-semibold text-foreground tabular-nums leading-none tracking-tight">
+            <CountUp client:visible value={s.value} />
           </div>
-        </Reveal>
+          <div class="mt-3 font-mono text-[11px] text-muted-foreground tracking-[0.18em] uppercase">
+            {s.label}
+          </div>
+        </div>
       ))}
     </div>
   </div>

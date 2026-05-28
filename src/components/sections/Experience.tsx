@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/Card';
 import { Badge } from '~/components/ui/Badge';
 import { Briefcase, GraduationCap, MapPin, CalendarDays } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 interface Job {
   title: string;
@@ -41,12 +41,14 @@ function deriveTags(points: string[]): string[] {
 function CardReveal({
   children,
   delay,
+  skip,
 }: {
   children: React.ReactNode;
   delay: number;
+  skip: boolean;
 }) {
   const reduce = useReducedMotion();
-  if (reduce) return <>{children}</>;
+  if (reduce || skip) return <>{children}</>;
   return (
     <motion.div
       initial={{ opacity: 0, y: 14 }}
@@ -61,6 +63,9 @@ function CardReveal({
 export default function ExperienceTabs({ work, education }: Props) {
   const [tab, setTab] = useState<'experience' | 'education'>('experience');
   const reduce = useReducedMotion();
+  const seen = useRef<Set<'experience' | 'education'>>(new Set());
+  const skipStagger = seen.current.has(tab);
+  seen.current.add(tab);
 
   return (
     <Tabs
@@ -81,20 +86,20 @@ export default function ExperienceTabs({ work, education }: Props) {
         </TabsList>
       </div>
 
-      <AnimatePresence mode="wait" initial={false}>
+      <AnimatePresence initial={false}>
         {tab === 'experience' && (
           <motion.div
             key="experience"
-            initial={reduce ? false : { opacity: 0, y: 8 }}
+            initial={reduce ? false : { opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={reduce ? undefined : { opacity: 0, y: -6 }}
-            transition={{ duration: 0.35, ease: EASE }}
+            exit={reduce ? undefined : { opacity: 0, y: -4 }}
+            transition={{ duration: 0.22, ease: EASE }}
           >
             <TabsContent value="experience" forceMount className="space-y-5">
               {work.map((job, i) => {
                 const tags = deriveTags(job.points);
                 return (
-                  <CardReveal key={`${job.company}-${job.duration}`} delay={i * 0.08}>
+                  <CardReveal key={`${job.company}-${job.duration}`} delay={i * 0.08} skip={skipStagger}>
                     <Card className="card-lift">
                       <CardHeader className="gap-2">
                         <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
@@ -145,14 +150,14 @@ export default function ExperienceTabs({ work, education }: Props) {
         {tab === 'education' && (
           <motion.div
             key="education"
-            initial={reduce ? false : { opacity: 0, y: 8 }}
+            initial={reduce ? false : { opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={reduce ? undefined : { opacity: 0, y: -6 }}
-            transition={{ duration: 0.35, ease: EASE }}
+            exit={reduce ? undefined : { opacity: 0, y: -4 }}
+            transition={{ duration: 0.22, ease: EASE }}
           >
             <TabsContent value="education" forceMount className="space-y-5">
               {education.map((edu, i) => (
-                <CardReveal key={`${edu.institution}-${edu.duration}`} delay={i * 0.08}>
+                <CardReveal key={`${edu.institution}-${edu.duration}`} delay={i * 0.08} skip={skipStagger}>
                   <Card className="card-lift">
                     <CardHeader className="gap-2">
                       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">

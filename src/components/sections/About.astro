@@ -39,38 +39,50 @@ const focusAreas = [
     </Reveal>
 
     <div class="mt-20 grid grid-cols-12 gap-x-8 gap-y-16">
-      <div class="col-span-12 lg:col-span-7 lg:col-start-1 space-y-6 max-w-[62ch]">
+      <div
+        data-reveal-cascade
+        class="col-span-12 lg:col-span-7 lg:col-start-1 space-y-6 max-w-[62ch]"
+        style="--cascade-step: 60ms;"
+      >
         {profile.data.about.map((para, i) => (
-          <Reveal client:visible delay={i * 0.06}>
-            <p class="text-[15px] sm:text-base text-muted-foreground leading-[1.75] text-pretty">
-              {para}
-            </p>
-          </Reveal>
+          <p
+            data-reveal-item
+            style={`--i:${i};`}
+            class="text-[15px] sm:text-base text-muted-foreground leading-[1.75] text-pretty"
+          >
+            {para}
+          </p>
         ))}
       </div>
 
-      <ol class="col-span-12 lg:col-span-5 lg:col-start-8 space-y-10">
+      <ol
+        data-reveal-cascade
+        class="col-span-12 lg:col-span-5 lg:col-start-8 space-y-10"
+        style="--cascade-step: 80ms;"
+      >
         {focusAreas.map(({ icon: Icon, title, body }, i) => (
-          <Reveal client:visible delay={0.1 + i * 0.08}>
-            <li class="group grid grid-cols-[auto_1fr] gap-x-5">
-              <div class="flex flex-col items-center pt-1">
-                <Icon
-                  size={18}
-                  aria-hidden="true"
-                  className="text-primary/80 transition-transform duration-300 group-hover:translate-y-[-1px]"
-                />
-                <span class="mt-2 font-mono text-[10px] tabular-nums text-muted-foreground/60 tracking-wider">
-                  0{i + 1}
-                </span>
-              </div>
-              <div class="min-w-0 border-l border-border/60 pl-5">
-                <h3 class="text-base font-semibold text-foreground">{title}</h3>
-                <p class="mt-2 text-sm text-muted-foreground leading-relaxed max-w-[42ch]">
-                  {body}
-                </p>
-              </div>
-            </li>
-          </Reveal>
+          <li
+            data-reveal-item
+            style={`--i:${i};`}
+            class="group grid grid-cols-[auto_1fr] gap-x-5"
+          >
+            <div class="flex flex-col items-center pt-1">
+              <Icon
+                size={18}
+                aria-hidden="true"
+                className="text-primary/80 transition-transform duration-300 group-hover:translate-y-[-1px]"
+              />
+              <span class="mt-2 font-mono text-[10px] tabular-nums text-muted-foreground/60 tracking-wider">
+                0{i + 1}
+              </span>
+            </div>
+            <div class="min-w-0 border-l border-border/60 pl-5">
+              <h3 class="text-base font-semibold text-foreground">{title}</h3>
+              <p class="mt-2 text-sm text-muted-foreground leading-relaxed max-w-[42ch]">
+                {body}
+              </p>
+            </div>
+          </li>
         ))}
       </ol>
     </div>

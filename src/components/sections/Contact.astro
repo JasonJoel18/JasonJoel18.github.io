@@ -1,6 +1,6 @@
 ---
 import { getEntry } from 'astro:content';
-import { Github, Linkedin, Mail, Send } from 'lucide-react';
+import { AlertCircle, Check, Github, Linkedin, Mail, Send } from 'lucide-react';
 import KaggleIcon from '~/components/ui/KaggleIcon.astro';
 import Reveal from '~/components/motion/Reveal';
 import SectionHead from '~/components/ui/SectionHead.astro';
@@ -36,14 +36,22 @@ const socialIconMap = { github: Github, linkedin: Linkedin, email: Mail } as con
     <div class="mt-20 grid grid-cols-12 gap-x-8 gap-y-14">
       <div class="col-span-12 lg:col-span-5 space-y-12">
         <Reveal client:visible>
-          <dl class="space-y-5">
-            {infoRows.map((row) => (
-              <div class="grid grid-cols-[5.5rem_1fr] gap-4 items-baseline">
+          <dl
+            data-reveal-cascade
+            class="space-y-5"
+            style="--cascade-step: 55ms;"
+          >
+            {infoRows.map((row, i) => (
+              <div
+                data-reveal-item
+                style={`--i:${i};`}
+                class="grid grid-cols-[5.5rem_1fr] gap-4 items-baseline"
+              >
                 <dt class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
                   {row.key}
                 </dt>
-                <dd class="text-sm text-foreground break-all" data-copy-row={row.copy ? 'true' : undefined}>
-                  <span class="inline-flex items-center gap-2" data-default>
+                <dd class="text-sm text-foreground break-all relative" data-copy-row={row.copy ? 'true' : undefined}>
+                  <span class="inline-flex items-center gap-2 copy-state" data-default>
                     {row.href ? (
                       <a href={row.href} class="hover:text-primary transition-colors">
                         {row.value}
@@ -66,7 +74,7 @@ const socialIconMap = { github: Github, linkedin: Linkedin, email: Mail } as con
                     )}
                   </span>
                   {row.copy && (
-                    <span class="hidden items-center gap-2 text-primary" data-confirm>
+                    <span class="inline-flex items-center gap-2 text-primary copy-state" data-confirm>
                       <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <polyline points="20 6 9 17 4 12"></polyline>
                       </svg>
@@ -109,73 +117,362 @@ const socialIconMap = { github: Github, linkedin: Linkedin, email: Mail } as con
       </div>
 
       <Reveal client:visible delay={0.1} className="col-span-12 lg:col-span-7">
-        <form
-          action={`mailto:${c.email}`}
-          method="post"
-          enctype="text/plain"
-          class="space-y-5"
-        >
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="space-y-2">
-              <label for="contact-name" class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">Name</label>
-              <input
-                id="contact-name"
-                name="name"
-                required
-                class="flex h-11 w-full rounded-[var(--radius)] border border-border bg-[var(--input-background)] px-3.5 text-sm placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary/40"
-                placeholder="Your name"
-              />
-            </div>
-            <div class="space-y-2">
-              <label for="contact-email" class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">Email</label>
-              <input
-                id="contact-email"
-                name="email"
-                type="email"
-                required
-                class="flex h-11 w-full rounded-[var(--radius)] border border-border bg-[var(--input-background)] px-3.5 text-sm placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary/40"
-                placeholder="you@example.com"
-              />
-            </div>
-          </div>
-
-          <div class="space-y-2">
-            <label for="contact-subject" class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">Subject</label>
-            <input
-              id="contact-subject"
-              name="subject"
-              required
-              class="flex h-11 w-full rounded-[var(--radius)] border border-border bg-[var(--input-background)] px-3.5 text-sm placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary/40"
-              placeholder="What's this about?"
-            />
-          </div>
-
-          <div class="space-y-2">
-            <label for="contact-message" class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">Message</label>
-            <textarea
-              id="contact-message"
-              name="message"
-              required
-              rows="6"
-              class="flex min-h-[180px] w-full rounded-[var(--radius)] border border-border bg-[var(--input-background)] px-3.5 py-3 text-sm placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary/40"
-              placeholder="Tell me about your project, role, or question…"
-            ></textarea>
-          </div>
-
-          <button
-            type="submit"
-            class="group inline-flex items-center gap-2 h-11 rounded-[var(--radius)] bg-primary px-6 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+        <div data-form-shell data-form-state="idle" class="relative">
+          {/* Error banner — visible only when send fails. */}
+          <div
+            data-form-banner
+            role="alert"
+            aria-live="assertive"
+            class="form-banner mb-6 hidden items-start gap-3 rounded-[var(--radius)] border border-destructive/40 bg-destructive/8 px-4 py-3"
           >
-            <Send size={15} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            Send message
-          </button>
-        </form>
+            <AlertCircle size={16} className="mt-0.5 shrink-0 text-destructive" aria-hidden="true" />
+            <div class="min-w-0 flex-1 space-y-1">
+              <p class="text-[11px] font-mono uppercase tracking-[0.18em] text-destructive">
+                Send failed
+              </p>
+              <p data-banner-message class="text-sm text-foreground leading-relaxed">
+                Something went wrong on our end.
+              </p>
+              <a
+                href={`mailto:${c.email}`}
+                class="inline-flex items-center gap-1 text-sm font-medium text-destructive hover:underline underline-offset-4"
+              >
+                Email me directly instead
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+
+          <form
+            id="contact-form"
+            action="https://formspree.io/f/xvzylred"
+            method="POST"
+            novalidate
+            data-fallback-mailto={`mailto:${c.email}`}
+            data-reveal-cascade
+            class="form-body space-y-5"
+            style="--cascade-step: 70ms;"
+          >
+            {/* Honeypot — real users won't fill this; bots will. */}
+            <input
+              type="text"
+              name="_gotcha"
+              tabindex="-1"
+              autocomplete="off"
+              aria-hidden="true"
+              class="absolute left-[-9999px] h-0 w-0 opacity-0 pointer-events-none"
+            />
+            <div data-reveal-item style="--i:0;" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="field space-y-2" data-field="name">
+                <label for="contact-name" class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">Name</label>
+                <input
+                  id="contact-name"
+                  name="name"
+                  required
+                  autocomplete="name"
+                  aria-describedby="contact-name-error"
+                  class="form-input"
+                  placeholder="Your name"
+                />
+                <p id="contact-name-error" class="field-error" role="alert"></p>
+              </div>
+              <div class="field space-y-2" data-field="email">
+                <label for="contact-email" class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">Email</label>
+                <input
+                  id="contact-email"
+                  name="email"
+                  type="email"
+                  required
+                  autocomplete="email"
+                  aria-describedby="contact-email-error"
+                  class="form-input"
+                  placeholder="you@example.com"
+                />
+                <p id="contact-email-error" class="field-error" role="alert"></p>
+              </div>
+            </div>
+
+            <div data-reveal-item style="--i:1;" class="field space-y-2" data-field="subject">
+              <label for="contact-subject" class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">Subject</label>
+              <input
+                id="contact-subject"
+                name="_subject"
+                required
+                aria-describedby="contact-subject-error"
+                class="form-input"
+                placeholder="What's this about?"
+              />
+              <p id="contact-subject-error" class="field-error" role="alert"></p>
+            </div>
+
+            <div data-reveal-item style="--i:2;" class="field space-y-2" data-field="message">
+              <label for="contact-message" class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">Message</label>
+              <textarea
+                id="contact-message"
+                name="message"
+                required
+                rows="6"
+                aria-describedby="contact-message-error"
+                class="form-input min-h-[180px] py-3"
+                placeholder="Tell me about your project, role, or question…"
+              ></textarea>
+              <p id="contact-message-error" class="field-error" role="alert"></p>
+            </div>
+
+            <div data-reveal-item style="--i:3;">
+              <button
+                type="submit"
+                data-submit
+                class="submit-btn group inline-flex items-center justify-center gap-2 h-11 min-w-[176px] rounded-[var(--radius)] bg-primary px-6 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed"
+              >
+                <span data-btn-state="idle" class="inline-flex items-center gap-2">
+                  <Send size={15} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  Send message
+                </span>
+                <span data-btn-state="sending" class="inline-flex items-center gap-2">
+                  <svg
+                    class="submit-spinner"
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                  </svg>
+                  Sending…
+                </span>
+                <span data-btn-state="success" class="inline-flex items-center gap-2">
+                  <Check size={15} aria-hidden="true" />
+                  Sent
+                </span>
+              </button>
+            </div>
+          </form>
+
+          {/* Success state — replaces the form once delivered. */}
+          <div
+            data-form-success
+            role="status"
+            aria-live="polite"
+            class="form-success hidden"
+          >
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/12 text-primary">
+                <Check size={18} strokeWidth={2.5} aria-hidden="true" />
+              </span>
+              <span class="text-[11px] font-mono uppercase tracking-[0.2em] text-primary">
+                Status / Delivered
+              </span>
+            </div>
+            <h3 class="mt-6 text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
+              Message delivered.
+            </h3>
+            <p class="mt-3 text-[15px] text-muted-foreground leading-relaxed max-w-[46ch]">
+              Thanks for reaching out. I reply within a day, usually faster during Berlin business hours. In the meantime, the CV has the long version.
+            </p>
+            <div class="mt-7 flex flex-wrap items-center gap-3">
+              <a
+                href="/cv.pdf"
+                download
+                class="inline-flex items-center gap-2 h-11 rounded-[var(--radius)] bg-primary px-5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+              >
+                Download CV
+              </a>
+              <button
+                type="button"
+                data-form-reset
+                class="inline-flex items-center gap-2 h-11 rounded-[var(--radius)] border border-border bg-background px-5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+              >
+                Send another message
+              </button>
+            </div>
+          </div>
+        </div>
       </Reveal>
     </div>
   </div>
 </section>
 
 <script>
+  // Contact form: per-field validation, state-driven submit, fetch to Formspree,
+  // editorial success swap, error banner with mailto fallback.
+  (() => {
+    type FieldName = 'name' | 'email' | 'subject' | 'message';
+    type FormState = 'idle' | 'sending' | 'success' | 'error';
+
+    const shellEl = document.querySelector<HTMLElement>('[data-form-shell]');
+    const formEl = document.getElementById('contact-form') as HTMLFormElement | null;
+    if (!shellEl || !formEl) return;
+    const shell: HTMLElement = shellEl;
+    const form: HTMLFormElement = formEl;
+
+    const submitBtn = form.querySelector<HTMLButtonElement>('[data-submit]');
+    const honeypot = form.querySelector<HTMLInputElement>('input[name="_gotcha"]');
+    const banner = shell.querySelector<HTMLElement>('[data-form-banner]');
+    const bannerMessage = shell.querySelector<HTMLElement>('[data-banner-message]');
+    const successPanel = shell.querySelector<HTMLElement>('[data-form-success]');
+    const resetBtn = shell.querySelector<HTMLButtonElement>('[data-form-reset]');
+
+    const FIELDS: Record<FieldName, string> = {
+      name: 'contact-name',
+      email: 'contact-email',
+      subject: 'contact-subject',
+      message: 'contact-message',
+    };
+
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    function validateField(name: FieldName): string | null {
+      const input = document.getElementById(FIELDS[name]) as
+        | HTMLInputElement
+        | HTMLTextAreaElement
+        | null;
+      if (!input) return null;
+      const value = input.value.trim();
+      if (!value) {
+        switch (name) {
+          case 'name': return 'Tell me what to call you.';
+          case 'email': return 'I need an address to reply to.';
+          case 'subject': return 'Give the message a subject.';
+          case 'message': return 'Add a few lines so I know what to focus on.';
+        }
+      }
+      if (name === 'email' && !EMAIL_RE.test(value)) {
+        return 'That doesn’t look like a valid email.';
+      }
+      if (name === 'message' && value.length < 10) {
+        return 'A bit more detail would help.';
+      }
+      return null;
+    }
+
+    function showFieldError(name: FieldName, message: string | null) {
+      const wrapper = shell.querySelector<HTMLElement>(`[data-field="${name}"]`);
+      const input = document.getElementById(FIELDS[name]) as HTMLInputElement | null;
+      const errorEl = document.getElementById(`${FIELDS[name]}-error`);
+      if (!wrapper || !input || !errorEl) return;
+      if (message) {
+        wrapper.dataset.invalid = 'true';
+        input.setAttribute('aria-invalid', 'true');
+        errorEl.textContent = message;
+      } else {
+        delete wrapper.dataset.invalid;
+        input.removeAttribute('aria-invalid');
+        errorEl.textContent = '';
+      }
+    }
+
+    // Live re-validation: once a field has been flagged, clear the error as the user types.
+    (Object.keys(FIELDS) as FieldName[]).forEach((name) => {
+      const input = document.getElementById(FIELDS[name]) as
+        | HTMLInputElement
+        | HTMLTextAreaElement
+        | null;
+      if (!input) return;
+      input.addEventListener('blur', () => {
+        // Only validate on blur after first submission attempt OR if the field has content.
+        if (input.dataset.touched === 'true' || input.value.trim()) {
+          input.dataset.touched = 'true';
+          showFieldError(name, validateField(name));
+        }
+      });
+      input.addEventListener('input', () => {
+        if (input.dataset.touched === 'true') {
+          showFieldError(name, validateField(name));
+        }
+      });
+    });
+
+    function setState(next: FormState) {
+      shell.dataset.formState = next;
+      if (submitBtn) submitBtn.disabled = next === 'sending' || next === 'success';
+      if (next === 'error' && banner) {
+        banner.classList.remove('hidden');
+        banner.classList.add('flex');
+      } else if (banner) {
+        banner.classList.add('hidden');
+        banner.classList.remove('flex');
+      }
+      if (next === 'success' && successPanel) {
+        successPanel.classList.remove('hidden');
+      }
+    }
+
+    function showSuccess() {
+      setState('success');
+      successPanel?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function showError(message: string) {
+      if (bannerMessage) bannerMessage.textContent = message;
+      setState('error');
+      banner?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    resetBtn?.addEventListener('click', () => {
+      form.reset();
+      (Object.keys(FIELDS) as FieldName[]).forEach((name) => {
+        const input = document.getElementById(FIELDS[name]) as HTMLInputElement | null;
+        if (input) delete input.dataset.touched;
+        showFieldError(name, null);
+      });
+      successPanel?.classList.add('hidden');
+      setState('idle');
+      (document.getElementById(FIELDS.name) as HTMLInputElement | null)?.focus();
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (honeypot && honeypot.value) return; // bot — silently ignore
+
+      // Validate every field, mark each as touched, surface the first error.
+      let firstInvalid: FieldName | null = null;
+      (Object.keys(FIELDS) as FieldName[]).forEach((name) => {
+        const input = document.getElementById(FIELDS[name]) as HTMLInputElement | null;
+        if (input) input.dataset.touched = 'true';
+        const msg = validateField(name);
+        showFieldError(name, msg);
+        if (msg && !firstInvalid) firstInvalid = name;
+      });
+      if (firstInvalid) {
+        const focusTarget = document.getElementById(FIELDS[firstInvalid]) as HTMLInputElement | null;
+        focusTarget?.focus();
+        return;
+      }
+
+      setState('sending');
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (res.ok) {
+          form.reset();
+          showSuccess();
+          return;
+        }
+        let detail = 'The form server rejected the request.';
+        try {
+          const json = await res.json();
+          if (json?.errors?.[0]?.message) detail = json.errors[0].message;
+        } catch {}
+        throw new Error(detail);
+      } catch (err) {
+        const message =
+          err instanceof Error && err.message
+            ? err.message
+            : 'Network error while sending. Check your connection and try again.';
+        showError(message);
+      }
+    });
+  })();
+
   document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
     btn.addEventListener('click', async (event) => {
       event.preventDefault();
@@ -184,22 +481,12 @@ const socialIconMap = { github: Github, linkedin: Linkedin, email: Mail } as con
       try {
         await navigator.clipboard.writeText(value);
       } catch {
-        // Older browsers / insecure contexts: silently fail rather than disrupt.
         return;
       }
       const row = btn.closest<HTMLElement>('[data-copy-row]');
       if (!row) return;
-      const def = row.querySelector<HTMLElement>('[data-default]');
-      const conf = row.querySelector<HTMLElement>('[data-confirm]');
-      if (!def || !conf) return;
-      def.classList.add('hidden');
-      conf.classList.remove('hidden');
-      conf.classList.add('inline-flex');
-      window.setTimeout(() => {
-        def.classList.remove('hidden');
-        conf.classList.add('hidden');
-        conf.classList.remove('inline-flex');
-      }, 1400);
+      row.setAttribute('data-copied', 'true');
+      window.setTimeout(() => row.removeAttribute('data-copied'), 1400);
     });
   });
 </script>

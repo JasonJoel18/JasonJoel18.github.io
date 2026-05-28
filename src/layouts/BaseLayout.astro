@@ -101,6 +101,39 @@ const personJsonLd = {
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <script is:inline>
+      // Scroll-triggered cascade reveal: one observer for all groups.
+      // Fires once per group, no autonomous motion, honours reduced-motion via CSS.
+      (function () {
+        if (typeof IntersectionObserver === 'undefined') {
+          document
+            .querySelectorAll('[data-reveal-cascade]')
+            .forEach(function (el) { el.classList.add('is-in'); });
+          return;
+        }
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add('is-in');
+              io.unobserve(entry.target);
+            });
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+        );
+        function attach() {
+          document
+            .querySelectorAll('[data-reveal-cascade]:not(.is-in)')
+            .forEach(function (el) { io.observe(el); });
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', attach, { once: true });
+        } else {
+          attach();
+        }
+      })();
+    </script>
+
+    <script is:inline>
       // Console signature for curious devs.
       try {
         if (typeof console !== 'undefined' && console.log) {
