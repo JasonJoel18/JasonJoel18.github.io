@@ -1,73 +1,98 @@
 @import "tailwindcss";
 
-/* Shadcn-style oklch neutral palette — light default, .dark override. */
+/* Editorial cobalt palette — light default, .dark override. */
+/* Brand accent: oklch(0.45 0.18 256) — committed cobalt, used at restrained-plus dose. */
+/* Neutrals: tinted with chroma 0.005-0.008 toward hue 256 (cool-balanced). */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --background: oklch(0.995 0.002 256);
+  --foreground: oklch(0.16 0.012 256);
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.16 0.012 256);
 
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.16 0.012 256);
 
-  --primary: #030213;
-  --primary-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.45 0.18 256);
+  --primary-foreground: oklch(0.985 0.003 256);
 
-  --secondary: oklch(0.95 0.0058 264.53);
-  --secondary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.955 0.008 256);
+  --secondary-foreground: oklch(0.22 0.015 256);
 
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --muted: oklch(0.97 0.006 256);
+  --muted-foreground: oklch(0.52 0.018 256);
 
-  --accent: oklch(0.95 0.0058 264.53);
-  --accent-foreground: oklch(0.205 0 0);
+  --accent: oklch(0.94 0.022 256);
+  --accent-foreground: oklch(0.35 0.16 256);
 
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.985 0 0);
 
-  --border: rgba(0, 0, 0, 0.1);
+  --border: oklch(0.91 0.008 256);
   --input: transparent;
-  --input-background: oklch(0.97 0 0);
-  --ring: oklch(0.708 0 0);
+  --input-background: oklch(0.975 0.006 256);
+  --ring: oklch(0.55 0.17 256);
 
-  --switch-background: oklch(0.86 0 0);
+  --switch-background: oklch(0.86 0.008 256);
 
   --radius: 0.625rem;
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Code / terminal palette — earthy, not neon. Tinted off pure black. */
+  --code-bg:     oklch(0.985 0.003 264);
+  --code-prompt: oklch(0.55 0.13 148);
+  --code-kw:     oklch(0.48 0.18 296);
+  --code-str:    oklch(0.55 0.13 28);
+  --code-num:    oklch(0.55 0.13 200);
+  --code-fn:     oklch(0.5 0.16 250);
+  --code-com:    oklch(0.62 0.01 264);
+  --code-op:     oklch(0.5 0.005 264);
 
   --font-sans: "Inter Tight", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
+  --code-bg:     oklch(0.205 0.008 256);
+  --code-prompt: oklch(0.75 0.18 148);
+  --code-kw:     oklch(0.78 0.17 296);
+  --code-str:    oklch(0.78 0.15 28);
+  --code-num:    oklch(0.78 0.13 200);
+  --code-fn:     oklch(0.78 0.14 250);
+  --code-com:    oklch(0.55 0.01 256);
+  --code-op:     oklch(0.72 0.005 256);
 
-  --card: oklch(0.18 0 0);
-  --card-foreground: oklch(0.985 0 0);
+  --background: oklch(0.155 0.01 256);
+  --foreground: oklch(0.97 0.005 256);
 
-  --popover: oklch(0.18 0 0);
-  --popover-foreground: oklch(0.985 0 0);
+  --card: oklch(0.195 0.012 256);
+  --card-foreground: oklch(0.97 0.005 256);
 
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
+  --popover: oklch(0.195 0.012 256);
+  --popover-foreground: oklch(0.97 0.005 256);
 
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.72 0.16 256);
+  --primary-foreground: oklch(0.16 0.02 256);
 
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
+  --secondary: oklch(0.27 0.015 256);
+  --secondary-foreground: oklch(0.97 0.005 256);
 
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.265 0.012 256);
+  --muted-foreground: oklch(0.7 0.012 256);
+
+  --accent: oklch(0.3 0.04 256);
+  --accent-foreground: oklch(0.85 0.08 256);
 
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
 
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --input-background: oklch(0.205 0 0);
-  --ring: oklch(0.439 0 0);
+  --border: oklch(0.28 0.014 256);
+  --input: oklch(0.28 0.014 256);
+  --input-background: oklch(0.21 0.012 256);
+  --ring: oklch(0.65 0.16 256);
 }
 
 /* Tailwind v4 token bridge — exposes utilities like bg-background, text-muted-foreground, border-border. */
@@ -167,6 +192,39 @@
     content-visibility: auto;
     contain-intrinsic-size: 1px 800px;
   }
+
+  /* Subtle card lift — used on Skill / Focus / Contact cards. */
+  .card-lift {
+    transition: transform 320ms var(--ease-out-quart), box-shadow 320ms var(--ease-out-quart), border-color 320ms var(--ease-out-quart);
+    will-change: transform;
+  }
+  .card-lift:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 10px 28px -14px color-mix(in oklab, var(--primary) 22%, transparent),
+      0 2px 6px -2px color-mix(in oklab, var(--foreground) 8%, transparent);
+    border-color: color-mix(in oklab, var(--primary) 30%, var(--border));
+  }
+
+  /* Slower, softer scroll-cue bounce (data-cursor feel). */
+  @keyframes nudge {
+    0%, 100% { transform: translateY(0); opacity: 0.7; }
+    50%      { transform: translateY(6px); opacity: 1; }
+  }
+  .animate-nudge { animation: nudge 2.4s var(--ease-out-quart) infinite; }
+
+  /* Command palette open/close transitions (Radix data-state). */
+  .cmd-overlay { animation: cmd-fade 180ms var(--ease-out-quart); }
+  .cmd-overlay[data-state="closed"] { animation: cmd-fade-out 140ms var(--ease-out-quart) forwards; }
+  .cmd-content {
+    animation: cmd-enter 220ms var(--ease-out-expo);
+    transform-origin: 50% 0%;
+  }
+  .cmd-content[data-state="closed"] { animation: cmd-exit 160ms var(--ease-out-quart) forwards; }
+  @keyframes cmd-fade   { from { opacity: 0 } to { opacity: 1 } }
+  @keyframes cmd-fade-out { from { opacity: 1 } to { opacity: 0 } }
+  @keyframes cmd-enter  { from { opacity: 0; transform: translate(-50%, -8px) scale(0.97) } to { opacity: 1; transform: translate(-50%, 0) scale(1) } }
+  @keyframes cmd-exit   { from { opacity: 1; transform: translate(-50%, 0) scale(1) } to { opacity: 0; transform: translate(-50%, -8px) scale(0.97) } }
 }
 
 @media (prefers-reduced-motion: reduce) {

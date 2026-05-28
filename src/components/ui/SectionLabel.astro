@@ -1,0 +1,14 @@
+---
+interface Props {
+  number: string;
+  label: string;
+  class?: string;
+}
+const { number, label, class: className } = Astro.props;
+---
+<div class:list={["inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground", className]}>
+  <span class="text-primary/80">//</span>
+  <span class="tabular-nums text-primary">{number}</span>
+  <span class="opacity-60">—</span>
+  <span>{label}</span>
+</div>

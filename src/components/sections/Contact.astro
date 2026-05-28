@@ -1,135 +1,153 @@
 ---
 import { getEntry } from 'astro:content';
-import { Mail, Phone, MapPin, Github, Linkedin, Send } from 'lucide-react';
+import { Github, Linkedin, Mail, Send } from 'lucide-react';
 import KaggleIcon from '~/components/ui/KaggleIcon.astro';
+import Reveal from '~/components/motion/Reveal';
+import SectionHead from '~/components/ui/SectionHead.astro';
 
 const profile = await getEntry('profile', 'profile');
 const cv = await getEntry('cv', 'cv');
 if (!profile || !cv) throw new Error('Missing entries');
 
 const c = cv.data.contact;
-const infoCards = [
-  { icon: Mail,   label: 'Email',    value: c.email,    href: `mailto:${c.email}` },
-  { icon: Phone,  label: 'Phone',    value: c.phone ?? '',   href: c.phone ? `tel:${c.phone.replace(/\s+/g, '')}` : null },
-  { icon: MapPin, label: 'Location', value: c.location, href: null },
-];
+const infoRows = [
+  { key: 'Email',    value: c.email,    href: `mailto:${c.email}` },
+  { key: 'Phone',    value: c.phone ?? null, href: c.phone ? `tel:${c.phone.replace(/\s+/g, '')}` : null },
+  { key: 'Location', value: c.location, href: null },
+  { key: 'Timezone', value: 'CET · UTC+1', href: null },
+  { key: 'Status',   value: 'Open to roles', href: null },
+].filter((r) => r.value);
 
 const socialIconMap = { github: Github, linkedin: Linkedin, email: Mail } as const;
 ---
 
-<section id="contact" class="relative py-16 sm:py-24 bg-muted/30 cv-auto">
+<section id="contact" class="relative py-28 sm:py-36 cv-auto">
   <div class="container-page">
-    <div class="text-center mb-12">
-      <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight">Get in Touch</h2>
-      <p class="mt-3 text-muted-foreground max-w-2xl mx-auto text-pretty">
-        Have a data problem worth solving — or just want to swap notes on dashboards? My inbox is open.
-      </p>
-    </div>
+    <Reveal client:visible>
+      <SectionHead
+        number="05"
+        label="contact"
+        title="Get in touch."
+        lede="Have a data problem worth solving, or want to swap notes on dashboards? My inbox is open."
+        aside="Replies usually within a day. Email beats LinkedIn for anything urgent."
+      />
+    </Reveal>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="space-y-4">
-        {infoCards.map(({ icon: Icon, label, value, href }) => (
-          <div class="rounded-[var(--radius)] border border-border bg-card p-5 shadow-sm flex items-start gap-4">
-            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius)] bg-primary/10 text-primary">
-              <Icon size={18} aria-hidden="true" />
-            </div>
-            <div class="min-w-0">
-              <div class="text-xs font-medium text-muted-foreground">{label}</div>
-              {href ? (
-                <a href={href} class="text-sm text-foreground hover:text-primary break-all">{value}</a>
-              ) : (
-                <div class="text-sm text-foreground break-all">{value}</div>
-              )}
-            </div>
-          </div>
-        ))}
+    <div class="mt-20 grid grid-cols-12 gap-x-8 gap-y-14">
+      <div class="col-span-12 lg:col-span-5 space-y-12">
+        <Reveal client:visible>
+          <dl class="space-y-5">
+            {infoRows.map((row) => (
+              <div class="grid grid-cols-[5.5rem_1fr] gap-4 items-baseline">
+                <dt class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
+                  {row.key}
+                </dt>
+                <dd class="text-sm text-foreground break-all">
+                  {row.href ? (
+                    <a href={row.href} class="hover:text-primary transition-colors">
+                      {row.value}
+                    </a>
+                  ) : (
+                    <span>{row.value}</span>
+                  )}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </Reveal>
 
-        <div class="rounded-[var(--radius)] border border-border bg-card p-5 shadow-sm">
-          <h3 class="text-sm font-semibold text-foreground mb-3">Let's Connect</h3>
-          <div class="flex items-center gap-2">
-            {profile.data.socials.map((s) => {
-              const baseClass =
-                'inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground';
-              if (s.kind === 'kaggle') {
+        <Reveal client:visible delay={0.15}>
+          <div class="border-t border-border pt-8">
+            <div class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground mb-4">
+              Elsewhere
+            </div>
+            <div class="flex items-center gap-2">
+              {profile.data.socials.map((s) => {
+                const baseClass =
+                  'inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-muted-foreground transition-all duration-300 hover:bg-muted hover:text-foreground hover:-translate-y-0.5';
+                if (s.kind === 'kaggle') {
+                  return (
+                    <a href={s.url} target="_blank" rel="noreferrer noopener" aria-label={s.label} class={baseClass}>
+                      <KaggleIcon size={16} />
+                    </a>
+                  );
+                }
+                const Icon = socialIconMap[s.kind as keyof typeof socialIconMap];
+                if (!Icon) return null;
                 return (
-                  <a href={s.url} target="_blank" rel="noreferrer noopener" aria-label={s.label} class={baseClass}>
-                    <KaggleIcon size={16} />
+                  <a href={s.url} target={s.kind === 'email' ? undefined : '_blank'} rel="noreferrer noopener" aria-label={s.label} class={baseClass}>
+                    <Icon size={16} aria-hidden="true" />
                   </a>
                 );
-              }
-              const Icon = socialIconMap[s.kind as keyof typeof socialIconMap];
-              if (!Icon) return null;
-              return (
-                <a href={s.url} target={s.kind === 'email' ? undefined : '_blank'} rel="noreferrer noopener" aria-label={s.label} class={baseClass}>
-                  <Icon size={16} aria-hidden="true" />
-                </a>
-              );
-            })}
+              })}
+            </div>
           </div>
-        </div>
+        </Reveal>
       </div>
 
-      <form
-        action={`mailto:${c.email}`}
-        method="post"
-        enctype="text/plain"
-        class="lg:col-span-2 rounded-[var(--radius)] border border-border bg-card p-6 sm:p-8 shadow-sm space-y-5"
-      >
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div class="space-y-2">
-            <label for="contact-name" class="text-sm font-medium">Name</label>
-            <input
-              id="contact-name"
-              name="name"
-              required
-              class="flex h-10 w-full rounded-[var(--radius)] border border-border bg-[var(--input-background)] px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              placeholder="Your name"
-            />
-          </div>
-          <div class="space-y-2">
-            <label for="contact-email" class="text-sm font-medium">Email</label>
-            <input
-              id="contact-email"
-              name="email"
-              type="email"
-              required
-              class="flex h-10 w-full rounded-[var(--radius)] border border-border bg-[var(--input-background)] px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              placeholder="you@example.com"
-            />
-          </div>
-        </div>
-
-        <div class="space-y-2">
-          <label for="contact-subject" class="text-sm font-medium">Subject</label>
-          <input
-            id="contact-subject"
-            name="subject"
-            required
-            class="flex h-10 w-full rounded-[var(--radius)] border border-border bg-[var(--input-background)] px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            placeholder="What's this about?"
-          />
-        </div>
-
-        <div class="space-y-2">
-          <label for="contact-message" class="text-sm font-medium">Message</label>
-          <textarea
-            id="contact-message"
-            name="message"
-            required
-            rows="6"
-            class="flex min-h-[140px] w-full rounded-[var(--radius)] border border-border bg-[var(--input-background)] px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            placeholder="Tell me about your project, role, or question…"
-          ></textarea>
-        </div>
-
-        <button
-          type="submit"
-          class="inline-flex items-center gap-2 h-10 rounded-[var(--radius)] bg-primary px-5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+      <Reveal client:visible delay={0.1} className="col-span-12 lg:col-span-7">
+        <form
+          action={`mailto:${c.email}`}
+          method="post"
+          enctype="text/plain"
+          class="space-y-5"
         >
-          <Send size={16} />
-          Send message
-        </button>
-      </form>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label for="contact-name" class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">Name</label>
+              <input
+                id="contact-name"
+                name="name"
+                required
+                class="flex h-11 w-full rounded-[var(--radius)] border border-border bg-[var(--input-background)] px-3.5 text-sm placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary/40"
+                placeholder="Your name"
+              />
+            </div>
+            <div class="space-y-2">
+              <label for="contact-email" class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">Email</label>
+              <input
+                id="contact-email"
+                name="email"
+                type="email"
+                required
+                class="flex h-11 w-full rounded-[var(--radius)] border border-border bg-[var(--input-background)] px-3.5 text-sm placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary/40"
+                placeholder="you@example.com"
+              />
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label for="contact-subject" class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">Subject</label>
+            <input
+              id="contact-subject"
+              name="subject"
+              required
+              class="flex h-11 w-full rounded-[var(--radius)] border border-border bg-[var(--input-background)] px-3.5 text-sm placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary/40"
+              placeholder="What's this about?"
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label for="contact-message" class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">Message</label>
+            <textarea
+              id="contact-message"
+              name="message"
+              required
+              rows="6"
+              class="flex min-h-[180px] w-full rounded-[var(--radius)] border border-border bg-[var(--input-background)] px-3.5 py-3 text-sm placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary/40"
+              placeholder="Tell me about your project, role, or question…"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="group inline-flex items-center gap-2 h-11 rounded-[var(--radius)] bg-primary px-6 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+          >
+            <Send size={15} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            Send message
+          </button>
+        </form>
+      </Reveal>
     </div>
   </div>
 </section>

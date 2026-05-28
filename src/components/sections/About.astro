@@ -1,72 +1,78 @@
 ---
 import { getEntry } from 'astro:content';
 import { Brain, Database, TrendingUp } from 'lucide-react';
+import Reveal from '~/components/motion/Reveal';
+import SectionHead from '~/components/ui/SectionHead.astro';
 
 const profile = await getEntry('profile', 'profile');
-const cv = await getEntry('cv', 'cv');
-if (!profile || !cv) throw new Error('Missing entries');
+if (!profile) throw new Error('Missing profile entry');
 
-const technical = cv.data.skills.find((s) => s.category === 'Technical Skills')?.items ?? [];
-const tools = cv.data.skills.find((s) => s.category === 'Tools & Platforms')?.items ?? [];
-const chips = [...technical.slice(0, 3), ...tools.slice(0, 3)];
-
-const focusCards = [
+const focusAreas = [
   {
     icon: Brain,
     title: 'Machine Learning',
-    body: 'Predictive modeling, classification, and uncertainty-aware deep learning — turning historical data into forward-looking signals.',
+    body: 'Predictive modeling, classification, and uncertainty-aware deep learning. Historical data turned into forward-looking signal.',
   },
   {
     icon: Database,
     title: 'Data Engineering',
-    body: 'SQL pipelines across MySQL and SAP HANA, stored procedures, and Python automation that cut hours of manual reporting.',
+    body: 'SQL pipelines across MySQL and SAP HANA, stored procedures, Python automation that replaces hours of manual reporting.',
   },
   {
     icon: TrendingUp,
     title: 'Analytics & Insights',
-    body: 'BI dashboards in Tableau, Power BI, and Plotly Dash that land with C-suite stakeholders and drive measurable change.',
+    body: 'Dashboards in Tableau, Power BI, and Plotly Dash that land with C-suite stakeholders and drive measurable change.',
   },
 ];
 ---
 
-<section id="about" class="relative py-16 sm:py-24 bg-muted/30 cv-auto">
+<section id="about" class="relative py-28 sm:py-36 cv-auto">
   <div class="container-page">
-    <div class="text-center mb-12">
-      <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight">About Me</h2>
-      <p class="mt-3 text-muted-foreground max-w-2xl mx-auto text-pretty">
-        Building decision-grade analytics across BI, data engineering, and machine learning.
-      </p>
-    </div>
+    <Reveal client:visible>
+      <SectionHead
+        number="01"
+        label="about"
+        title="About."
+        lede="Decision-grade analytics across BI, data engineering, and machine learning — three years of shipping the work behind the chart."
+        aside="Happiest with a SQL window function open in one tab and a notebook in another."
+      />
+    </Reveal>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-      <div class="space-y-5">
-        {profile.data.about.map((para) => (
-          <p class="text-muted-foreground leading-relaxed text-pretty">{para}</p>
-        ))}
-        {chips.length > 0 && (
-          <div class="flex flex-wrap gap-2 pt-2">
-            {chips.map((c) => (
-              <span class="inline-flex items-center rounded-md border border-border bg-background px-2.5 py-1 text-xs font-medium text-foreground">
-                {c}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div class="space-y-4">
-        {focusCards.map(({ icon: Icon, title, body }) => (
-          <div class="flex items-start gap-4 rounded-[var(--radius)] border border-border bg-card p-5 shadow-sm">
-            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-[var(--radius)] bg-primary/10 text-primary">
-              <Icon size={20} aria-hidden="true" />
-            </div>
-            <div>
-              <h3 class="text-base font-semibold text-foreground">{title}</h3>
-              <p class="mt-1 text-sm text-muted-foreground leading-relaxed">{body}</p>
-            </div>
-          </div>
+    <div class="mt-20 grid grid-cols-12 gap-x-8 gap-y-16">
+      <div class="col-span-12 lg:col-span-7 lg:col-start-1 space-y-6 max-w-[62ch]">
+        {profile.data.about.map((para, i) => (
+          <Reveal client:visible delay={i * 0.06}>
+            <p class="text-[15px] sm:text-base text-muted-foreground leading-[1.75] text-pretty">
+              {para}
+            </p>
+          </Reveal>
         ))}
       </div>
+
+      <ol class="col-span-12 lg:col-span-5 lg:col-start-8 space-y-10">
+        {focusAreas.map(({ icon: Icon, title, body }, i) => (
+          <Reveal client:visible delay={0.1 + i * 0.08}>
+            <li class="group grid grid-cols-[auto_1fr] gap-x-5">
+              <div class="flex flex-col items-center pt-1">
+                <Icon
+                  size={18}
+                  aria-hidden="true"
+                  className="text-primary/80 transition-transform duration-300 group-hover:translate-y-[-1px]"
+                />
+                <span class="mt-2 font-mono text-[10px] tabular-nums text-muted-foreground/60 tracking-wider">
+                  0{i + 1}
+                </span>
+              </div>
+              <div class="min-w-0 border-l border-border/60 pl-5">
+                <h3 class="text-base font-semibold text-foreground">{title}</h3>
+                <p class="mt-2 text-sm text-muted-foreground leading-relaxed max-w-[42ch]">
+                  {body}
+                </p>
+              </div>
+            </li>
+          </Reveal>
+        ))}
+      </ol>
     </div>
   </div>
 </section>

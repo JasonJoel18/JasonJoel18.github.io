@@ -1,0 +1,68 @@
+---
+interface Token {
+  t: 'kw' | 'str' | 'num' | 'fn' | 'com' | 'op' | 'var' | 'punct' | 'plain';
+  v: string;
+}
+
+interface Line {
+  prompt?: string;
+  tokens: Token[];
+  className?: string;
+}
+
+interface Props {
+  title?: string;
+  lang?: string;
+  lines: Line[];
+  showChrome?: boolean;
+  class?: string;
+}
+
+const { title, lang, lines, showChrome = true, class: className } = Astro.props;
+
+const tokenClass: Record<Token['t'], string> = {
+  kw:    'text-[color:var(--code-kw)]',
+  str:   'text-[color:var(--code-str)]',
+  num:   'text-[color:var(--code-num)]',
+  fn:    'text-[color:var(--code-fn)]',
+  com:   'text-[color:var(--code-com)] italic',
+  op:    'text-[color:var(--code-op)]',
+  var:   'text-foreground',
+  punct: 'text-muted-foreground',
+  plain: 'text-foreground',
+};
+---
+
+<div
+  class:list={[
+    'overflow-hidden rounded-[var(--radius)] border border-border bg-[color:var(--code-bg)] font-mono text-[13px] leading-relaxed shadow-sm',
+    className,
+  ]}
+>
+  {showChrome && (
+    <div class="flex items-center justify-between border-b border-border/80 px-3.5 py-2 bg-muted/40">
+      <div class="flex items-center gap-1.5">
+        <span class="h-2.5 w-2.5 rounded-full bg-[oklch(0.72_0.16_28)]"></span>
+        <span class="h-2.5 w-2.5 rounded-full bg-[oklch(0.85_0.14_85)]"></span>
+        <span class="h-2.5 w-2.5 rounded-full bg-[oklch(0.78_0.16_148)]"></span>
+      </div>
+      <span class="text-[11px] text-muted-foreground tabular-nums">
+        {title ?? 'shell'}{lang ? ` · ${lang}` : ''}
+      </span>
+      <span class="h-2.5 w-2.5 opacity-0"></span>
+    </div>
+  )}
+
+  <div class="px-4 py-3.5 overflow-x-auto">
+    {lines.map((line) => (
+      <div class:list={['whitespace-pre', line.className]}>
+        {line.prompt && (
+          <span class="text-[color:var(--code-prompt)] select-none">{line.prompt}</span>
+        )}
+        {line.tokens.map((tok) => (
+          <span class={tokenClass[tok.t]}>{tok.v}</span>
+        ))}
+      </div>
+    ))}
+  </div>
+</div>

@@ -2,6 +2,7 @@
 import { getEntry } from 'astro:content';
 import { Download } from 'lucide-react';
 import MobileSheet from './MobileSheet.tsx';
+import CommandPalette from './CommandPalette.tsx';
 
 const site = await getEntry('site', 'site');
 const profile = await getEntry('profile', 'profile');
@@ -47,6 +48,7 @@ const initials = profile.data.name
       </nav>
 
       <div class="flex items-center gap-2">
+        <CommandPalette client:idle />
         <a
           href={cta.primary.href}
           download

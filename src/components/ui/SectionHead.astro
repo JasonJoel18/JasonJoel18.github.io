@@ -1,0 +1,37 @@
+---
+interface Props {
+  number: string;
+  label: string;
+  title: string;
+  lede?: string;
+  aside?: string;
+  class?: string;
+}
+
+const { number, label, title, lede, aside, class: className } = Astro.props;
+---
+
+<div class:list={["grid grid-cols-12 gap-x-8 gap-y-5", className]}>
+  <div class="col-span-12 lg:col-span-3">
+    <div class="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+      <span class="text-primary tabular-nums">{number}</span>
+      <span class="opacity-40"> / </span>
+      <span>{label}</span>
+    </div>
+    {aside && (
+      <p class="mt-4 text-xs text-muted-foreground/80 leading-relaxed max-w-[28ch] hidden lg:block">
+        {aside}
+      </p>
+    )}
+  </div>
+  <div class="col-span-12 lg:col-span-9">
+    <h2 class="text-3xl sm:text-4xl lg:text-[2.75rem] font-semibold tracking-tight leading-[1.08] text-balance">
+      {title}
+    </h2>
+    {lede && (
+      <p class="mt-5 text-base sm:text-lg text-muted-foreground max-w-[58ch] leading-relaxed text-pretty">
+        {lede}
+      </p>
+    )}
+  </div>
+</div>

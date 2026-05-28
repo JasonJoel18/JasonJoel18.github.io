@@ -1,7 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
-import { Github } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import ProjectCard from '~/components/sections/ProjectCard';
+import Reveal from '~/components/motion/Reveal';
+import SectionHead from '~/components/ui/SectionHead.astro';
 
 const projects = (await getCollection('projects')).sort((a, b) => {
   if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
@@ -23,31 +25,34 @@ const cards = projects.map((p) => ({
 }));
 ---
 
-<section id="projects" class="relative py-16 sm:py-24 bg-muted/30 cv-auto">
+<section id="projects" class="relative py-28 sm:py-36 cv-auto">
   <div class="container-page">
-    <div class="text-center mb-12">
-      <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight">Selected Projects</h2>
-      <p class="mt-3 text-muted-foreground max-w-2xl mx-auto text-pretty">
-        BI dashboards, data automation, and ML — each shipped against a measurable target.
-      </p>
-    </div>
+    <Reveal client:visible>
+      <SectionHead
+        number="03"
+        label="work"
+        title="Selected work."
+        lede="BI dashboards, data automation, and machine learning. Each shipped against a measurable target."
+        aside={`${cards.length} public commits. Client work lives in private repos.`}
+      />
+    </Reveal>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {cards.map((project) => (
-        <ProjectCard client:visible project={project} />
+    <div class="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
+      {cards.map((project, i) => (
+        <ProjectCard client:visible project={project} index={i} />
       ))}
     </div>
 
-    <div class="mt-10 flex justify-center">
+    <Reveal client:visible className="mt-16 flex justify-start" delay={0.1}>
       <a
         href="https://github.com/JasonJoel18"
         target="_blank"
         rel="noreferrer noopener"
-        class="inline-flex items-center gap-2 h-10 px-5 rounded-[var(--radius)] border border-border bg-background text-sm font-medium text-foreground hover:bg-muted transition-colors"
+        class="group inline-flex items-center gap-2 text-sm font-medium text-foreground border-b border-border pb-1 hover:border-primary transition-colors"
       >
-        <Github size={16} aria-hidden="true" />
-        View All Projects
+        See everything on GitHub
+        <ArrowUpRight size={15} aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
       </a>
-    </div>
+    </Reveal>
   </div>
 </section>
