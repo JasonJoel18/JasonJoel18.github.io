@@ -416,17 +416,37 @@
   .animate-nudge { animation: nudge 2.4s var(--ease-out-quart) infinite; }
 
   /* Command palette open/close transitions (Radix data-state). */
-  .cmd-overlay { animation: cmd-fade 180ms var(--ease-out-quart); }
-  .cmd-overlay[data-state="closed"] { animation: cmd-fade-out 140ms var(--ease-out-quart) forwards; }
+  .cmd-overlay { animation: cmd-fade 220ms var(--ease-out-quart); }
+  .cmd-overlay[data-state="closed"] { animation: cmd-fade-out 160ms var(--ease-out-quart) forwards; }
   .cmd-content {
-    animation: cmd-enter 220ms var(--ease-out-expo);
+    /* Centering is owned entirely by transform here. Do NOT add Tailwind's
+       -translate-x-1/2 on this element: in v4 it sets the CSS `translate`
+       property which composes with `transform` and would double-offset
+       the panel on open (visible as a left-then-snap-to-center jump). */
+    transform: translate(-50%, 0);
+    animation: cmd-enter 260ms var(--ease-out-expo) both;
     transform-origin: 50% 0%;
   }
-  .cmd-content[data-state="closed"] { animation: cmd-exit 160ms var(--ease-out-quart) forwards; }
-  @keyframes cmd-fade   { from { opacity: 0 } to { opacity: 1 } }
+  .cmd-content[data-state="closed"] { animation: cmd-exit 180ms var(--ease-out-quart) forwards; }
+  @keyframes cmd-fade     { from { opacity: 0 } to { opacity: 1 } }
   @keyframes cmd-fade-out { from { opacity: 1 } to { opacity: 0 } }
-  @keyframes cmd-enter  { from { opacity: 0; transform: translate(-50%, -8px) scale(0.97) } to { opacity: 1; transform: translate(-50%, 0) scale(1) } }
-  @keyframes cmd-exit   { from { opacity: 1; transform: translate(-50%, 0) scale(1) } to { opacity: 0; transform: translate(-50%, -8px) scale(0.97) } }
+  @keyframes cmd-enter    { from { opacity: 0; transform: translate(-50%, -14px) scale(0.96) } to { opacity: 1; transform: translate(-50%, 0) scale(1) } }
+  @keyframes cmd-exit     { from { opacity: 1; transform: translate(-50%, 0) scale(1) } to { opacity: 0; transform: translate(-50%, -10px) scale(0.97) } }
+
+  /* Neutralize react-remove-scroll's padding compensation. We reserve the
+     scrollbar gutter on <html> already, so Radix Dialog opening would otherwise
+     double-compensate and shift the fixed header right by ~scrollbar-width,
+     producing a visible "shake" on every cmd+K open/close. */
+  body[data-scroll-locked] {
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+    --removed-body-scroll-bar-size: 0px;
+  }
+  body[data-scroll-locked] #site-header,
+  body[data-scroll-locked] [data-cmd-scroll-lock-ignore] {
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

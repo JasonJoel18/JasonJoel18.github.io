@@ -1,0 +1,207 @@
+---
+import { getEntry } from 'astro:content';
+import { Github, Linkedin, Mail, Send } from 'lucide-react';
+import KaggleIcon from '~/components/ui/KaggleIcon.astro';
+import Reveal from '~/components/motion/Reveal';
+import SectionHead from '~/components/ui/SectionHead.astro';
+
+const profile = await getEntry('profile', 'profile');
+const cv = await getEntry('cv', 'cv');
+if (!profile || !cv) throw new Error('Missing entries');
+
+const c = cv.data.contact;
+const infoRows = [
+  { key: 'Email',    value: c.email,    href: `mailto:${c.email}`, copy: c.email },
+  { key: 'Phone',    value: c.phone ?? null, href: c.phone ? `tel:${c.phone.replace(/\s+/g, '')}` : null, copy: null },
+  { key: 'Location', value: c.location, href: null, copy: null },
+  { key: 'Timezone', value: 'CET · UTC+1', href: null, copy: null },
+  { key: 'Status',   value: 'Open to roles', href: null, copy: null },
+].filter((r) => r.value);
+
+const socialIconMap = { github: Github, linkedin: Linkedin, email: Mail } as const;
+---
+
+<section id="contact" class="relative py-20 sm:py-28 lg:py-36 cv-auto">
+  <div class="container-page">
+    <Reveal client:visible>
+      <SectionHead
+        number="05"
+        label="contact"
+        title="Get in touch."
+        lede="Have a data problem worth solving, or want to swap notes on dashboards? My inbox is open."
+        aside="Replies usually within a day. Email beats LinkedIn for anything urgent."
+      />
+    </Reveal>
+
+    <div class="mt-20 grid grid-cols-12 gap-x-8 gap-y-14">
+      <div class="col-span-12 lg:col-span-5 space-y-12">
+        <Reveal client:visible>
+          <dl
+            data-reveal-cascade
+            class="space-y-5"
+            style="--cascade-step: 55ms;"
+          >
+            {infoRows.map((row, i) => (
+              <div
+                data-reveal-item
+                style={`--i:${i};`}
+                class="grid grid-cols-[5.5rem_1fr] gap-4 items-baseline"
+              >
+                <dt class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
+                  {row.key}
+                </dt>
+                <dd class="text-sm text-foreground break-all relative" data-copy-row={row.copy ? 'true' : undefined}>
+                  <span class="inline-flex items-center gap-2 copy-state" data-default>
+                    {row.href ? (
+                      <a href={row.href} class="hover:text-primary transition-colors">
+                        {row.value}
+                      </a>
+                    ) : (
+                      <span>{row.value}</span>
+                    )}
+                    {row.copy && (
+                      <button
+                        type="button"
+                        data-copy={row.copy}
+                        aria-label={`Copy ${row.key.toLowerCase()} to clipboard`}
+                        class="inline-flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors -my-1"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+                          <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+                        </svg>
+                      </button>
+                    )}
+                  </span>
+                  {row.copy && (
+                    <span class="inline-flex items-center gap-2 text-primary copy-state" data-confirm>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      copied to clipboard
+                    </span>
+                  )}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </Reveal>
+
+        <Reveal client:visible delay={0.15}>
+          <div class="border-t border-border pt-8">
+            <div class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground mb-4">
+              Elsewhere
+            </div>
+            <div class="flex items-center gap-2">
+              {profile.data.socials.map((s) => {
+                const baseClass =
+                  'inline-flex h-11 w-11 items-center justify-center rounded-full border border-border text-muted-foreground transition-all duration-300 hover:bg-muted hover:text-foreground hover:-translate-y-0.5';
+                if (s.kind === 'kaggle') {
+                  return (
+                    <a href={s.url} target="_blank" rel="noreferrer noopener" aria-label={s.label} class={baseClass}>
+                      <KaggleIcon size={16} />
+                    </a>
+                  );
+                }
+                const Icon = socialIconMap[s.kind as keyof typeof socialIconMap];
+                if (!Icon) return null;
+                return (
+                  <a href={s.url} target={s.kind === 'email' ? undefined : '_blank'} rel="noreferrer noopener" aria-label={s.label} class={baseClass}>
+                    <Icon size={16} aria-hidden="true" />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </Reveal>
+      </div>
+
+      <Reveal client:visible delay={0.1} className="col-span-12 lg:col-span-7">
+        <form
+          action={`mailto:${c.email}`}
+          method="post"
+          enctype="text/plain"
+          data-reveal-cascade
+          class="space-y-5"
+          style="--cascade-step: 70ms;"
+        >
+          <div data-reveal-item style="--i:0;" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-2">
+              <label for="contact-name" class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">Name</label>
+              <input
+                id="contact-name"
+                name="name"
+                required
+                class="flex h-11 w-full rounded-[var(--radius)] border border-border bg-[var(--input-background)] px-3.5 text-sm placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary/40"
+                placeholder="Your name"
+              />
+            </div>
+            <div class="space-y-2">
+              <label for="contact-email" class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">Email</label>
+              <input
+                id="contact-email"
+                name="email"
+                type="email"
+                required
+                class="flex h-11 w-full rounded-[var(--radius)] border border-border bg-[var(--input-background)] px-3.5 text-sm placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary/40"
+                placeholder="you@example.com"
+              />
+            </div>
+          </div>
+
+          <div data-reveal-item style="--i:1;" class="space-y-2">
+            <label for="contact-subject" class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">Subject</label>
+            <input
+              id="contact-subject"
+              name="subject"
+              required
+              class="flex h-11 w-full rounded-[var(--radius)] border border-border bg-[var(--input-background)] px-3.5 text-sm placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary/40"
+              placeholder="What's this about?"
+            />
+          </div>
+
+          <div data-reveal-item style="--i:2;" class="space-y-2">
+            <label for="contact-message" class="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">Message</label>
+            <textarea
+              id="contact-message"
+              name="message"
+              required
+              rows="6"
+              class="flex min-h-[180px] w-full rounded-[var(--radius)] border border-border bg-[var(--input-background)] px-3.5 py-3 text-sm placeholder:text-muted-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary/40"
+              placeholder="Tell me about your project, role, or question…"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            data-reveal-item
+            style="--i:3;"
+            class="group inline-flex items-center gap-2 h-11 rounded-[var(--radius)] bg-primary px-6 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+          >
+            <Send size={15} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            Send message
+          </button>
+        </form>
+      </Reveal>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
+    btn.addEventListener('click', async (event) => {
+      event.preventDefault();
+      const value = btn.dataset.copy;
+      if (!value) return;
+      try {
+        await navigator.clipboard.writeText(value);
+      } catch {
+        return;
+      }
+      const row = btn.closest<HTMLElement>('[data-copy-row]');
+      if (!row) return;
+      row.setAttribute('data-copied', 'true');
+      window.setTimeout(() => row.removeAttribute('data-copied'), 1400);
+    });
+  });
+</script>
