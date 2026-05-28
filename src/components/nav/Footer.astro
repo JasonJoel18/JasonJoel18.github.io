@@ -30,7 +30,7 @@ const focusAreas = [
         <div class="mt-4 flex items-center gap-2">
           {profile.data.socials.map((s) => {
             const baseClass =
-              'inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground';
+              'inline-flex h-11 w-11 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground';
             if (s.kind === 'kaggle') {
               return (
                 <a href={s.url} target="_blank" rel="noreferrer noopener" aria-label={s.label} class={baseClass}>
@@ -51,16 +51,16 @@ const focusAreas = [
 
       <div>
         <p class="text-sm font-semibold text-foreground">Quick Links</p>
-        <ul class="mt-3 space-y-2">
+        <ul class="mt-3 -my-1.5">
           {quickLinks.map((item) => (
             <li>
-              <a href={item.href} class="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <a href={item.href} class="inline-flex py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 {item.label}
               </a>
             </li>
           ))}
           <li>
-            <a href="/cv" class="text-sm text-muted-foreground hover:text-foreground transition-colors">CV</a>
+            <a href="/cv" class="inline-flex py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">CV</a>
           </li>
         </ul>
       </div>

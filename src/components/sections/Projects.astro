@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { ArrowUpRight } from 'lucide-react';
-import ProjectCard from '~/components/sections/ProjectCard';
+import ProjectIndex, { type ProjectRow } from '~/components/sections/ProjectIndex';
 import Reveal from '~/components/motion/Reveal';
 import SectionHead from '~/components/ui/SectionHead.astro';
 
@@ -11,21 +11,31 @@ const projects = (await getCollection('projects')).sort((a, b) => {
   return b.data.year - a.data.year;
 });
 
-const cards = projects.map((p) => ({
-  title: p.data.title,
-  summary: p.data.summary,
-  year: p.data.year,
-  tech: p.data.tech,
-  media: p.data.media,
-  metrics: p.data.metrics,
-  role: p.data.role,
-  links: p.data.links ?? {},
-  href: p.data.caseStudy ? `/projects/${p.id}/` : null,
-  featured: p.data.featured,
-}));
+const rows: ProjectRow[] = projects.map((p) => {
+  const m = p.data.media;
+  let cover = '';
+  let coverAlt = p.data.title;
+  if (m.type === 'image' || m.type === 'gif') {
+    cover = m.src;
+    coverAlt = m.alt;
+  } else if (m.type === 'video') {
+    cover = m.poster;
+    coverAlt = m.alt;
+  }
+  return {
+    slug: p.id,
+    title: p.data.title,
+    year: p.data.year,
+    tech: p.data.tech,
+    role: p.data.role,
+    featured: p.data.featured,
+    cover,
+    coverAlt,
+  };
+});
 ---
 
-<section id="projects" class="relative py-28 sm:py-36 cv-auto">
+<section id="projects" class="relative py-20 sm:py-28 lg:py-36 cv-auto">
   <div class="container-page">
     <Reveal client:visible>
       <SectionHead
@@ -33,15 +43,13 @@ const cards = projects.map((p) => ({
         label="work"
         title="Selected work."
         lede="BI dashboards, data automation, and machine learning. Each shipped against a measurable target."
-        aside={`${cards.length} public commits. Client work lives in private repos.`}
+        aside={`${rows.length} public commits. Client work lives in private repos.`}
       />
     </Reveal>
 
-    <div class="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
-      {cards.map((project, i) => (
-        <ProjectCard client:visible project={project} index={i} />
-      ))}
-    </div>
+    <Reveal client:visible className="mt-16">
+      <ProjectIndex client:load projects={rows} />
+    </Reveal>
 
     <Reveal client:visible className="mt-16 flex justify-start" delay={0.1}>
       <a

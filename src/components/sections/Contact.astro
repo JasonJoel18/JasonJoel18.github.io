@@ -21,7 +21,7 @@ const infoRows = [
 const socialIconMap = { github: Github, linkedin: Linkedin, email: Mail } as const;
 ---
 
-<section id="contact" class="relative py-28 sm:py-36 cv-auto">
+<section id="contact" class="relative py-20 sm:py-28 lg:py-36 cv-auto">
   <div class="container-page">
     <Reveal client:visible>
       <SectionHead
@@ -87,7 +87,7 @@ const socialIconMap = { github: Github, linkedin: Linkedin, email: Mail } as con
             <div class="flex items-center gap-2">
               {profile.data.socials.map((s) => {
                 const baseClass =
-                  'inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-muted-foreground transition-all duration-300 hover:bg-muted hover:text-foreground hover:-translate-y-0.5';
+                  'inline-flex h-11 w-11 items-center justify-center rounded-full border border-border text-muted-foreground transition-all duration-300 hover:bg-muted hover:text-foreground hover:-translate-y-0.5';
                 if (s.kind === 'kaggle') {
                   return (
                     <a href={s.url} target="_blank" rel="noreferrer noopener" aria-label={s.label} class={baseClass}>

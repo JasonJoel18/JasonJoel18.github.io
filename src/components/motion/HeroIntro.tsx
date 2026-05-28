@@ -102,7 +102,7 @@ export default function HeroIntro({
     window.setTimeout(() => setCvDownloaded(false), 1600);
   };
 
-  const fallbackLabel = `${location} — ${availability}`;
+  const fallbackLabel = `${location} · ${availability}`;
   const displayLabel = status?.label ?? fallbackLabel;
   const online = status?.online ?? true; // pre-hydration: render as if online
 
@@ -208,7 +208,7 @@ export default function HeroIntro({
       >
         {socials.map((s) => {
           const baseClass =
-            'inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-muted-foreground transition-all duration-300 hover:bg-muted hover:text-foreground hover:-translate-y-0.5';
+            'inline-flex h-11 w-11 items-center justify-center rounded-full border border-border text-muted-foreground transition-all duration-300 hover:bg-muted hover:text-foreground hover:-translate-y-0.5';
           if (s.kind === 'kaggle') {
             return (
               <a

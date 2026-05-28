@@ -49,7 +49,9 @@ const initials = profile.data.name
       </nav>
 
       <div class="flex items-center gap-2">
-        <CommandPalette client:idle />
+        <div class="hidden sm:inline-flex">
+          <CommandPalette client:idle />
+        </div>
         <ThemeToggle client:idle />
         <a
           href={cta.primary.href}

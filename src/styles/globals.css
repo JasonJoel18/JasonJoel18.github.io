@@ -142,6 +142,9 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     scroll-padding-top: 80px;
+    /* Reserve scrollbar gutter so Radix Dialog (cmd+K, mobile sheet) opening
+       doesn't shift the page when it locks body scroll. */
+    scrollbar-gutter: stable;
   }
 
   body {

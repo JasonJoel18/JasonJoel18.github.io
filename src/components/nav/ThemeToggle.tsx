@@ -46,7 +46,7 @@ export default function ThemeToggle() {
       onClick={toggle}
       aria-label={theme ? nextLabel : 'Toggle theme'}
       title={theme ? nextLabel : undefined}
-      className="relative inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-muted-foreground hover:border-primary/40 hover:text-foreground transition-colors overflow-hidden"
+      className="relative inline-flex h-11 w-11 sm:h-9 sm:w-9 items-center justify-center rounded-md border border-border text-muted-foreground hover:border-primary/40 hover:text-foreground transition-colors overflow-hidden"
       suppressHydrationWarning
     >
       {theme === null ? (

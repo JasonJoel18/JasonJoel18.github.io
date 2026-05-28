@@ -5,7 +5,7 @@ import ProjectMedia from '~/components/media/ProjectMedia.tsx';
 import { ArrowLeft, Github, ExternalLink, BarChart3 } from 'lucide-react';
 
 export async function getStaticPaths() {
-  const projects = await getCollection('projects', ({ data }) => data.caseStudy === true);
+  const projects = await getCollection('projects');
   return projects.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },
@@ -15,39 +15,55 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const p = entry.data;
+
+const sections = [
+  p.problem ? { label: 'Problem',  body: p.problem  } : null,
+  p.approach ? { label: 'Approach', body: p.approach } : null,
+  p.results ? { label: 'Results',  body: p.results  } : null,
+].filter(Boolean) as Array<{ label: string; body: string }>;
 ---
 
-<BaseLayout title={`${p.title} — Jason Joel Pinto`} description={p.summary}>
-  <article class="container-page pt-28 pb-20">
+<BaseLayout title={`${p.title} · Jason Joel Pinto`} description={p.summary}>
+  <article class="container-page pt-28 pb-24">
     <a
       href="/#projects"
-      class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
+      class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-10"
     >
       <ArrowLeft size={16} aria-hidden="true" />
       Back to projects
     </a>
 
-    <header class="rounded-[var(--radius)] border border-border bg-card p-6 sm:p-10 shadow-sm mb-10">
-      <p class="text-xs font-semibold uppercase tracking-[0.16em] text-primary mb-3">
-        Case study · {p.year}
-      </p>
-      <h1 class="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-balance mb-4">
+    <header class="mb-14 max-w-4xl">
+      <div class="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground mb-6">
+        <span class="tabular-nums text-primary">{p.year}</span>
+        <span class="opacity-40">·</span>
+        <span>{p.role ?? (p.caseStudy ? 'Case study' : 'Project')}</span>
+        {p.featured && (
+          <>
+            <span class="opacity-40">·</span>
+            <span class="text-primary/80">Featured</span>
+          </>
+        )}
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight leading-[1.05] text-balance mb-6">
         {p.title}
       </h1>
-      <p class="text-base sm:text-lg text-muted-foreground leading-relaxed text-pretty max-w-3xl">
+
+      <p class="text-lg sm:text-xl text-muted-foreground leading-relaxed text-pretty max-w-3xl">
         {p.summary}
       </p>
 
-      <ul class="flex flex-wrap gap-1.5 mt-5">
+      <ul class="flex flex-wrap gap-1.5 mt-8">
         {p.tech.map((t) => (
-          <li class="text-xs font-medium text-secondary-foreground bg-secondary rounded-md px-2.5 py-0.5">
+          <li class="text-xs font-medium text-secondary-foreground bg-secondary rounded-md px-2.5 py-1">
             {t}
           </li>
         ))}
       </ul>
 
       {(p.links?.github || p.links?.live || p.links?.demo) && (
-        <div class="flex flex-wrap gap-2 mt-6">
+        <div class="flex flex-wrap gap-2 mt-8">
           {p.links?.github && (
             <a
               href={p.links.github}
@@ -85,18 +101,56 @@ const p = entry.data;
       )}
     </header>
 
-    <div class="mb-12">
+    <div class="mb-16">
       <ProjectMedia client:load media={p.media} />
     </div>
 
-    <div class="prose max-w-3xl mx-auto
-      prose-headings:tracking-tight prose-headings:text-foreground
-      prose-p:text-muted-foreground prose-p:leading-relaxed
-      prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-      prose-strong:text-foreground
-      prose-code:text-foreground prose-code:font-mono prose-code:text-sm
-      prose-li:text-muted-foreground">
-      <Content />
-    </div>
+    {p.metrics && p.metrics.length > 0 && (
+      <dl class="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-10 border-y border-border py-10 mb-16">
+        {p.metrics.map((m) => (
+          <div class="flex flex-col">
+            <dt class="font-mono text-[10.5px] uppercase tracking-[0.2em] text-muted-foreground">
+              {m.label}
+            </dt>
+            <dd class="mt-3 text-3xl sm:text-4xl font-semibold text-foreground tabular-nums tracking-tight leading-none">
+              {m.value}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    )}
+
+    {sections.length > 0 && (
+      <div class="grid grid-cols-12 gap-x-8 gap-y-12 mb-16">
+        {sections.map((s, i) => (
+          <section class="col-span-12 md:col-span-10 md:col-start-2 grid grid-cols-12 gap-x-8">
+            <div class="col-span-12 md:col-span-3">
+              <div class="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+                <span class="text-primary tabular-nums">0{i + 1}</span>
+                <span class="opacity-40"> / </span>
+                <span>{s.label}</span>
+              </div>
+            </div>
+            <div class="col-span-12 md:col-span-9">
+              <p class="text-base sm:text-lg text-foreground leading-relaxed text-pretty max-w-prose">
+                {s.body}
+              </p>
+            </div>
+          </section>
+        ))}
+      </div>
+    )}
+
+    {entry.body && entry.body.trim().length > 0 && (
+      <div class="prose max-w-3xl mx-auto
+        prose-headings:tracking-tight prose-headings:text-foreground
+        prose-p:text-muted-foreground prose-p:leading-relaxed
+        prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+        prose-strong:text-foreground
+        prose-code:text-foreground prose-code:font-mono prose-code:text-sm
+        prose-li:text-muted-foreground">
+        <Content />
+      </div>
+    )}
   </article>
 </BaseLayout>

@@ -65,12 +65,12 @@ cv:
   - name: Hindi
     level: Native
   education:
-  - degree: M.Sc. — Data Science, AI & Digital Business
+  - degree: 'M.Sc., Data Science, AI & Digital Business'
     institution: GISMA University of Applied Sciences
     duration: Graduated 2025
     location: Potsdam / Berlin, Germany
     summary: 'GPA: 1.9 (German scale)'
-  - degree: B.Com — Bachelor of Commerce
+  - degree: B.Com, Bachelor of Commerce
     institution: St. Aloysius College (Autonomous), Mangalore
     duration: Graduated 2020
     location: Mangalore, India
@@ -101,7 +101,7 @@ cv:
     issuer: Anthropic Academy
   - name: AWS Cloud Practitioner
     issuer: In Progress
-  - name: HackerRank — SQL (Intermediate) Certificate
+  - name: HackerRank SQL (Intermediate) Certificate
     issuer: HackerRank
   - name: 'Learning Data Analytics: 1 Foundations'
     issuer: LinkedIn Learning

@@ -25,10 +25,10 @@ export default function MobileSheet({ nav, cta }: Props) {
       <SheetTrigger
         aria-label="Open menu"
         className={cn(
-          'md:hidden inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-foreground hover:bg-muted transition-colors',
+          'md:hidden inline-flex h-11 w-11 items-center justify-center rounded-md border border-border text-foreground hover:bg-muted transition-colors',
         )}
       >
-        <Menu className="h-4 w-4" />
+        <Menu className="h-5 w-5" />
       </SheetTrigger>
       <SheetContent side="right" className="w-72">
         <SheetHeader>

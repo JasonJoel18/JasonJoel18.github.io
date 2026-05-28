@@ -1,7 +1,7 @@
 # JasonJoel18.github.io
 
 Personal portfolio for **Jason Joel Pinto** — Data Analyst, Berlin.
-Live at **https://JasonJoel18.github.io/**.
+Live at **<https://JasonJoel18.github.io/>**.
 
 Built with **Astro 5 · React 19 · Tailwind CSS v4 · Framer Motion**, deployed for free to **GitHub Pages** via GitHub Actions.
 
@@ -14,6 +14,7 @@ bun install        # one-time
 bun run dev        # starts http://localhost:4321
 bun run build      # type-checks + builds to ./dist
 bun run preview    # preview the production build
+lsof -ti :4321 | xargs kill -9 2>/dev/null # Kill port 4321
 ```
 
 Bun 1.x. (Node 20+ also works if you swap the commands back to `npm`.)
