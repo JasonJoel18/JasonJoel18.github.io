@@ -51,7 +51,10 @@
   --code-com:    oklch(0.62 0.01 264);
   --code-op:     oklch(0.5 0.005 264);
 
-  --font-sans: "Inter Tight", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* JetBrains Mono is the system primary. Both --font-sans and --font-mono
+     resolve to it so existing `font-sans` and `font-mono` utilities both stay
+     correct without churning every component. */
+  --font-sans: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
@@ -139,6 +142,10 @@
     background: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);
+    /* JetBrains Mono ships with code-friendly ligatures (=>, ->, !=, >=).
+       Keep them; they reinforce the editorial-console character on a body-mono
+       site without being noisy in prose (the sequences rarely appear). */
+    font-feature-settings: "calt" 1, "liga" 1, "zero" 0;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     scroll-padding-top: 80px;
@@ -165,9 +172,13 @@
   }
 
   h1, h2, h3, h4 {
-    letter-spacing: -0.015em;
-    line-height: 1.15;
-    font-weight: 600;
+    /* Mono characters all share the same advance, so the slight negative
+       tracking that tightened Inter Tight here would cause glyph collisions.
+       Tracking sits at 0; medium weight (500) reads as visually heavier than
+       Inter Semibold did, so the hierarchy stays — without going chunky. */
+    letter-spacing: 0;
+    line-height: 1.1;
+    font-weight: 500;
   }
 
   section {
@@ -414,6 +425,70 @@
     50%      { transform: translateY(6px); opacity: 1; }
   }
   .animate-nudge { animation: nudge 2.4s var(--ease-out-quart) infinite; }
+
+  /* Hero background: sparse dotted grid + soft cobalt halo. Driven by JS in
+     Hero.astro — grid translates on cursor parallax, halo opacity fades on
+     scroll via the --hero-veil CSS var. Both compose transform + opacity only,
+     stay contained to the hero section, and cost nothing when the user isn't
+     interacting (no autonomous loop). */
+  .hero-bg {
+    --hero-veil: 1;
+    contain: layout paint;
+  }
+  .hero-bg-grid {
+    position: absolute;
+    /* Oversize so cursor parallax never reveals an edge. */
+    inset: -24px;
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      color-mix(in oklab, var(--foreground) 9%, transparent) 1px,
+      transparent 0
+    );
+    background-size: 28px 28px;
+    /* Fade the grid toward the edges so the section breathes. */
+    -webkit-mask-image: radial-gradient(
+      ellipse 70% 60% at 50% 45%,
+      #000 40%,
+      transparent 95%
+    );
+            mask-image: radial-gradient(
+      ellipse 70% 60% at 50% 45%,
+      #000 40%,
+      transparent 95%
+    );
+    opacity: 0.85;
+  }
+  .hero-bg-halo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        700px 460px at 50% 38%,
+        color-mix(in oklab, var(--primary) 14%, transparent),
+        transparent 70%
+      ),
+      radial-gradient(
+        1100px 600px at 50% 0%,
+        color-mix(in oklab, var(--primary) 6%, transparent),
+        transparent 75%
+      );
+    opacity: var(--hero-veil, 1);
+    transition: opacity 220ms var(--ease-out-quart);
+  }
+  /* Slightly higher contrast for the dots in dark mode. */
+  .dark .hero-bg-grid {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      color-mix(in oklab, var(--foreground) 11%, transparent) 1px,
+      transparent 0
+    );
+    opacity: 0.95;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-bg-halo { transition: none; }
+    .hero-bg-grid { transform: none !important; }
+  }
 
   /* Command palette open/close transitions (Radix data-state). */
   .cmd-overlay { animation: cmd-fade 220ms var(--ease-out-quart); }

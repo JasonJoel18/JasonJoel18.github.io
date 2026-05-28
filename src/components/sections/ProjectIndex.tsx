@@ -129,7 +129,7 @@ export default function ProjectIndex({ projects }: Props) {
 
                 <div className="min-w-0">
                   <div className="flex items-baseline flex-wrap gap-x-3">
-                    <h3 className="text-2xl sm:text-3xl md:text-[2.1rem] font-semibold tracking-tight leading-[1.1] text-balance">
+                    <h3 className="font-mono text-lg sm:text-xl md:text-[1.5rem] font-medium leading-[1.2]">
                       {p.title}
                     </h3>
                     {p.featured && (
@@ -138,7 +138,7 @@ export default function ProjectIndex({ projects }: Props) {
                       </span>
                     )}
                   </div>
-                  <div className="mt-2.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
+                  <div className="mt-2.5 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[11px] tracking-[0.02em] text-muted-foreground">
                     {p.tech.slice(0, 5).map((t, ti) => (
                       <span key={t} className="inline-flex items-center gap-2">
                         {ti > 0 && <span aria-hidden="true" className="opacity-40">·</span>}

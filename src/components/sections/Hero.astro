@@ -39,7 +39,16 @@ const terminalLines = [
   id="hero"
   class="relative min-h-[90svh] flex flex-col items-center justify-center pt-32 pb-20 text-center overflow-hidden"
 >
-  <div class="container-page w-full">
+  <div
+    id="hero-bg"
+    aria-hidden="true"
+    class="hero-bg pointer-events-none absolute inset-0 -z-0"
+  >
+    <div class="hero-bg-grid will-change-transform"></div>
+    <div class="hero-bg-halo"></div>
+  </div>
+
+  <div class="container-page w-full relative z-10">
     <HeroIntro
       client:load
       firstWords={firstWords}
@@ -61,8 +70,80 @@ const terminalLines = [
   <a
     href="#about"
     aria-label="Scroll to about"
-    class="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground hover:text-foreground transition-colors"
+    class="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted-foreground hover:text-foreground transition-colors z-10"
   >
     <ArrowDown size={22} className="animate-nudge" />
   </a>
 </section>
+
+<script>
+  // Cursor-driven grid parallax + scroll-driven halo fade. Transform + CSS var
+  // only, single rAF, bails out on reduced-motion. Contained to the hero so
+  // the rest of the page pays nothing for it.
+  (function () {
+    const section = document.getElementById('hero');
+    const bg = document.getElementById('hero-bg');
+    if (!section || !bg) return;
+
+    const grid = bg.querySelector<HTMLElement>('.hero-bg-grid');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const finePointer = window.matchMedia('(pointer: fine)').matches;
+
+    let raf = 0;
+    let tx = 0, ty = 0;       // target offset
+    let cx = 0, cy = 0;       // current (lerped)
+    let veil = 0;             // 0..1 scroll-driven halo fade
+    const MAX = 10;           // px parallax range
+    const LERP = 0.12;
+
+    const apply = () => {
+      raf = 0;
+      cx += (tx - cx) * LERP;
+      cy += (ty - cy) * LERP;
+      if (grid) grid.style.transform = `translate3d(${cx.toFixed(2)}px, ${cy.toFixed(2)}px, 0)`;
+      bg.style.setProperty('--hero-veil', String(1 - veil));
+      if (Math.abs(tx - cx) > 0.05 || Math.abs(ty - cy) > 0.05) {
+        raf = window.requestAnimationFrame(apply);
+      }
+    };
+
+    const schedule = () => {
+      if (!raf) raf = window.requestAnimationFrame(apply);
+    };
+
+    if (finePointer && !reduce) {
+      section.addEventListener(
+        'pointermove',
+        (e) => {
+          const r = section.getBoundingClientRect();
+          const nx = (e.clientX - r.left) / r.width - 0.5;
+          const ny = (e.clientY - r.top) / r.height - 0.5;
+          tx = nx * MAX * -1;
+          ty = ny * MAX * -1;
+          schedule();
+        },
+        { passive: true },
+      );
+      section.addEventListener(
+        'pointerleave',
+        () => {
+          tx = 0;
+          ty = 0;
+          schedule();
+        },
+        { passive: true },
+      );
+    }
+
+    const onScroll = () => {
+      const r = section.getBoundingClientRect();
+      // Fade halo as the hero scrolls out of view; once fully gone, stop work.
+      const v = Math.min(Math.max(-r.top / Math.max(r.height, 1), 0), 1);
+      if (Math.abs(v - veil) < 0.005) return;
+      veil = v;
+      schedule();
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+</script>

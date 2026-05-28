@@ -131,7 +131,7 @@ export default function HeroIntro({
 
       <motion.h1
         {...fade(0.08)}
-        className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-balance"
+        className="text-4xl sm:text-6xl lg:text-[5rem] font-semibold leading-[1.02] text-balance"
       >
         <span className="text-foreground">
           {firstWords}
@@ -142,7 +142,7 @@ export default function HeroIntro({
           {!reduce && (
             <motion.span
               aria-hidden="true"
-              className="pointer-events-none absolute left-0 right-0 -bottom-1 sm:-bottom-1.5 block h-px origin-left bg-gradient-to-r from-primary/0 via-primary/60 to-primary/0"
+              className="pointer-events-none absolute left-0 right-0 -bottom-1 sm:-bottom-2 block h-[2px] origin-left bg-gradient-to-r from-primary/0 via-primary/80 to-primary/0"
               initial={{ scaleX: 0, opacity: 0 }}
               animate={{ scaleX: 1, opacity: 1 }}
               transition={{ duration: 1.1, delay: 0.55, ease: EASE }}
@@ -153,7 +153,7 @@ export default function HeroIntro({
 
       <motion.h2
         {...fade(0.18)}
-        className="mt-4 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty"
+        className="mt-5 sm:mt-6 text-lg sm:text-xl lg:text-[1.375rem] text-muted-foreground max-w-2xl mx-auto text-pretty"
       >
         {tagline}
       </motion.h2>
